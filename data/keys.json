@@ -242,7 +242,7 @@
     {
       "id": "undo",
       "modifier": "Control",
-      "code": "KeyZ",
+      "code": "KeyY",
       "label": "Strg + Z",
       "meaning": "Rückgängig machen",
       "mnemonic": "Z wie Zurück"

@@ -1,0 +1,524 @@
+/* Spielbildschirm, virtuelle Tastatur, Hände und Regen-Modus. */
+
+/* ---------- Spielbildschirm ---------- */
+.screen.game {
+  max-width: none;
+  height: 100vh;
+  padding: 0.5rem 1rem 0.75rem;
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  gap: 0.4rem;
+}
+.hud {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(10rem, 22rem) auto;
+  gap: 1rem;
+  align-items: center;
+}
+/* Lange Titel werden mit "…" gekürzt (der volle Titel steht im Tooltip) */
+.hud__title { font-size: 1.1rem; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hud__progress { display: flex; align-items: center; gap: 0.6rem; }
+.hud__count { font-weight: bold; white-space: nowrap; font-size: 0.9rem; }
+.hud__buttons { display: flex; justify-content: flex-end; gap: 0.4rem; }
+.progress {
+  flex: 1;
+  height: 1rem;
+  border-radius: 0;
+  background: var(--surface);
+  border: 3px solid var(--border-dark);
+  overflow: hidden;
+}
+.progress__fill { height: 100%; width: 0; background: var(--ok); transition: width 0.3s; }
+
+.game__field {
+  position: relative;
+  border-radius: 0;
+  border: 5px solid var(--border);
+  box-shadow: 0 0 0 2px var(--border-dark), inset 0 0 0 2px rgba(107, 54, 18, 0.3);
+  overflow: hidden;
+  min-height: 200px;
+  background-color: var(--sky-bottom);
+  background-size: cover;
+  background-position: right bottom;
+  image-rendering: pixelated;
+}
+/* Mit Weltbild: eigene Bodenstreifen ausblenden, das Bild hat schon einen Boden */
+.game__field.has-scene .rain__ground,
+.game__field.has-scene .scene__ground { background: none; border: none; }
+:root[data-theme="kontrast"] .game__field.has-scene .rain__ground,
+:root[data-theme="kontrast"] .game__field.has-scene .scene__ground { background: var(--ground); }
+
+/* Hinweiszeile unter dem Spielfeld */
+.hint {
+  min-height: 2.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  font-weight: bold;
+  border-radius: 0;
+  padding: 0.3em 1em;
+  opacity: 0;
+  transition: opacity 0.2s;
+  border: 2px solid transparent;
+}
+.hint.is-visible { opacity: 1; background: var(--info-bg); border-color: var(--accent); }
+.hint.hint--error { background: var(--warn-bg); border-color: var(--star); }
+.hint.hint--caps,
+.hint.hint--capsOff,
+.hint.hint--shift { background: var(--info-bg); border-color: var(--accent); }
+.hint__icon { font-size: 1.3rem; }
+.tut .hint { opacity: 1; min-height: 1.6em; justify-content: flex-start; padding: 0; }
+
+/* Overlay im Spielfeld (Start, Pause) */
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.55);
+  z-index: 5;
+}
+:root[data-theme="kontrast"] .overlay { background: rgba(0, 0, 0, 0.8); }
+.overlay[hidden] { display: none; }
+.overlay__box {
+  background: var(--surface);
+  border: 3px solid var(--text);
+  border-radius: 0;
+  padding: 1.25rem 2rem;
+  text-align: center;
+  box-shadow: var(--shadow);
+  max-width: 30rem;
+}
+.overlay__box .tipp { margin: 0 auto 0.5rem; }
+.overlay__box .row { justify-content: center; }
+
+/* ---------- Tastatur-Bereich ---------- */
+.game__kb {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 1rem;
+  /* Tasteneinheit: passt sich an Breite und Höhe an */
+  --u: min(3.6vw, 7.2vh, 56px);
+}
+.game__hand { width: calc(var(--u) * 3.4); flex: none; }
+.game__kbwrap { flex: none; }
+
+.kb { position: relative; font-size: calc(var(--u) * 0.36); }
+.key {
+  position: absolute;
+  border: 2px solid var(--key-border);
+  border-bottom-width: 4px;
+  border-radius: 0;
+  background: var(--key-bg);
+  color: var(--key-text);
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  line-height: 1;
+  transition: transform 0.06s, opacity 0.2s;
+}
+.key--special { font-size: 0.8em; font-weight: normal; }
+.key__main { font-size: 1.25em; }
+.key--special .key__main { font-size: 1em; }
+.key__shift { position: absolute; top: 8%; left: 14%; font-size: 0.8em; }
+.key__base { position: absolute; bottom: 10%; left: 14%; font-size: 0.95em; }
+.key__altgr { position: absolute; bottom: 8%; right: 12%; font-size: 0.7em; font-weight: normal; opacity: 0.75; }
+.key__bump {
+  position: absolute;
+  bottom: 16%;
+  width: 28%;
+  height: 3px;
+  border-radius: 0;
+  background: currentColor;
+}
+.key--part { border-top: none; border-top-left-radius: 0; }
+
+/* Fingerfarben */
+.kb--colors .finger-LP, .kb--colors .finger-RP { background: var(--f-pinky); }
+.kb--colors .finger-LR, .kb--colors .finger-RR { background: var(--f-ring); }
+.kb--colors .finger-LM, .kb--colors .finger-RM { background: var(--f-middle); }
+.kb--colors .finger-LI, .kb--colors .finger-RI { background: var(--f-index); }
+.kb--colors .finger-LT, .kb--colors .finger-RT, .kb--colors .finger-TH { background: var(--f-thumb); }
+
+.key.is-inactive { opacity: var(--key-inactive); }
+.key.is-new { opacity: 1; outline: 4px solid var(--next-ring); outline-offset: 2px; z-index: 2; }
+/* Nächste Taste: pulsierender Rahmen + größer (nicht nur Farbe) */
+.key.is-next {
+  opacity: 1;
+  z-index: 2;
+  outline: 4px solid var(--next-ring);
+  outline-offset: 1px;
+  animation: key-pulse 1s ease-in-out infinite;
+}
+@keyframes key-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+.key.is-pressed { transform: translateY(2px) scale(0.95); animation: none; }
+.key.is-ok { box-shadow: 0 0 0 4px var(--ok); }
+.key.is-bad { box-shadow: 0 0 0 4px var(--bad); }
+.key.is-bad::after {
+  content: "✗";
+  position: absolute;
+  top: -0.9em;
+  right: -0.3em;
+  font-size: 1.1em;
+  color: var(--bad);
+}
+
+/* ---------- Hände ---------- */
+.hand { width: 100%; height: auto; display: block; }
+.hand__palm, .hand__finger { fill: var(--hand-skin); stroke: var(--hand-line); stroke-width: 2.5; }
+.hand__finger { transition: transform 0.15s; transform-box: fill-box; transform-origin: 50% 100%; }
+.hand__finger.finger-LP, .hand__finger.finger-RP { fill: var(--f-pinky); }
+.hand__finger.finger-LR, .hand__finger.finger-RR { fill: var(--f-ring); }
+.hand__finger.finger-LM, .hand__finger.finger-RM { fill: var(--f-middle); }
+.hand__finger.finger-LI, .hand__finger.finger-RI { fill: var(--f-index); }
+.hand__finger.finger-LT, .hand__finger.finger-RT { fill: var(--f-thumb); }
+.hand__finger.is-active { stroke: var(--next-ring); stroke-width: 6; transform: scale(1.12); }
+
+/* ---------- Regen-Modus ---------- */
+.rain { position: absolute; inset: 0; }
+.rain__ground {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 52px;
+  background: linear-gradient(var(--ground), var(--ground-dark));
+  border-top: 3px solid var(--ground-dark);
+}
+.rain__tipp {
+  position: absolute;
+  width: 96px; /* 3 x 32 Pixel */
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+}
+.rain__tipp.is-happy { animation: tipp-hop 0.5s ease-out; }
+.rain__tipp.is-oops { animation: tipp-oops 0.5s ease-in-out; }
+@keyframes tipp-hop { 50% { transform: translate(-50%, -16px); } }
+@keyframes tipp-oops { 25% { transform: translateX(-56%) rotate(-6deg); } 75% { transform: translateX(-44%) rotate(6deg); } }
+
+/* Tropfen im Pixel-Stil: Der Rand entsteht aus vier versetzten Schatten (klassischer
+   Pixelart-Trick, die Ecken bekommen dadurch eine kleine Stufe). Oben sitzt die
+   Pixel-Spitze genau auf der Randlinie. */
+.drop {
+  --drop-line: 4px;
+  position: absolute;
+  top: 34px;
+  transform: translate(-50%, 0);
+  background: var(--drop-bg);
+  min-width: 2.6em;
+  padding: 0.35em 0.85em 0.45em;
+  text-align: center;
+  color: var(--drop-text);
+  font-size: 1.7rem;
+  font-weight: bold;
+  white-space: nowrap;
+  box-shadow:
+    0 calc(-1 * var(--drop-line)) 0 0 var(--drop-border),
+    0 var(--drop-line) 0 0 var(--drop-border),
+    calc(-1 * var(--drop-line)) 0 0 0 var(--drop-border),
+    var(--drop-line) 0 0 0 var(--drop-border),
+    0 calc(2 * var(--drop-line) + 2px) 0 0 rgba(47, 90, 140, 0.22);
+  will-change: transform;
+}
+.drop__tip {
+  position: absolute;
+  left: 50%;
+  top: calc(-1 * var(--drop-line) - 20px); /* untere Zeile liegt auf der Randlinie */
+  width: 40px;
+  height: 24px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.drop__tip-fill { fill: var(--drop-bg); }
+.drop__tip-line { fill: var(--drop-border); }
+/* Glanzpunkt als Pixel-Quadrat */
+.drop::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 6px;
+  width: 6px;
+  height: 6px;
+  background: #ffffff;
+  box-shadow: 6px 0 0 rgba(255, 255, 255, 0.6);
+}
+:root[data-theme="kontrast"] .drop::after { display: none; }
+/* Ziel-Tropfen: die anderen Tropfen treten zurück, das aktuelle Zeichen ist unterstrichen */
+.drop--target { z-index: 3; }
+.drop:not(.drop--target) { opacity: 0.8; }
+.drop__ch { position: relative; display: inline-block; min-width: 0.4em; text-align: center; }
+.drop__ch.is-done { color: var(--ok); opacity: 0.55; }
+.drop__ch.is-current {
+  color: var(--text);
+  border-bottom: 5px solid var(--primary);
+}
+.drop__ch--space { color: var(--muted); font-weight: normal; margin-left: 0.15em; }
+.drop--shake { animation: drop-shake 0.3s; }
+@keyframes drop-shake {
+  25% { margin-left: -8px; }
+  75% { margin-left: 8px; }
+}
+.drop--pop { animation: drop-pop 0.5s ease-out forwards; }
+@keyframes drop-pop {
+  0% { opacity: 1; scale: 1; }
+  40% { scale: 1.25; }
+  100% { opacity: 0; scale: 1.6; }
+}
+.drop--splash { animation: drop-splash 0.6s ease-out forwards; }
+@keyframes drop-splash {
+  0% { opacity: 1; }
+  100% { opacity: 0; scale: 1.5 0.3; }
+}
+
+/* ---------- Mini-Tutorial ---------- */
+.screen.tut { max-width: none; display: flex; flex-direction: column; gap: 0.75rem; align-items: center; padding-top: 0.75rem; }
+.tut .game__kb { --u: min(3.2vw, 5.4vh, 52px); }
+.tut__card-main { max-width: 56rem; width: 100%; padding: 1rem 1.5rem; }
+.tut__card-main h1 { font-size: 1.5rem; margin-bottom: 0.2em; }
+.tut__card-main .row { margin-top: 0.5rem; }
+.tut__cards { list-style: none; padding: 0; margin: 0.4rem 0 0.6rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.tut__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  border: 3px solid var(--border);
+  border-radius: 0;
+  padding: 0.35rem 0.6rem;
+  min-width: 6.5rem;
+  font-size: 0.75rem;
+  text-align: center;
+}
+.tut__card .kbd-big { font-size: 1.25rem; }
+.tut__card.is-current { border-color: var(--primary); border-style: dashed; }
+.tut__card.is-done { border-color: var(--ok); background: var(--ok-bg); }
+.tut__check::before { content: " "; }
+.tut__card.is-done .tut__check::before { content: "✔ geschafft"; color: var(--ok); font-weight: bold; }
+
+/* Bewegungen reduzieren, wenn gewünscht */
+/* "Weniger Bewegung" (Einstellung oder Betriebssystem): keine Wackel-, Hüpf- und Pulseffekte.
+   Die Tropfen fallen trotzdem, das ist das Spiel selbst. */
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.001s !important;
+  animation-iteration-count: 1 !important;
+  animation-delay: 0s !important;
+  transition: none !important;
+}
+.reduce-motion .confetti,
+.reduce-motion .spark { display: none; }
+
+/* ---------- Textzeile (Monster, Rennen) ---------- */
+.scroll-panel {
+  position: absolute;
+  top: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(92%, 52rem);
+  background: var(--surface);
+  border: 3px solid var(--text);
+  border-radius: 0;
+  padding: 0.5rem 1rem 0.4rem;
+  box-shadow: var(--shadow);
+  z-index: 3;
+  text-align: center;
+}
+.textline { overflow: hidden; white-space: nowrap; }
+.textline--big { font-size: 2.1rem; font-weight: bold; }
+.textline__inner { position: relative; display: inline-block; transition: transform 0.15s ease-out; }
+.textline--ticker { text-align: left; }
+.tl__ch { display: inline-block; min-width: 0.35em; text-align: center; border-bottom: 5px solid transparent; }
+.tl__ch.is-done { color: var(--ok); opacity: 0.55; }
+.tl__ch.is-current { border-bottom-color: var(--primary); }
+.tl__ch--space { color: var(--muted); font-weight: normal; }
+.tl__ch.is-wrong { animation: ch-wrong 0.3s; }
+@keyframes ch-wrong { 25% { transform: translateX(-5px); color: var(--bad); } 75% { transform: translateX(5px); color: var(--bad); } }
+
+/* ---------- Gemeinsame Szene ---------- */
+.scene { position: absolute; inset: 0; }
+.scene__ground {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 22%;
+  background: linear-gradient(var(--ground), var(--ground-dark));
+  border-top: 3px solid var(--ground-dark);
+}
+@keyframes tipp-hop2 { 50% { transform: translateY(-18px); } }
+@keyframes tipp-shake { 25% { transform: rotate(-8deg); } 75% { transform: rotate(8deg); } }
+
+/* ---------- Monster-Modus ---------- */
+.monster__next { margin: 0.2rem 0 0; color: var(--muted); font-size: 0.95rem; }
+.monster__win { margin: 0.3rem 0; font-size: 1.6rem; font-weight: bold; color: var(--ok); }
+.monster__tipp {
+  position: absolute;
+  left: 4%;
+  bottom: 12%;
+  width: 96px; /* 3 x 32 Pixel */
+}
+.monster__tipp.is-happy { animation: tipp-hop2 0.5s ease-out; }
+.monster__tipp.is-oops { animation: tipp-shake 0.5s ease-in-out; }
+.monster__monster {
+  position: absolute;
+  bottom: 10%;
+  width: 160px; /* 4 x 40 Pixel */
+  transition: left 0.25s linear;
+  transform-origin: 50% 100%;
+}
+.monster__monster.is-hit { animation: monster-hit 0.4s ease-out; }
+.monster__monster.is-grow { animation: monster-grow 0.4s ease-out; }
+.monster__monster.is-bounce { animation: monster-bounce 0.7s ease-out; }
+.monster__monster.is-friend { animation: monster-friend 1s ease-in-out 2; }
+@keyframes monster-hit { 30% { transform: rotate(10deg) scale(0.92); filter: brightness(1.4); } }
+@keyframes monster-grow { 40% { transform: scale(1.12); } }
+@keyframes monster-bounce { 0% { transform: translateY(0); } 40% { transform: translateY(-60px) rotate(-15deg); } 100% { transform: translateY(0); } }
+@keyframes monster-friend { 50% { transform: translateY(-20px) rotate(5deg); } }
+.spell {
+  position: absolute;
+  bottom: 30%;
+  font-size: 2.6rem;
+  color: var(--star);
+  text-shadow: 0 0 10px #fff, 0 0 3px var(--text);
+  animation: spell-fly 0.45s ease-in forwards;
+  z-index: 4;
+  pointer-events: none;
+}
+.spell--small { font-size: 1.6rem; }
+@keyframes spell-fly {
+  from { transform: translateX(0) rotate(0) scale(0.6); opacity: 1; }
+  80% { opacity: 1; }
+  to { transform: translateX(var(--dx)) rotate(360deg) scale(1.2); opacity: 0; }
+}
+
+/* ---------- Renn-Modus ---------- */
+.race__panel { top: 1rem; }
+.race__road {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 8%;
+  height: 22%;
+  background: #5b6075;
+  border-top: 4px solid #3f4357;
+  border-bottom: 4px solid #3f4357;
+}
+.race__road::after {
+  /* Mittelstreifen */
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  top: 50%;
+  height: 5px;
+  background: repeating-linear-gradient(90deg, #fff 0 34px, transparent 34px 60px);
+  opacity: 0.8;
+}
+:root[data-theme="kontrast"] .race__road { background: #000; border-color: #fff; }
+.race__finish {
+  position: absolute;
+  right: 5%;
+  bottom: 8%;
+  height: 22%;
+  width: 22px;
+  background: repeating-conic-gradient(#222 0 25%, #fff 0 50%) 0 0 / 11px 11px;
+  border: 2px solid #222;
+}
+.race__flag { position: absolute; bottom: 100%; left: -6px; font-size: 2.2rem; }
+.race__car {
+  position: absolute;
+  bottom: 12%;
+  width: 144px; /* 3 x 48 Pixel */
+  transform: translateX(-10%);
+}
+/* Pixelbild mit zwei Bildern nebeneinander; beim Fahren wechseln sie sich ab */
+.race__carsprite {
+  width: 144px;
+  height: 84px;
+  background: url(../assets/pixel/auto.png) 0 0 / 288px 84px no-repeat;
+  image-rendering: pixelated;
+  filter: var(--avatar-filter, none);
+}
+.race__car.is-driving .race__carsprite { animation: car-frames 0.3s steps(2) infinite; }
+@keyframes car-frames { to { background-position: -288px 0; } }
+.race__car.is-stutter { animation: car-stutter 0.35s; }
+.race__car.is-finished { animation: car-cheer 0.6s ease-out 2; }
+@keyframes car-stutter { 25% { transform: translateX(-10%) rotate(-3deg); } 75% { transform: translateX(-10%) rotate(3deg); } }
+@keyframes car-cheer { 50% { transform: translateX(-10%) translateY(-16px); } }
+
+/* ---------- Tastenkunde ---------- */
+.game--keyhunt .game__kb { --u: min(3vw, 5vh, 46px); }
+.game--keyhunt .game__hand { display: none; }
+.kb--clickable .key { cursor: pointer; }
+.kb--clickable .key:hover { outline: 3px solid var(--focus); z-index: 3; }
+.keyhunt { display: grid; place-items: center; padding: 1rem; }
+.keyhunt__card {
+  width: min(92%, 40rem);
+  text-align: center;
+  padding: 1.1rem 1.6rem;
+}
+.keyhunt__question { font-family: var(--font-head); font-size: 1.7rem; font-weight: bold; line-height: 1.25; margin-bottom: 0.4em; }
+.keyhunt__verdict { font-size: 1.5rem; font-weight: bold; margin-bottom: 0.3em; }
+.keyhunt__card.is-right .keyhunt__verdict { color: var(--ok); }
+.keyhunt__card.is-wrong .keyhunt__verdict { color: var(--primary); }
+.keyhunt__answer { font-size: 1.2rem; font-weight: bold; }
+.keyhunt__card .row { margin-top: 0.5rem; }
+.keyhunt__done { font-size: 1.6rem; font-weight: bold; color: var(--ok); margin: 0; }
+
+/* ---------- Geschichte ---------- */
+.story__panel { text-align: left; }
+.story__title { font-family: var(--font-head); font-weight: bold; margin: 0 0 0.2rem; color: var(--muted); }
+.story__between { background: rgba(59, 42, 26, 0.35); }
+/* Kapitel geschafft: Bild links, Sterne und Knöpfe rechts (passt auch bei 768 px Höhe) */
+.story__box {
+  max-width: 56rem;
+  width: 94%;
+  padding: 0.9rem 1.2rem;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  grid-template-rows: auto auto auto 1fr;
+  column-gap: 1.25rem;
+  align-items: center;
+  text-align: left;
+}
+.story__box .story__img { grid-row: 1 / span 5; }
+.story__box h2 { margin: 0 0 0.2rem; }
+.story__box p { margin: 0.2rem 0; }
+.story__box p.muted { font-size: 0.85rem; }
+.story__box .row { justify-content: flex-start; margin-top: 0.5rem; }
+.story__img {
+  display: block;
+  width: 100%;
+  max-height: calc(100% - 0.5rem);
+  aspect-ratio: 2 / 1;
+  object-fit: cover;
+  image-rendering: pixelated;
+  border-radius: 0;
+  border: 3px solid var(--border);
+}
+
+/* Pixel-Funken (Tropfen platzt) */
+.spark {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--star);
+  box-shadow: 0 0 0 2px var(--surface);
+  z-index: 4;
+  pointer-events: none;
+  animation: spark-fly 0.55s steps(5) forwards;
+}
+@keyframes spark-fly { to { transform: translate(var(--dx), var(--dy)); opacity: 0; } }
+
+/* Zahnrad-Konfetti bei drei Sternen */
+.confetti {
+  position: fixed;
+  top: -40px;
+  width: 24px;
+  height: 24px;
+  image-rendering: pixelated;
+  z-index: 40;
+  pointer-events: none;
+  animation: confetti-fall var(--t, 2.6s) steps(16) forwards;
+}
+@keyframes confetti-fall { to { transform: translate(var(--dx, 0), 110vh); } }

@@ -361,15 +361,6 @@
       "xylophon",
       "pinguin"
     ],
-    "w4_saetze": [
-      "der hund bellt, die katze schläft.",
-      "die maus isst käse.",
-      "ich habe einen hund.",
-      "mama backt einen kuchen.",
-      "der bus fährt, aber das auto steht.",
-      "das zebra und der löwe leben im zoo.",
-      "im winter ist es kalt, im sommer ist es warm."
-    ],
     "w5_gross_links": [
       "Quark",
       "Quelle",
@@ -543,8 +534,18 @@
       "Ella",
       "Theo",
       "Clara",
-      "Xaver",
+      "Xenia",
       "Quentin",
+      "Tibelia",
+      "Kemal",
+      "Naomi",
+      "Noemi",
+      "Yusuf",
+      "Ioannis",
+      "Samir",
+      "Giuseppe",
+      "Jaron",
+      "Ali",
       "Tipp"
     ],
     "w5_orte": [
@@ -607,36 +608,6 @@
       "Oktober",
       "November",
       "Dezember"
-    ],
-    "w5_caps": [
-      "ZOO",
-      "BUS",
-      "ZUG",
-      "EIS",
-      "SOS",
-      "USA",
-      "USB",
-      "DVD",
-      "WLAN",
-      "KINO",
-      "TAXI",
-      "POST",
-      "HALT",
-      "STOPP",
-      "FEUER",
-      "HOTEL",
-      "ZEBRA",
-      "ACHTUNG",
-      "ROBOTER",
-      "TASTENHELD"
-    ],
-    "w5_caps_saetze": [
-      "Im ZOO wohnt ein ZEBRA.",
-      "Der BUS fährt zum KINO.",
-      "ACHTUNG, das FEUER brennt.",
-      "Das WLAN ist heute sehr langsam.",
-      "Ich rufe SOS, denn der ZUG fährt nicht.",
-      "Tipp wohnt im HOTEL am Berg."
     ],
     "w5_saetze": [
       "Anna und Ben spielen im Park.",
