@@ -135,7 +135,7 @@
 .kb--colors .finger-LT, .kb--colors .finger-RT, .kb--colors .finger-TH { background: var(--f-thumb); }
 
 .key.is-inactive { opacity: var(--key-inactive); }
-.key.is-new { box-shadow: 0 0 0 3px var(--accent); }
+.key.is-new { opacity: 1; outline: 4px solid var(--next-ring); outline-offset: 2px; z-index: 2; }
 /* Nächste Taste: pulsierender Rahmen + größer (nicht nur Farbe) */
 .key.is-next {
   opacity: 1;

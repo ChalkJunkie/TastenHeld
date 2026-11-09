@@ -20,29 +20,48 @@ export function renderLevelIntro(app, id) {
   };
 
   const best = prog
-    ? el('div', { class: 'intro__best' },
-      el('h2', { class: 'h3' }, 'Deine Bestleistung'),
-      starsNode(prog.stars ?? 0, 3, 'stars--mid'),
-      el('p', {}, `Genauigkeit ${formatNumber(prog.bestAccuracy ?? 0, 1)} %, Tempo ${formatNumber(prog.bestCpm ?? 0)} Zeichen pro Minute`))
-    : el('p', { class: 'intro__best muted' }, 'Dieses Level hast du noch nicht gespielt.');
+    ? el('p', { class: 'intro__best' }, 'Dein Rekord: ', starsNode(prog.stars ?? 0, 3),
+      ` ${formatNumber(prog.bestAccuracy ?? 0, 1)} % genau`)
+    : null;
+
+  // Grafik: Wo liegen die Finger? (Tastatur mit Fingerfarben + Hände)
+  const kbWrap = el('div', { class: 'game__kbwrap' });
+  const handL = el('div', { class: 'game__hand' });
+  const handR = el('div', { class: 'game__hand' });
+  const figure = el('figure', { class: 'intro__fig' },
+    el('div', { class: 'game__kb intro__kb' }, handL, kbWrap, handR),
+    el('figcaption', {},
+      el('span', { class: 'legend-swatch', 'aria-hidden': 'true' }),
+      'Gleiche Farbe = gleicher Finger.',
+      hasNew ? ' Neue Tasten sind umrandet.' : ''));
 
   const screen = el('section', { class: `screen intro world--${world.theme}` },
     el('div', { class: 'card intro__card' },
       el('p', { class: 'eyebrow' }, `Welt ${world.id}: ${world.title}`),
       el('h1', {}, `Level ${level.id}: ${level.title}`),
       level.intro ? el('p', { class: 'intro__text' }, level.intro) : null,
-      hasNew ? el('p', { class: 'intro__new' }, 'Neue Tasten: ',
-        level.newKeys.map((t) => el('kbd', {}, tokenLabel(t, app.index)))) : null,
-      el('p', { class: 'intro__rules' },
-        'Für Sterne zählt, wie genau du tippst – nicht wie schnell: ',
-        el('br'),
-        `★ ab ${thresholds[0]} %, ★★ ab ${thresholds[1]} %, ★★★ ab ${thresholds[2]} %.`),
-      best,
+      figure,
+      el('div', { class: 'intro__info' },
+        el('p', { class: 'intro__rules' },
+          'Sterne gibt es fürs genaue Tippen: ',
+          el('span', { class: 'nowrap' }, `★ ${thresholds[0]} %`), ' · ',
+          el('span', { class: 'nowrap' }, `★★ ${thresholds[1]} %`), ' · ',
+          el('span', { class: 'nowrap' }, `★★★ ${thresholds[2]} %`)),
+        best),
       el('div', { class: 'row' },
         el('button', { class: 'btn btn--big btn--primary', type: 'button', onclick: start }, "Los geht's!"),
         hasNew && seen ? el('button', { class: 'btn', type: 'button', onclick: () => renderTutorial(app, level, () => app.go.intro(id)) }, 'Neue Tasten noch mal üben') : null,
         el('button', { class: 'btn', type: 'button', onclick: () => app.go.map() }, 'Zur Weltkarte'))));
   showScreen(screen);
+
+  // Tastatur und Hände erst zeichnen, wenn der Bildschirm steht
+  const { index } = app;
+  const keyboard = createKeyboard(kbWrap, index);
+  const hands = createHands(handL, handR);
+  keyboard.setActive((level.activeKeys ?? []).map((t) => index.resolveToken(t)).filter(Boolean));
+  const newCodes = (level.newKeys ?? []).map((t) => index.resolveToken(t)).filter(Boolean);
+  keyboard.markNew(newCodes);
+  hands.setFinger(newCodes.map((c) => index.keys.get(c)?.finger));
 }
 
 /** Mini-Tutorial: jede neue Taste einmal drücken. */

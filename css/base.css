@@ -355,12 +355,34 @@ kbd {
 @keyframes bubble-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(232, 85, 62, 0.6); } 50% { box-shadow: 0 0 0 12px rgba(232, 85, 62, 0); } }
 
 /* ---------- Level-Vorschau ---------- */
-.intro__card { max-width: 46rem; margin: 2rem auto 0; }
+.intro__card { max-width: 56rem; margin: 0.75rem auto 0; padding: 1.1rem 1.75rem 1.25rem; }
+.intro__card h1 { margin-bottom: 0.2em; }
 .eyebrow { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.8rem; font-weight: bold; color: var(--muted); margin-bottom: 0.3em; }
-.intro__text { font-size: 1.15rem; }
-.intro__new kbd { font-size: 1.1rem; }
-.intro__rules { background: var(--info-bg); border-radius: 12px; padding: 0.7em 1em; }
-.intro__best { margin-top: 1rem; }
+.intro__text { font-size: 1.2rem; font-weight: bold; margin-bottom: 0.4em; }
+.intro__fig {
+  margin: 0;
+  padding: 0.75rem 0.5rem 0.5rem;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 18px;
+}
+.intro__kb { --u: min(2.9vw, 5.2vh, 44px); }
+.intro__fig figcaption { text-align: center; font-size: 0.9rem; margin-top: 0.4rem; color: var(--muted); }
+.legend-swatch {
+  display: inline-block;
+  width: 3.2em;
+  height: 0.9em;
+  margin-right: 0.5em;
+  vertical-align: middle;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--f-pinky) 0 25%, var(--f-ring) 25% 50%, var(--f-middle) 50% 75%, var(--f-index) 75%);
+  border: 1px solid var(--key-border);
+}
+.intro__info { display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; align-items: center; margin-top: 0.75rem; }
+.intro__info p { margin: 0; }
+.intro__rules { background: var(--info-bg); border-radius: 12px; padding: 0.35em 0.9em; }
+.intro__best .stars { font-size: 1.2rem; vertical-align: -0.1em; }
+.nowrap { white-space: nowrap; }
 
 /* ---------- Ergebnis ---------- */
 .result__card { max-width: 44rem; margin: 1.5rem auto 0; text-align: center; }

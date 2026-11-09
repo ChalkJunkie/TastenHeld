@@ -13,11 +13,11 @@ const FINGERS = [
 
 function makeHand(side) {
   const svg = document.createElementNS(SVG_NS, 'svg');
-  svg.setAttribute('viewBox', '0 0 124 150');
+  svg.setAttribute('viewBox', '0 0 140 150');
   svg.setAttribute('class', `hand hand--${side}`);
   svg.setAttribute('aria-hidden', 'true');
   const g = document.createElementNS(SVG_NS, 'g');
-  if (side === 'R') g.setAttribute('transform', 'translate(124 0) scale(-1 1)');
+  if (side === 'R') g.setAttribute('transform', 'translate(140 0) scale(-1 1)');
   svg.append(g);
 
   const rect = (attrs) => {
@@ -26,18 +26,19 @@ function makeHand(side) {
     g.append(r);
     return r;
   };
+  // Daumen: wächst unten seitlich aus dem Handballen und zeigt schräg nach außen.
+  // Er wird VOR der Handfläche gezeichnet, damit sein Ansatz unter dem Ballen verschwindet.
+  // Die Drehung sitzt in einer eigenen Gruppe, damit CSS-Effekte am Finger sie nicht stören.
+  const thumbGroup = document.createElementNS(SVG_NS, 'g');
+  thumbGroup.setAttribute('transform', 'rotate(50 88 132)');
+  g.append(thumbGroup);
+  const thumb = rect({ x: 79, y: 82, width: 18, height: 54, rx: 9, class: `hand__finger finger-${side}T`, 'data-finger': `${side}T` });
+  thumbGroup.append(thumb);
   // Handfläche
   rect({ x: 4, y: 78, width: 88, height: 66, rx: 26, class: 'hand__palm' });
   for (const [f, x, y, w, h] of FINGERS) {
     rect({ x, y, width: w, height: h, rx: 9, class: `hand__finger finger-${side}${f}`, 'data-finger': `${side}${f}` });
   }
-  // Daumen (schräg, zeigt zur Mitte)
-  // Die Drehung sitzt in einer eigenen Gruppe, damit CSS-Effekte am Finger sie nicht stören
-  const thumbGroup = document.createElementNS(SVG_NS, 'g');
-  thumbGroup.setAttribute('transform', 'rotate(-38 95 96)');
-  g.append(thumbGroup);
-  const thumb = rect({ x: 86, y: 70, width: 18, height: 52, rx: 9, class: `hand__finger finger-${side}T`, 'data-finger': `${side}T` });
-  thumbGroup.append(thumb);
   return svg;
 }
 
@@ -49,13 +50,13 @@ export function createHands(leftContainer, rightContainer) {
   rightContainer.append(right);
 
   return {
-    /** finger: 'LP', 'RI', 'TH' (beide Daumen) ... oder null */
+    /** finger: 'LP', 'RI', 'TH' (beide Daumen) ..., eine Liste davon oder null */
     setFinger(finger) {
       for (const svg of [left, right]) {
         for (const el of svg.querySelectorAll('.is-active')) el.classList.remove('is-active');
       }
-      if (!finger) return;
-      const ids = finger === 'TH' ? ['LT', 'RT'] : [finger];
+      const list = (Array.isArray(finger) ? finger : [finger]).filter(Boolean);
+      const ids = list.flatMap((f) => (f === 'TH' ? ['LT', 'RT'] : [f]));
       for (const id of ids) {
         for (const svg of [left, right]) {
           svg.querySelector(`[data-finger="${id}"]`)?.classList.add('is-active');
