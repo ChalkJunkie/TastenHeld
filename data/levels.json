@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "_hinweis": "Level-IDs (z. B. 1-3) sind Spielstand-Schlüssel und dürfen nie umbenannt werden. activeKeys/newKeys: einzelne Zeichen der Grundbelegung (\"a\", \"ö\", \",\") oder Tastennamen (\"Space\", \"ShiftLeft\", \"ShiftRight\", \"CapsLock\", \"AltGr\"). Prüfen mit index.html?debug=1 (Ausgabe in der Konsole).",
+  "worlds": [
+    {
+      "id": 1,
+      "title": "Die Grundreihe",
+      "intro": "Tipp wohnt auf der Tastenwiese. Hier lernst du die Grundreihe kennen: Dort wohnen deine Finger! Tipp spricht am Anfang nur die Kleinbuchstaben-Sprache.",
+      "theme": "wiese",
+      "levels": [
+        {
+          "id": "1-1",
+          "title": "Die linke Hand",
+          "intro": "Deine linke Hand liegt auf A S D F. Der Zeigefinger fühlt den kleinen Huckel auf dem F. Die Leertaste drückst du mit dem Daumen.",
+          "mode": "rain",
+          "caseMode": "lower",
+          "newKeys": ["a", "s", "d", "f", "Space"],
+          "activeKeys": ["a", "s", "d", "f", "Space"],
+          "content": { "type": "sequences", "source": "w1_links", "count": 12 },
+          "helps": { "keyboard": true, "hands": true, "fingerColors": true, "highlightNext": true },
+          "params": { "fallSpeed": 0.045, "maxOnScreen": 1, "spawnGap": 1.0, "confirmSpace": false },
+          "stars": { "accuracy": [85, 93, 98], "minChars": 30 },
+          "unlock": { "after": null }
+        },
+        {
+          "id": "1-2",
+          "title": "Die rechte Hand",
+          "intro": "Jetzt ist die rechte Hand dran: J K L Ö. Der Zeigefinger fühlt den Huckel auf dem J.",
+          "mode": "rain",
+          "caseMode": "lower",
+          "newKeys": ["j", "k", "l", "ö"],
+          "activeKeys": ["a", "s", "d", "f", "j", "k", "l", "ö", "Space"],
+          "content": { "type": "sequences", "source": "w1_rechts", "count": 10 },
+          "helps": { "keyboard": true, "hands": true, "fingerColors": true, "highlightNext": true },
+          "params": { "fallSpeed": 0.045, "maxOnScreen": 1, "spawnGap": 1.0, "confirmSpace": false },
+          "stars": { "accuracy": [85, 93, 98], "minChars": 30 },
+          "unlock": { "after": "1-1" }
+        },
+        {
+          "id": "1-3",
+          "title": "G und H",
+          "intro": "G und H liegen in der Mitte. Die Zeigefinger machen einen kleinen Schritt zur Seite und springen gleich wieder zurück.",
+          "mode": "rain",
+          "caseMode": "lower",
+          "newKeys": ["g", "h"],
+          "activeKeys": ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "Space"],
+          "content": { "type": "sequences", "source": "w1_gh", "count": 12 },
+          "helps": { "keyboard": true, "hands": true, "fingerColors": true, "highlightNext": true },
+          "params": { "fallSpeed": 0.05, "maxOnScreen": 1, "spawnGap": 1.0, "confirmSpace": false },
+          "stars": { "accuracy": [85, 93, 98], "minChars": 35 },
+          "unlock": { "after": "1-2" }
+        },
+        {
+          "id": "1-4",
+          "title": "Das Ä",
+          "intro": "Das Ä wohnt ganz rechts neben dem Ö. Du erreichst es mit dem rechten kleinen Finger.",
+          "mode": "rain",
+          "caseMode": "lower",
+          "newKeys": ["ä"],
+          "activeKeys": ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä", "Space"],
+          "content": { "type": "sequences", "source": "w1_ae", "count": 10 },
+          "helps": { "keyboard": true, "hands": true, "fingerColors": true, "highlightNext": true },
+          "params": { "fallSpeed": 0.05, "maxOnScreen": 1, "spawnGap": 1.0, "confirmSpace": false },
+          "stars": { "accuracy": [85, 93, 98], "minChars": 25 },
+          "unlock": { "after": "1-3" }
+        },
+        {
+          "id": "1-5",
+          "title": "Erste Wörter",
+          "intro": "Jetzt tippst du echte Wörter! Nach jedem Wort drückst du die Leertaste, dann zerplatzt der Tropfen.",
+          "mode": "rain",
+          "caseMode": "lower",
+          "newKeys": [],
+          "activeKeys": ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä", "Space"],
+          "content": { "type": "words", "source": "w1_woerter", "count": 14 },
+          "helps": { "keyboard": true, "hands": true, "fingerColors": true, "highlightNext": true },
+          "params": { "fallSpeed": 0.05, "maxOnScreen": 2, "spawnGap": 2.5, "confirmSpace": true },
+          "stars": { "accuracy": [85, 93, 98], "minChars": 50, "tempoBonusCpm": 50 },
+          "unlock": { "after": "1-4" }
+        },
+        {
+          "id": "1-6",
+          "title": "Grundreihen-Meister",
+          "intro": "Alles gemischt! Diesmal zeigt Tipp keine Hände mehr an. Schaffst du es auch so?",
+          "mode": "rain",
+          "caseMode": "lower",
+          "newKeys": [],
+          "activeKeys": ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä", "Space"],
+          "content": { "type": "words", "source": ["w1_gh", "w1_ae", "w1_woerter"], "count": 16 },
+          "helps": { "keyboard": true, "hands": false, "fingerColors": true, "highlightNext": true },
+          "params": { "fallSpeed": 0.055, "maxOnScreen": 2, "spawnGap": 2.2, "confirmSpace": true },
+          "stars": { "accuracy": [85, 93, 98], "minChars": 55, "tempoBonusCpm": 60 },
+          "unlock": { "after": "1-5" }
+        }
+      ]
+    }
+  ]
+}

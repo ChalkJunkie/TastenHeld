@@ -1,0 +1,129 @@
+// Level-Vorschau und Mini-Tutorial für neue Tasten.
+
+import { el, showScreen, starsNode, formatNumber } from '../ui.js';
+import { levelProgress } from '../progress.js';
+import { DEFAULT_STARS, HINTS } from '../engine.js';
+import { tokenLabel } from '../layout.js';
+import { createKeyboard } from '../keyboard.js';
+import { createHands } from '../hands.js';
+
+export function renderLevelIntro(app, id) {
+  const { world, level } = app.levelById(id);
+  const prog = levelProgress(app.state, id);
+  const thresholds = level.stars?.accuracy ?? DEFAULT_STARS;
+  const hasNew = (level.newKeys ?? []).length > 0;
+  const seen = app.state.tutorialsSeen.includes(id);
+
+  const start = () => {
+    if (hasNew && !seen) renderTutorial(app, level, () => app.go.play(id));
+    else app.go.play(id);
+  };
+
+  const best = prog
+    ? el('div', { class: 'intro__best' },
+      el('h2', { class: 'h3' }, 'Deine Bestleistung'),
+      starsNode(prog.stars ?? 0, 3, 'stars--mid'),
+      el('p', {}, `Genauigkeit ${formatNumber(prog.bestAccuracy ?? 0, 1)} %, Tempo ${formatNumber(prog.bestCpm ?? 0)} Zeichen pro Minute`))
+    : el('p', { class: 'intro__best muted' }, 'Dieses Level hast du noch nicht gespielt.');
+
+  const screen = el('section', { class: `screen intro world--${world.theme}` },
+    el('div', { class: 'card intro__card' },
+      el('p', { class: 'eyebrow' }, `Welt ${world.id}: ${world.title}`),
+      el('h1', {}, `Level ${level.id}: ${level.title}`),
+      level.intro ? el('p', { class: 'intro__text' }, level.intro) : null,
+      hasNew ? el('p', { class: 'intro__new' }, 'Neue Tasten: ',
+        level.newKeys.map((t) => el('kbd', {}, tokenLabel(t, app.index)))) : null,
+      el('p', { class: 'intro__rules' },
+        'Für Sterne zählt, wie genau du tippst – nicht wie schnell: ',
+        el('br'),
+        `★ ab ${thresholds[0]} %, ★★ ab ${thresholds[1]} %, ★★★ ab ${thresholds[2]} %.`),
+      best,
+      el('div', { class: 'row' },
+        el('button', { class: 'btn btn--big btn--primary', type: 'button', onclick: start }, "Los geht's!"),
+        hasNew && seen ? el('button', { class: 'btn', type: 'button', onclick: () => renderTutorial(app, level, () => app.go.intro(id)) }, 'Neue Tasten noch mal üben') : null,
+        el('button', { class: 'btn', type: 'button', onclick: () => app.go.map() }, 'Zur Weltkarte'))));
+  showScreen(screen);
+}
+
+/** Mini-Tutorial: jede neue Taste einmal drücken. */
+export function renderTutorial(app, level, onDone) {
+  const { index, input } = app;
+  const steps = level.newKeys.map((token) => {
+    const code = index.resolveToken(token);
+    const finger = index.keys.get(code)?.finger;
+    return { token, code, finger, done: false };
+  });
+  let current = 0;
+
+  const cards = steps.map((s) =>
+    el('li', { class: 'tut__card' },
+      el('kbd', { class: 'kbd-big' }, tokenLabel(s.token, index)),
+      el('span', {}, index.fingerInfo(s.finger)?.name ?? ''),
+      el('span', { class: 'tut__check', 'aria-hidden': 'true' })));
+  const hint = el('p', { class: 'hint', role: 'status' });
+  const kbWrap = el('div', { class: 'game__kbwrap' });
+  const handL = el('div', { class: 'game__hand' });
+  const handR = el('div', { class: 'game__hand' });
+  const actions = el('div', { class: 'row' },
+    el('button', { class: 'btn', type: 'button', onclick: () => finish(false) }, 'Überspringen'));
+
+  const screen = el('section', { class: 'screen tut' },
+    el('div', { class: 'card tut__card-main' },
+      el('h1', {}, 'Neue Tasten!'),
+      el('p', {}, 'Leg deine Finger auf die Grundstellung: links auf A S D F, rechts auf J K L Ö. Spürst du die kleinen Huckel auf F und J?'),
+      el('p', { class: 'label-big' }, 'Drück jetzt jede neue Taste einmal.'),
+      el('ol', { class: 'tut__cards' }, cards),
+      hint,
+      actions),
+    el('div', { class: 'game__kb' }, handL, kbWrap, handR));
+  showScreen(screen);
+
+  const keyboard = createKeyboard(kbWrap, index);
+  const hands = createHands(handL, handR);
+  keyboard.markNew(steps.map((s) => s.code));
+
+  function show() {
+    cards.forEach((c, i) => {
+      c.classList.toggle('is-current', i === current);
+      c.classList.toggle('is-done', steps[i].done);
+    });
+    const step = steps[current];
+    keyboard.setNext(step ? [step.code] : []);
+    hands.setFinger(step?.finger ?? null);
+  }
+
+  function finish(completed) {
+    input.stop();
+    if (completed && !app.state.tutorialsSeen.includes(level.id)) {
+      app.state.tutorialsSeen.push(level.id);
+      app.commit();
+    }
+    onDone();
+  }
+
+  input.listen((ev) => {
+    if (ev.type !== 'down') return;
+    if (ev.key === 'Escape') { input.stop(); app.go.intro(level.id); return; }
+    const step = steps[current];
+    if (!step) return;
+    keyboard.press(ev.code, ev.code === step.code ? 'ok' : 'bad');
+    if (ev.code === step.code) {
+      step.done = true;
+      current++;
+      hint.textContent = level.caseMode === 'lower' && ev.caps ? HINTS.caps : '';
+      show();
+      if (current >= steps.length) {
+        input.stop();
+        hint.textContent = 'Super! Du kennst jetzt alle neuen Tasten.';
+        const go = el('button', { class: 'btn btn--big btn--primary', type: 'button', onclick: () => finish(true) }, "Jetzt geht's los!");
+        actions.replaceChildren(go);
+        go.focus();
+      }
+    } else {
+      const name = tokenLabel(step.token, index);
+      const what = name === 'Leertaste' ? 'die Leertaste' : `die Taste ${name}`;
+      hint.textContent = `Fast! Gesucht ist ${what}. Du drückst sie mit ${index.fingerInfo(step.finger)?.dat ?? 'dem richtigen Finger'}.`;
+    }
+  });
+  show();
+}

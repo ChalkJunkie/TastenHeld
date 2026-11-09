@@ -1,0 +1,224 @@
+{
+  "version": 1,
+  "name": "Deutsch (QWERTZ, ISO)",
+  "_hinweis": "Komplettes Tastaturlayout, unabhängig von den Levels. Positionen werden pro Reihe von links nach rechts berechnet (w = Breite in Tasteneinheiten, gap = Lücke). Finger: L/R = linke/rechte Hand, P kleiner Finger, R Ringfinger, M Mittelfinger, I Zeigefinger, T Daumen; TH = Leertaste (beide Daumen).",
+  "fingers": {
+    "LP": {
+      "name": "linker kleiner Finger",
+      "acc": "den linken kleinen Finger",
+      "dat": "dem linken kleinen Finger",
+      "hand": "L"
+    },
+    "LR": {
+      "name": "linker Ringfinger",
+      "acc": "den linken Ringfinger",
+      "dat": "dem linken Ringfinger",
+      "hand": "L"
+    },
+    "LM": {
+      "name": "linker Mittelfinger",
+      "acc": "den linken Mittelfinger",
+      "dat": "dem linken Mittelfinger",
+      "hand": "L"
+    },
+    "LI": {
+      "name": "linker Zeigefinger",
+      "acc": "den linken Zeigefinger",
+      "dat": "dem linken Zeigefinger",
+      "hand": "L"
+    },
+    "LT": {
+      "name": "linker Daumen",
+      "acc": "den linken Daumen",
+      "dat": "dem linken Daumen",
+      "hand": "L"
+    },
+    "TH": {
+      "name": "Daumen",
+      "acc": "einen Daumen",
+      "dat": "einem Daumen",
+      "hand": null
+    },
+    "RT": {
+      "name": "rechter Daumen",
+      "acc": "den rechten Daumen",
+      "dat": "dem rechten Daumen",
+      "hand": "R"
+    },
+    "RI": {
+      "name": "rechter Zeigefinger",
+      "acc": "den rechten Zeigefinger",
+      "dat": "dem rechten Zeigefinger",
+      "hand": "R"
+    },
+    "RM": {
+      "name": "rechter Mittelfinger",
+      "acc": "den rechten Mittelfinger",
+      "dat": "dem rechten Mittelfinger",
+      "hand": "R"
+    },
+    "RR": {
+      "name": "rechter Ringfinger",
+      "acc": "den rechten Ringfinger",
+      "dat": "dem rechten Ringfinger",
+      "hand": "R"
+    },
+    "RP": {
+      "name": "rechter kleiner Finger",
+      "acc": "den rechten kleinen Finger",
+      "dat": "dem rechten kleinen Finger",
+      "hand": "R"
+    }
+  },
+  "deadChars": [
+    "^",
+    "´",
+    "`"
+  ],
+  "sections": [
+    {
+      "id": "fn",
+      "x": 0,
+      "y": 0,
+      "rows": [
+        [
+          { "code": "Escape", "label": "Esc", "finger": "LP" },
+          { "gap": 1 },
+          { "code": "F1", "label": "F1", "finger": "LR" },
+          { "code": "F2", "label": "F2", "finger": "LM" },
+          { "code": "F3", "label": "F3", "finger": "LI" },
+          { "code": "F4", "label": "F4", "finger": "LI" },
+          { "gap": 0.5 },
+          { "code": "F5", "label": "F5", "finger": "RI" },
+          { "code": "F6", "label": "F6", "finger": "RI" },
+          { "code": "F7", "label": "F7", "finger": "RM" },
+          { "code": "F8", "label": "F8", "finger": "RR" },
+          { "gap": 0.5 },
+          { "code": "F9", "label": "F9", "finger": "RP" },
+          { "code": "F10", "label": "F10", "finger": "RP" },
+          { "code": "F11", "label": "F11", "finger": "RP" },
+          { "code": "F12", "label": "F12", "finger": "RP" }
+        ]
+      ]
+    },
+    {
+      "id": "main",
+      "x": 0,
+      "y": 1.25,
+      "rows": [
+        [
+          { "code": "Backquote", "base": "^", "shift": "°", "finger": "LP", "dead": true },
+          { "code": "Digit1", "base": "1", "shift": "!", "finger": "LP" },
+          { "code": "Digit2", "base": "2", "shift": "\"", "altgr": "²", "finger": "LR" },
+          { "code": "Digit3", "base": "3", "shift": "§", "altgr": "³", "finger": "LM" },
+          { "code": "Digit4", "base": "4", "shift": "$", "finger": "LI" },
+          { "code": "Digit5", "base": "5", "shift": "%", "finger": "LI" },
+          { "code": "Digit6", "base": "6", "shift": "&", "finger": "RI" },
+          {
+            "code": "Digit7",
+            "base": "7",
+            "shift": "/",
+            "altgr": "{",
+            "finger": "RI"
+          },
+          { "code": "Digit8", "base": "8", "shift": "(", "altgr": "[", "finger": "RM" },
+          { "code": "Digit9", "base": "9", "shift": ")", "altgr": "]", "finger": "RR" },
+          {
+            "code": "Digit0",
+            "base": "0",
+            "shift": "=",
+            "altgr": "}",
+            "finger": "RP"
+          },
+          { "code": "Minus", "base": "ß", "shift": "?", "altgr": "\\", "finger": "RP" },
+          { "code": "Equal", "base": "´", "shift": "`", "finger": "RP", "dead": true },
+          { "code": "Backspace", "label": "⌫", "finger": "RP", "w": 2 }
+        ],
+        [
+          { "code": "Tab", "label": "Tab ⇥", "finger": "LP", "w": 1.5 },
+          { "code": "KeyQ", "base": "q", "shift": "Q", "altgr": "@", "finger": "LP" },
+          { "code": "KeyW", "base": "w", "shift": "W", "finger": "LR" },
+          { "code": "KeyE", "base": "e", "shift": "E", "altgr": "€", "finger": "LM" },
+          { "code": "KeyR", "base": "r", "shift": "R", "finger": "LI" },
+          { "code": "KeyT", "base": "t", "shift": "T", "finger": "LI" },
+          { "code": "KeyZ", "base": "z", "shift": "Z", "finger": "RI" },
+          { "code": "KeyU", "base": "u", "shift": "U", "finger": "RI" },
+          { "code": "KeyI", "base": "i", "shift": "I", "finger": "RM" },
+          { "code": "KeyO", "base": "o", "shift": "O", "finger": "RR" },
+          { "code": "KeyP", "base": "p", "shift": "P", "finger": "RP" },
+          { "code": "BracketLeft", "base": "ü", "shift": "Ü", "finger": "RP" },
+          { "code": "BracketRight", "base": "+", "shift": "*", "altgr": "~", "finger": "RP" },
+          { "code": "Enter", "label": "Enter ↵", "finger": "RP", "w": 1.5 }
+        ],
+        [
+          { "code": "CapsLock", "label": "⇪", "finger": "LP", "w": 1.75 },
+          { "code": "KeyA", "base": "a", "shift": "A", "finger": "LP" },
+          { "code": "KeyS", "base": "s", "shift": "S", "finger": "LR" },
+          { "code": "KeyD", "base": "d", "shift": "D", "finger": "LM" },
+          { "code": "KeyF", "base": "f", "shift": "F", "finger": "LI", "bump": true },
+          { "code": "KeyG", "base": "g", "shift": "G", "finger": "LI" },
+          { "code": "KeyH", "base": "h", "shift": "H", "finger": "RI" },
+          { "code": "KeyJ", "base": "j", "shift": "J", "finger": "RI", "bump": true },
+          { "code": "KeyK", "base": "k", "shift": "K", "finger": "RM" },
+          { "code": "KeyL", "base": "l", "shift": "L", "finger": "RR" },
+          { "code": "Semicolon", "base": "ö", "shift": "Ö", "finger": "RP" },
+          { "code": "Quote", "base": "ä", "shift": "Ä", "finger": "RP" },
+          { "code": "Backslash", "base": "#", "shift": "'", "finger": "RP" },
+          { "code": "Enter", "finger": "RP", "w": 1.25, "part": true }
+        ],
+        [
+          { "code": "ShiftLeft", "label": "⇧", "finger": "LP", "w": 1.25 },
+          { "code": "IntlBackslash", "base": "<", "shift": ">", "altgr": "|", "finger": "LP" },
+          { "code": "KeyY", "base": "y", "shift": "Y", "finger": "LP" },
+          { "code": "KeyX", "base": "x", "shift": "X", "finger": "LR" },
+          { "code": "KeyC", "base": "c", "shift": "C", "finger": "LM" },
+          { "code": "KeyV", "base": "v", "shift": "V", "finger": "LI" },
+          { "code": "KeyB", "base": "b", "shift": "B", "finger": "LI" },
+          { "code": "KeyN", "base": "n", "shift": "N", "finger": "RI" },
+          { "code": "KeyM", "base": "m", "shift": "M", "altgr": "µ", "finger": "RI" },
+          { "code": "Comma", "base": ",", "shift": ";", "finger": "RM" },
+          { "code": "Period", "base": ".", "shift": ":", "finger": "RR" },
+          { "code": "Slash", "base": "-", "shift": "_", "finger": "RP" },
+          { "code": "ShiftRight", "label": "⇧", "finger": "RP", "w": 2.75 }
+        ],
+        [
+          { "code": "ControlLeft", "label": "Strg", "finger": "LP", "w": 1.25 },
+          { "code": "MetaLeft", "label": "Win", "finger": "LP", "w": 1.25 },
+          { "code": "AltLeft", "label": "Alt", "finger": "LT", "w": 1.25 },
+          { "code": "Space", "base": " ", "finger": "TH", "w": 6.25 },
+          { "code": "AltRight", "label": "Alt Gr", "finger": "RT", "w": 1.25 },
+          { "code": "MetaRight", "label": "Win", "finger": "RP", "w": 1.25 },
+          { "code": "ContextMenu", "label": "Menü", "finger": "RP", "w": 1.25 },
+          { "code": "ControlRight", "label": "Strg", "finger": "RP", "w": 1.25 }
+        ]
+      ]
+    },
+    {
+      "id": "nav",
+      "x": 15.5,
+      "y": 1.25,
+      "rows": [
+        [
+          { "code": "Insert", "label": "Einfg", "finger": "RI" },
+          { "code": "Home", "label": "Pos 1", "finger": "RM" },
+          { "code": "PageUp", "label": "Bild ↑", "finger": "RR" }
+        ],
+        [
+          { "code": "Delete", "label": "Entf", "finger": "RI" },
+          { "code": "End", "label": "Ende", "finger": "RM" },
+          { "code": "PageDown", "label": "Bild ↓", "finger": "RR" }
+        ],
+        [],
+        [
+          { "gap": 1 },
+          { "code": "ArrowUp", "label": "↑", "finger": "RM" }
+        ],
+        [
+          { "code": "ArrowLeft", "label": "←", "finger": "RI" },
+          { "code": "ArrowDown", "label": "↓", "finger": "RM" },
+          { "code": "ArrowRight", "label": "→", "finger": "RR" }
+        ]
+      ]
+    }
+  ]
+}

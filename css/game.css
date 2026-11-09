@@ -1,0 +1,283 @@
+/* Spielbildschirm, virtuelle Tastatur, Hände und Regen-Modus. */
+
+/* ---------- Spielbildschirm ---------- */
+.screen.game {
+  max-width: none;
+  height: 100vh;
+  padding: 0.5rem 1rem 0.75rem;
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  gap: 0.4rem;
+}
+.hud {
+  display: grid;
+  grid-template-columns: 1fr minmax(12rem, 22rem) 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+.hud__title { font-size: 1.1rem; margin: 0; }
+.hud__progress { display: flex; align-items: center; gap: 0.6rem; }
+.hud__count { font-weight: bold; white-space: nowrap; font-size: 0.9rem; }
+.hud__buttons { display: flex; justify-content: flex-end; gap: 0.4rem; flex-wrap: wrap; }
+.progress {
+  flex: 1;
+  height: 1rem;
+  border-radius: 99px;
+  background: var(--surface);
+  border: 2px solid var(--text);
+  overflow: hidden;
+}
+.progress__fill { height: 100%; width: 0; background: var(--ok); transition: width 0.3s; }
+
+.game__field {
+  position: relative;
+  border-radius: 22px;
+  border: 3px solid var(--border);
+  overflow: hidden;
+  min-height: 200px;
+  background: linear-gradient(var(--sky-top), var(--sky-bottom));
+}
+
+/* Hinweiszeile unter dem Spielfeld */
+.hint {
+  min-height: 2.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  font-weight: bold;
+  border-radius: 14px;
+  padding: 0.3em 1em;
+  opacity: 0;
+  transition: opacity 0.2s;
+  border: 2px solid transparent;
+}
+.hint.is-visible { opacity: 1; background: var(--info-bg); border-color: var(--accent); }
+.hint.hint--error { background: var(--warn-bg); border-color: var(--star); }
+.hint.hint--caps,
+.hint.hint--capsOff,
+.hint.hint--shift { background: var(--info-bg); border-color: var(--accent); }
+.hint__icon { font-size: 1.3rem; }
+.tut .hint { opacity: 1; min-height: 1.6em; justify-content: flex-start; padding: 0; }
+
+/* Overlay im Spielfeld (Start, Pause) */
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.55);
+  z-index: 5;
+}
+:root[data-theme="kontrast"] .overlay { background: rgba(0, 0, 0, 0.8); }
+.overlay[hidden] { display: none; }
+.overlay__box {
+  background: var(--surface);
+  border: 3px solid var(--text);
+  border-radius: 22px;
+  padding: 1.25rem 2rem;
+  text-align: center;
+  box-shadow: var(--shadow);
+  max-width: 30rem;
+}
+.overlay__box .tipp { margin: 0 auto 0.5rem; }
+.overlay__box .row { justify-content: center; }
+
+/* ---------- Tastatur-Bereich ---------- */
+.game__kb {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 1rem;
+  /* Tasteneinheit: passt sich an Breite und Höhe an */
+  --u: min(3.6vw, 7.2vh, 56px);
+}
+.game__hand { width: calc(var(--u) * 3.4); flex: none; }
+.game__kbwrap { flex: none; }
+
+.kb { position: relative; font-size: calc(var(--u) * 0.36); }
+.key {
+  position: absolute;
+  border: 2px solid var(--key-border);
+  border-bottom-width: 4px;
+  border-radius: calc(var(--u) * 0.16);
+  background: var(--key-bg);
+  color: var(--key-text);
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  line-height: 1;
+  transition: transform 0.06s, opacity 0.2s;
+}
+.key--special { font-size: 0.8em; font-weight: normal; }
+.key__main { font-size: 1.25em; }
+.key--special .key__main { font-size: 1em; }
+.key__shift { position: absolute; top: 8%; left: 14%; font-size: 0.8em; }
+.key__base { position: absolute; bottom: 10%; left: 14%; font-size: 0.95em; }
+.key__altgr { position: absolute; bottom: 8%; right: 12%; font-size: 0.7em; font-weight: normal; opacity: 0.75; }
+.key__bump {
+  position: absolute;
+  bottom: 16%;
+  width: 28%;
+  height: 3px;
+  border-radius: 2px;
+  background: currentColor;
+}
+.key--part { border-top: none; border-top-left-radius: 0; }
+
+/* Fingerfarben */
+.kb--colors .finger-LP, .kb--colors .finger-RP { background: var(--f-pinky); }
+.kb--colors .finger-LR, .kb--colors .finger-RR { background: var(--f-ring); }
+.kb--colors .finger-LM, .kb--colors .finger-RM { background: var(--f-middle); }
+.kb--colors .finger-LI, .kb--colors .finger-RI { background: var(--f-index); }
+.kb--colors .finger-LT, .kb--colors .finger-RT, .kb--colors .finger-TH { background: var(--f-thumb); }
+
+.key.is-inactive { opacity: var(--key-inactive); }
+.key.is-new { box-shadow: 0 0 0 3px var(--accent); }
+/* Nächste Taste: pulsierender Rahmen + größer (nicht nur Farbe) */
+.key.is-next {
+  opacity: 1;
+  z-index: 2;
+  outline: 4px solid var(--next-ring);
+  outline-offset: 1px;
+  animation: key-pulse 1s ease-in-out infinite;
+}
+@keyframes key-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+.key.is-pressed { transform: translateY(2px) scale(0.95); animation: none; }
+.key.is-ok { box-shadow: 0 0 0 4px var(--ok); }
+.key.is-bad { box-shadow: 0 0 0 4px var(--bad); }
+.key.is-bad::after {
+  content: "✗";
+  position: absolute;
+  top: -0.9em;
+  right: -0.3em;
+  font-size: 1.1em;
+  color: var(--bad);
+}
+
+/* ---------- Hände ---------- */
+.hand { width: 100%; height: auto; display: block; }
+.hand__palm, .hand__finger { fill: var(--hand-skin); stroke: var(--hand-line); stroke-width: 2.5; }
+.hand__finger { transition: transform 0.15s; transform-box: fill-box; transform-origin: 50% 100%; }
+.kb-colors-on .hand__finger { opacity: 1; }
+.hand__finger.finger-LP, .hand__finger.finger-RP { fill: var(--f-pinky); }
+.hand__finger.finger-LR, .hand__finger.finger-RR { fill: var(--f-ring); }
+.hand__finger.finger-LM, .hand__finger.finger-RM { fill: var(--f-middle); }
+.hand__finger.finger-LI, .hand__finger.finger-RI { fill: var(--f-index); }
+.hand__finger.finger-LT, .hand__finger.finger-RT { fill: var(--f-thumb); }
+.hand__finger.is-active { stroke: var(--next-ring); stroke-width: 6; transform: scale(1.12); }
+
+/* ---------- Regen-Modus ---------- */
+.rain { position: absolute; inset: 0; }
+.rain__ground {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 52px;
+  background: linear-gradient(var(--ground), var(--ground-dark));
+  border-top: 3px solid var(--ground-dark);
+}
+.rain__tipp {
+  position: absolute;
+  width: 74px;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+}
+.rain__tipp.is-happy { animation: tipp-hop 0.5s ease-out; }
+.rain__tipp.is-oops { animation: tipp-oops 0.5s ease-in-out; }
+@keyframes tipp-hop { 50% { transform: translate(-50%, -16px); } }
+@keyframes tipp-oops { 25% { transform: translateX(-56%) rotate(-6deg); } 75% { transform: translateX(-44%) rotate(6deg); } }
+
+.drop {
+  position: absolute;
+  top: 6px;
+  transform: translate(-50%, 0);
+  background: var(--drop-bg);
+  border: 3px solid var(--drop-border);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  padding: 0.45em 0.9em 0.55em;
+  font-size: 1.7rem;
+  font-weight: bold;
+  white-space: nowrap;
+  box-shadow: 0 4px 0 rgba(47, 127, 216, 0.25);
+  will-change: transform;
+}
+.drop::before {
+  /* Tropfenspitze */
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -14px;
+  width: 18px;
+  height: 18px;
+  background: var(--drop-bg);
+  border-left: 3px solid var(--drop-border);
+  border-top: 3px solid var(--drop-border);
+  transform: translateX(-50%) rotate(45deg);
+  border-radius: 4px 0 0 0;
+}
+.drop--target { border-width: 4px; z-index: 3; }
+.drop--target::after {
+  content: "▼";
+  position: absolute;
+  left: 50%;
+  bottom: -1.2em;
+  transform: translateX(-50%);
+  font-size: 0.55em;
+  color: var(--drop-border);
+}
+.drop__ch { position: relative; display: inline-block; min-width: 0.4em; text-align: center; }
+.drop__ch.is-done { color: var(--ok); opacity: 0.55; }
+.drop__ch.is-current {
+  color: var(--text);
+  border-bottom: 5px solid var(--primary);
+}
+.drop__ch--space { color: var(--muted); font-weight: normal; margin-left: 0.15em; }
+.drop--shake { animation: drop-shake 0.3s; }
+@keyframes drop-shake {
+  25% { margin-left: -8px; }
+  75% { margin-left: 8px; }
+}
+.drop--pop { animation: drop-pop 0.5s ease-out forwards; }
+@keyframes drop-pop {
+  0% { opacity: 1; scale: 1; }
+  40% { scale: 1.25; }
+  100% { opacity: 0; scale: 1.6; }
+}
+.drop--splash { animation: drop-splash 0.6s ease-out forwards; }
+@keyframes drop-splash {
+  0% { opacity: 1; }
+  100% { opacity: 0; scale: 1.5 0.3; }
+}
+
+/* ---------- Mini-Tutorial ---------- */
+.screen.tut { max-width: none; display: flex; flex-direction: column; gap: 0.75rem; align-items: center; padding-top: 0.75rem; }
+.tut .game__kb { --u: min(3.2vw, 5.4vh, 52px); }
+.tut__card-main { max-width: 56rem; width: 100%; padding: 1rem 1.5rem; }
+.tut__card-main h1 { font-size: 1.5rem; margin-bottom: 0.2em; }
+.tut__card-main .row { margin-top: 0.5rem; }
+.tut__cards { list-style: none; padding: 0; margin: 0.4rem 0 0.6rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.tut__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  border: 3px solid var(--border);
+  border-radius: 14px;
+  padding: 0.35rem 0.6rem;
+  min-width: 6.5rem;
+  font-size: 0.75rem;
+  text-align: center;
+}
+.tut__card .kbd-big { font-size: 1.25rem; }
+.tut__card.is-current { border-color: var(--primary); border-style: dashed; }
+.tut__card.is-done { border-color: var(--ok); background: var(--ok-bg); }
+.tut__check::before { content: " "; }
+.tut__card.is-done .tut__check::before { content: "✔ geschafft"; color: var(--ok); font-weight: bold; }
+
+/* Bewegungen reduzieren, wenn gewünscht */
+@media (prefers-reduced-motion: reduce) {
+  .key.is-next, .level-node.is-suggested .level-node__bubble, .tipp--wave { animation: none; }
+}

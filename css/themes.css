@@ -1,0 +1,113 @@
+/* Farbthemen. Alle Farben laufen über Variablen.
+   "standard" = bunt, "kontrast" = hoher Kontrast (immer verfügbar). */
+
+:root,
+:root[data-theme="standard"] {
+  --bg: #fff8ec;
+  --bg-2: #ffeccc;
+  --surface: #ffffff;
+  --text: #1f2547;
+  --muted: #545b80;
+  --border: #d9d2c2;
+  --primary: #e8553e;
+  --primary-hover: #cf4430;
+  --primary-text: #ffffff;
+  --accent: #2f7fd8;
+  --focus: #1b5fc1;
+  --ok: #1f8a4c;
+  --ok-bg: #dff5e7;
+  --bad: #c0392b;
+  --bad-bg: #fde4df;
+  --info-bg: #e3f0ff;
+  --warn-bg: #fff3c4;
+  --star: #f5b400;
+  --star-off: #c9c3b4;
+  --shadow: 0 4px 0 rgba(31, 37, 71, 0.15);
+
+  /* Tastatur */
+  --key-bg: #fbfbfd;
+  --key-text: #1f2547;
+  --key-border: #a8a9bd;
+  --key-inactive: 0.38;
+  --next-ring: #1f2547;
+  --f-pinky: #f7a8c9;
+  --f-ring: #ffd76e;
+  --f-middle: #98dc9c;
+  --f-index: #8ccaf7;
+  --f-thumb: #cdb9f5;
+  --hand-skin: #ffe1c7;
+  --hand-line: #8b6b55;
+
+  /* Welt "Wiese" */
+  --sky-top: #9fd8ff;
+  --sky-bottom: #e6f6ff;
+  --ground: #7ccf6b;
+  --ground-dark: #4fa443;
+  --drop-bg: #ffffff;
+  --drop-border: #2f7fd8;
+}
+
+:root[data-theme="kontrast"] {
+  --bg: #000000;
+  --bg-2: #111111;
+  --surface: #000000;
+  --text: #ffffff;
+  --muted: #e6e6e6;
+  --border: #ffffff;
+  --primary: #ffe600;
+  --primary-hover: #fff27a;
+  --primary-text: #000000;
+  --accent: #6ed0ff;
+  --focus: #ffe600;
+  --ok: #6cff9b;
+  --ok-bg: #002b10;
+  --bad: #ff8b7a;
+  --bad-bg: #3a0000;
+  --info-bg: #001f3a;
+  --warn-bg: #332b00;
+  --star: #ffe600;
+  --star-off: #8a8a8a;
+  --shadow: none;
+
+  --key-bg: #000000;
+  --key-text: #ffffff;
+  --key-border: #ffffff;
+  --key-inactive: 0.45;
+  --next-ring: #ffe600;
+  --f-pinky: #ff6fb5;
+  --f-ring: #ffd400;
+  --f-middle: #3dff6e;
+  --f-index: #33c3ff;
+  --f-thumb: #c18bff;
+  --hand-skin: #000000;
+  --hand-line: #ffffff;
+
+  --sky-top: #000000;
+  --sky-bottom: #000000;
+  --ground: #ffffff;
+  --ground-dark: #ffffff;
+  --drop-bg: #000000;
+  --drop-border: #ffe600;
+}
+
+/* Im Kontrast-Theme werden Fingerfarben als dicke Rahmen gezeigt */
+:root[data-theme="kontrast"] .kb--colors .key:not(.is-inactive) {
+  background: #000;
+  border-width: 3px;
+}
+:root[data-theme="kontrast"] .kb--colors .key.finger-LP,
+:root[data-theme="kontrast"] .kb--colors .key.finger-RP { border-color: var(--f-pinky); }
+:root[data-theme="kontrast"] .kb--colors .key.finger-LR,
+:root[data-theme="kontrast"] .kb--colors .key.finger-RR { border-color: var(--f-ring); }
+:root[data-theme="kontrast"] .kb--colors .key.finger-LM,
+:root[data-theme="kontrast"] .kb--colors .key.finger-RM { border-color: var(--f-middle); }
+:root[data-theme="kontrast"] .kb--colors .key.finger-LI,
+:root[data-theme="kontrast"] .kb--colors .key.finger-RI { border-color: var(--f-index); }
+:root[data-theme="kontrast"] .kb--colors .key.finger-LT,
+:root[data-theme="kontrast"] .kb--colors .key.finger-RT,
+:root[data-theme="kontrast"] .kb--colors .key.finger-TH { border-color: var(--f-thumb); }
+:root[data-theme="kontrast"] .key.is-next {
+  background: #ffe600 !important;
+  color: #000 !important;
+}
+:root[data-theme="kontrast"] .hand__finger.is-active { fill: #ffe600 !important; }
