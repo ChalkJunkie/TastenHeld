@@ -58,6 +58,10 @@ Dann im Browser `http://localhost:8000` öffnen.
 3. Branch `main` und Ordner `/ (root)` wählen → **Save**.
 4. Nach ein bis zwei Minuten ist das Spiel unter `https://<benutzername>.github.io/<repository>/` erreichbar.
 
+**Nach einem Update:** Browser speichern die Programmdateien bis zu 10 Minuten zwischen. Wer TastenHeld kurz
+vorher geöffnet hatte, lädt die Seite deshalb einmal mit **Strg + F5** neu. Das Spiel weist auch selbst darauf hin,
+wenn es eine veraltete Version bemerkt.
+
 ---
 
 ## Inhalte pflegen

@@ -1,6 +1,6 @@
 // Spielbildschirm: verbindet Modus, Tastatur, Hände, Hinweise, Pause und Spielschleife.
 
-import { el, showScreen, tippImage } from '../ui.js';
+import { el, showScreen, tippImage, openDialog } from '../ui.js';
 import { createKeyboard } from '../keyboard.js';
 import { createHands } from '../hands.js';
 import { createSession, drawItems, HINTS } from '../engine.js';
@@ -16,7 +16,12 @@ export function renderGame(app, id) {
   const { index, input } = app;
   const createMode = MODES[level.mode];
   if (!createMode) {
-    app.go.map();
+    // Unbekannter Modus: meist ist im Browser noch eine alte Programmversion gespeichert
+    console.error(`Level ${id}: Spielmodus "${level.mode}" ist unbekannt.`);
+    openDialog('Kurz neu laden, bitte!',
+      el('p', {}, 'Dieses Level braucht die neueste Version von TastenHeld. Drück ',
+        el('kbd', {}, 'Strg'), ' + ', el('kbd', {}, 'F5'), ', dann geht es weiter.'),
+      { actions: [{ label: 'Jetzt neu laden', primary: true, onClick: () => location.reload() }, { label: 'Zur Weltkarte', onClick: () => app.go.map() }] });
     return;
   }
   const helps = { keyboard: true, hands: true, fingerColors: true, highlightNext: true, ...level.helps };
