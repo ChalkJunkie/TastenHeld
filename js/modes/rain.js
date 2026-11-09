@@ -12,6 +12,23 @@ const DEFAULTS = {
   confirmSpace: false, // Wort mit Leertaste bestätigen
 };
 const LANES = 5;
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+/** Geschwungene Tropfenspitze: Füllung plus Randlinie (die Randlinie ist unten offen). */
+function dropTip() {
+  const svg = document.createElementNS(SVG_NS, 'svg');
+  svg.setAttribute('viewBox', '0 0 56 34');
+  svg.setAttribute('class', 'drop__tip');
+  svg.setAttribute('aria-hidden', 'true');
+  const curve = 'M0 34 C17 31 23 18 27 3 Q28 0 29 3 C33 18 39 31 56 34';
+  for (const [cls, d] of [['drop__tip-fill', `${curve} Z`], ['drop__tip-line', curve]]) {
+    const path = document.createElementNS(SVG_NS, 'path');
+    path.setAttribute('d', d);
+    path.setAttribute('class', cls);
+    svg.append(path);
+  }
+  return svg;
+}
 const MAX_RETRIES = 1; // so oft kommt ein verpasster Tropfen zurück
 
 export function createRain({ field, items, session, level, onProgress, onEnd }) {
@@ -52,7 +69,8 @@ export function createRain({ field, items, session, level, onProgress, onEnd }) 
     const item = queue.shift();
     if (!item) return;
     const lane = freeLane();
-    const drop = { ...item, lane, y: 0, typed: 0, node: el('div', { class: 'drop' }) };
+    const textEl = el('span', { class: 'drop__text' });
+    const drop = { ...item, lane, y: 0, typed: 0, textEl, node: el('div', { class: 'drop' }, dropTip(), textEl) };
     drop.node.style.left = `${8 + lane * (80 / (LANES - 1))}%`;
     renderDrop(drop);
     sky.append(drop.node);
@@ -69,7 +87,7 @@ export function createRain({ field, items, session, level, onProgress, onEnd }) 
       if (ch === ' ') cls.push('drop__ch--space');
       return el('span', { class: cls.join(' ') }, ch === ' ' ? '␣' : ch);
     });
-    drop.node.replaceChildren(...letters);
+    drop.textEl.replaceChildren(...letters);
     drop.node.classList.toggle('drop--target', drop === target);
     drop.node.setAttribute('aria-label', drop.text);
   }
@@ -155,7 +173,7 @@ export function createRain({ field, items, session, level, onProgress, onEnd }) 
         spawn();
         pickTarget();
       }
-      const travel = height - 70; // bis zum Boden
+      const travel = height - 110; // bis zum Boden (Tropfen beginnt 34px unter dem Rand)
       for (const drop of [...drops]) {
         drop.y += p.fallSpeed * speedFactor * dt;
         drop.node.style.transform = `translate(-50%, ${Math.round(drop.y * travel)}px)`;

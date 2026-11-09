@@ -349,32 +349,18 @@
           "unlock": { "after": "5-4" }
         },
         {
-          "id": "5-6",
-          "title": "Die Feststelltaste",
-          "intro": "Für viele große Buchstaben hintereinander drückst du einmal die Feststelltaste. Danach schaltest du sie wieder aus!",
-          "mode": "race",
-          "caseMode": "mixed",
-          "newKeys": ["CapsLock"],
-          "activeKeys": ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä", "q", "w", "e", "r", "t", "z", "u", "i", "o", "p", "ü", "y", "x", "c", "v", "b", "n", "m", "Space", "ShiftLeft", "ShiftRight", "CapsLock"],
-          "content": { "type": "words", "source": "w5_caps", "count": 12 },
-          "helps": { "keyboard": true, "hands": false, "fingerColors": true, "highlightNext": true },
-          "params": { "capsCheck": true },
-          "stars": { "accuracy": [85, 93, 98], "minChars": 40 },
-          "unlock": { "after": "5-5" }
-        },
-        {
           "id": "5-7",
           "title": "Sätze mit Punkt und Komma",
           "intro": "Jetzt kommen Komma und Punkt dazu. Nach dem Punkt geht es groß weiter!",
           "mode": "race",
           "caseMode": "mixed",
           "newKeys": [",", "."],
-          "activeKeys": ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä", "q", "w", "e", "r", "t", "z", "u", "i", "o", "p", "ü", "y", "x", "c", "v", "b", "n", "m", "Space", "ShiftLeft", "ShiftRight", "CapsLock", ",", "."],
-          "content": { "type": "sentences", "source": ["w5_saetze", "w5_caps_saetze"], "count": 6 },
+          "activeKeys": ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä", "q", "w", "e", "r", "t", "z", "u", "i", "o", "p", "ü", "y", "x", "c", "v", "b", "n", "m", "Space", "ShiftLeft", "ShiftRight", ",", "."],
+          "content": { "type": "sentences", "source": "w5_saetze", "count": 6 },
           "helps": { "keyboard": true, "hands": false, "fingerColors": true, "highlightNext": true },
-          "params": { "capsCheck": true },
+          "params": {},
           "stars": { "accuracy": [85, 93, 98], "minChars": 120, "tempoBonusCpm": 70 },
-          "unlock": { "after": "5-6" }
+          "unlock": { "after": "5-5" }
         }
       ]
     },

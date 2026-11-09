@@ -38,7 +38,7 @@ export function renderResult(app, levelId, result, summary) {
 
   const badges = [];
   if (summary.newStars && result.stars > 0) badges.push('Neuer Rekord: mehr Sterne!');
-  if (result.story?.done === result.story?.total && result.valid) badges.push('Du hast die goldene Taste zurückgebracht!');
+  if (result.story && result.story.done === result.story.total && result.valid) badges.push('Du hast die goldene Taste zurückgebracht!');
   if (summary.newAccuracy) badges.push('Neue Bestleistung bei der Genauigkeit!');
   if (summary.newCpm) badges.push('So schnell warst du hier noch nie!');
 

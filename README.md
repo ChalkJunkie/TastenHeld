@@ -18,7 +18,7 @@ Dazu kommen XP mit freischaltbaren Tipp-Farben und Farbthemen sowie das Übungsl
 | 2 Berge | E I R U | Regen, Monster, Rennen |
 | 3 Über den Wolken | T Z W O Q P Ü | Regen, Monster, Rennen |
 | 4 Kristallhöhle | V B N M C X Y | Regen, Monster, Rennen |
-| 5 Uhrturmstadt | Umschalttasten, Feststelltaste, ab 5-7 Komma und Punkt | alle drei |
+| 5 Uhrturmstadt | Umschalttasten, Namen, Orte, ab 5-7 Komma und Punkt (ein Level 5-6 gibt es nicht mehr) | alle drei |
 | 6 Erfinderwerkstatt | ß, Zahlen, Satzzeichen | alle drei |
 | 7 Maschinenraum | Tastenkunde (Fragekarten) | Tastenkunde |
 | 8 Sternwarte | lange Wörter, Zungenbrecher, Sonderzeichen, AltGr, Tastenkombinationen, Tempo-Sprint, große Prüfung | alle |
@@ -157,7 +157,7 @@ Beispiel aus `levels.json`:
     `content` ist `{ "type": "keycards", "source": "7.1" }` (Stufe aus keys.json) oder `{ "type": "combos" }`.
   - **story** (Geschichte): `content` ist `{ "type": "story", "source": "story" }`, die Kapitel kommen aus story.json.
     Die Bilder zu den Kapiteln liegen unter `assets/svg/story/` (Dateiname wie im Feld `svg`).
-  - **Alle Modi:** `capsCheck: true` für Feststelltasten-Level (Kleinbuchstaben bei aktiver Feststelltaste zählen
+  - **Alle Modi (derzeit nicht benutzt):** `capsCheck: true` für ein mögliches Feststelltasten-Level (Kleinbuchstaben bei aktiver Feststelltaste zählen
     nicht als Fehler, nach Wörtern in Großbuchstaben erinnert Tipp ans Ausschalten).
 - **`optional: true`:** Bonus-Level (z. B. 8-5). Es wird nicht als „Hier geht's weiter“ vorgeschlagen,
   und das nächste Level hängt nicht davon ab.

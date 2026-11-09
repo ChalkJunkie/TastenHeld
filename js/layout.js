@@ -97,6 +97,7 @@ export function tokenLabel(token, index) {
     AltGr: 'Alt Gr',
   };
   if (names[token]) return names[token];
-  if ([...token].length === 1) return token.toUpperCase();
+  // Großbuchstabe als Beschriftung (wie auf der Taste), aber ß bleibt ß (nicht "SS")
+  if ([...token].length === 1) return token.toUpperCase().length === 1 ? token.toUpperCase() : token;
   return index.keys.get(token)?.label ?? token;
 }

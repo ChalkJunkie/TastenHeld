@@ -198,44 +198,63 @@
 @keyframes tipp-hop { 50% { transform: translate(-50%, -16px); } }
 @keyframes tipp-oops { 25% { transform: translateX(-56%) rotate(-6deg); } 75% { transform: translateX(-44%) rotate(6deg); } }
 
+/* Tropfen: runder Körper (Kreis bei einem Buchstaben, Kapsel bei Wörtern)
+   mit einer geschwungenen SVG-Spitze, deren Kanten in den Rand übergehen. */
 .drop {
+  --drop-line: 3px;
   position: absolute;
-  top: 6px;
+  top: 34px;
   transform: translate(-50%, 0);
   background: var(--drop-bg);
-  border: 3px solid var(--drop-border);
-  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-  padding: 0.45em 0.9em 0.55em;
+  border: var(--drop-line) solid var(--drop-border);
+  border-radius: 999px;
+  min-width: 2.6em;
+  padding: 0.4em 0.85em 0.5em;
+  text-align: center;
   color: var(--drop-text);
   font-size: 1.7rem;
   font-weight: bold;
   white-space: nowrap;
-  box-shadow: 0 4px 0 rgba(47, 127, 216, 0.25);
+  box-shadow: 0 5px 0 rgba(47, 90, 140, 0.18);
   will-change: transform;
 }
-.drop::before {
-  /* Tropfenspitze */
+.drop__tip {
+  position: absolute;
+  left: 50%;
+  top: -30px;
+  width: 56px;
+  height: 34px;
+  transform: translateX(-50%);
+  overflow: visible;
+  pointer-events: none;
+}
+.drop__tip-fill { fill: var(--drop-bg); }
+.drop__tip-line {
+  fill: none;
+  stroke: var(--drop-border);
+  stroke-width: var(--drop-line);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+/* Glanzpunkt oben links, wie bei einem echten Wassertropfen */
+.drop::after {
   content: "";
   position: absolute;
-  left: 50%;
-  top: -14px;
-  width: 18px;
-  height: 18px;
-  background: var(--drop-bg);
-  border-left: 3px solid var(--drop-border);
-  border-top: 3px solid var(--drop-border);
-  transform: translateX(-50%) rotate(45deg);
-  border-radius: 4px 0 0 0;
+  left: 0.32em;
+  top: 0.2em;
+  width: 0.3em;
+  height: 0.19em;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 0 2px rgba(143, 194, 230, 0.35);
+  transform: rotate(-30deg);
 }
-.drop--target { border-width: 4px; z-index: 3; }
-.drop--target::after {
-  content: "▼";
-  position: absolute;
-  left: 50%;
-  bottom: -1.2em;
-  transform: translateX(-50%);
-  font-size: 0.55em;
-  color: var(--drop-border);
+:root[data-theme="kontrast"] .drop::after { display: none; }
+/* Ziel-Tropfen: dickerer Rand und ein Schimmer (nicht nur Farbe) */
+.drop--target {
+  --drop-line: 4px;
+  z-index: 3;
+  box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.55), 0 5px 0 rgba(47, 90, 140, 0.18);
 }
 .drop__ch { position: relative; display: inline-block; min-width: 0.4em; text-align: center; }
 .drop__ch.is-done { color: var(--ok); opacity: 0.55; }
