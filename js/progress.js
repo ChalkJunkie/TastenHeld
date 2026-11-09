@@ -1,6 +1,8 @@
 // Spielstand: Aufbau, Sicherung im Browser, Speichern/Laden als Datei, Prüfsumme, Migration.
 // Es verlässt nie etwas den Browser – kein Server, keine Cloud.
 
+import { unlockRewards } from './rewards.js';
+
 export const SAVE_FORMAT = 'tastenheld-spielstand';
 export const SAVE_VERSION = 1;
 const BACKUP_KEY = 'tastenheld.sicherung';
@@ -26,7 +28,7 @@ export function createState(nickname) {
     profile: { nickname, avatar: 'tipp', createdAt: today() },
     settings: { theme: 'standard', fontScale: 1 },
     levels: {}, // Level-ID -> { stars, bestAccuracy, bestCpm, plays, lastPlayed }
-    story: { chapters: {} }, // Kapitel-ID -> { stars }
+    story: { chapters: {} }, // Kapitel-ID -> { done, stars, bestAccuracy }
     keyStats: {}, // Zeichen -> { hits, errors }
     xp: 0,
     unlocked: { avatars: ['tipp'], themes: ['standard', 'kontrast'] },
@@ -203,8 +205,31 @@ export function isUnlocked(level, state, teacher = false) {
   return (state.levels[after]?.stars ?? 0) >= 1;
 }
 
-export function totalStars(state) {
-  return Object.values(state.levels).reduce((n, l) => n + (l.stars ?? 0), 0);
+/** Summe der Sterne (nur über die angegebenen Level-IDs, z. B. ohne "Meine Knackpunkte"). */
+export function totalStars(state, ids = null) {
+  return Object.entries(state.levels)
+    .filter(([id]) => !ids || ids.includes(id))
+    .reduce((n, [, l]) => n + (l.stars ?? 0), 0);
+}
+
+/** Ein Story-Kapitel ist getippt. Sterne werden nur verbessert, nie verschlechtert. */
+export function recordChapter(state, id, stars, accuracy) {
+  const prev = state.story.chapters[id];
+  state.story.chapters[id] = {
+    done: true,
+    stars: Math.max(prev?.stars ?? 0, stars),
+    bestAccuracy: Math.max(prev?.bestAccuracy ?? 0, Math.round(accuracy * 10) / 10),
+  };
+}
+
+/** Fortschritt der Boss-Geschichte. */
+export function storyProgress(state, chapters) {
+  const done = chapters.filter((c) => state.story.chapters[c.id]?.done);
+  const next = chapters.find((c) => !state.story.chapters[c.id]?.done) ?? null;
+  // Durchschnitt der besten Genauigkeit aller getippten Kapitel
+  const accs = done.map((c) => state.story.chapters[c.id].bestAccuracy ?? 0);
+  const accuracy = accs.length ? accs.reduce((a, b) => a + b, 0) / accs.length : 0;
+  return { done: done.length, total: chapters.length, next, allDone: done.length === chapters.length, accuracy };
 }
 
 /** XP einer Runde: fürs Üben, für Sterne und als Bonus fürs Tempo. */
@@ -240,10 +265,12 @@ export function recordResult(state, result) {
   state.levels[result.levelId] = entry;
 
   for (const [ch, s] of Object.entries(result.perChar ?? {})) {
+    if ([...ch].length !== 1) continue; // nur echte Zeichen (keine Tastenkunde-Karten)
     const k = (state.keyStats[ch] ??= { hits: 0, errors: 0 });
     k.hits += s.hits;
     k.errors += s.errors;
   }
   state.xp += summary.xp;
+  summary.rewards = unlockRewards(state);
   return summary;
 }

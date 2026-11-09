@@ -197,14 +197,16 @@ kbd {
 .dialog {
   border: 3px solid var(--text);
   border-radius: 22px;
-  padding: 1.5rem 1.75rem;
-  max-width: 34rem;
+  padding: 1.25rem 1.75rem;
+  max-width: 40rem;
+  max-height: 92vh;
+  overflow: auto;
   background: var(--surface);
   color: var(--text);
 }
 .dialog::backdrop { background: rgba(20, 24, 50, 0.55); }
 .dialog__actions { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: flex-end; margin-top: 1.25rem; }
-.choice { border: 2px solid var(--border); border-radius: 14px; margin: 0 0 1rem; padding: 0.6rem 1rem 0.8rem; }
+.choice { border: 2px solid var(--border); border-radius: 14px; margin: 0 0 0.8rem; padding: 0.4rem 1rem 0.6rem; }
 .choice legend { font-weight: bold; padding: 0 0.3em; }
 .choice__item { display: inline-flex; align-items: center; gap: 0.35em; margin: 0.25rem 1rem 0.25rem 0; cursor: pointer; border-radius: 8px; padding: 0.15em 0.3em; }
 .choice__item input { width: 1.2em; height: 1.2em; accent-color: var(--primary); }
@@ -241,7 +243,7 @@ kbd {
 
 .teacher-banner {
   background: var(--accent);
-  color: #fff;
+  color: var(--bg);
   text-align: center;
   height: 2.2rem;
   line-height: 2.2rem;
@@ -250,7 +252,6 @@ kbd {
 }
 /* Banner nimmt Platz weg: Spielbildschirm entsprechend kürzer */
 .is-teacher .screen.game { height: calc(100vh - 2.2rem); }
-:root[data-theme="kontrast"] .teacher-banner { color: #000; }
 .debug-badge {
   position: fixed; right: 0.5rem; bottom: 0.5rem; z-index: 60;
   background: var(--ok); color: #fff; padding: 0.3em 0.7em; border-radius: 8px; font-size: 0.75rem;
@@ -333,7 +334,8 @@ kbd {
   gap: 1rem;
 }
 .world__plate {
-  background: rgba(251, 243, 223, 0.94);
+  background: var(--plate-bg);
+  color: var(--plate-text);
   border: 3px solid var(--border);
   box-shadow: 0 3px 0 var(--border-dark);
   border-radius: 12px;
@@ -342,7 +344,6 @@ kbd {
 }
 .world__plate h2 { margin: 0 0 0.15em; font-size: 1.5rem; }
 .world__plate p { margin: 0; font-size: 0.9rem; }
-:root[data-theme="kontrast"] .world__plate { background: #000; }
 .world__path {
   list-style: none;
   margin: 0;
@@ -393,16 +394,14 @@ kbd {
 .level-node__title,
 .level-node .stars,
 .level-node__locked {
-  background: rgba(251, 243, 223, 0.95);
+  background: var(--plate-bg);
+  color: var(--plate-text);
   border: 2px solid var(--border);
   border-radius: 8px;
   text-align: center;
 }
-:root[data-theme="kontrast"] .level-node__title,
-:root[data-theme="kontrast"] .level-node .stars,
-:root[data-theme="kontrast"] .level-node__locked { background: #000; }
 .level-node__title { padding: 0.05em 0.5em; font-size: 0.85rem; font-weight: bold; }
-.level-node .stars { font-size: 1.2rem; padding: 0.05em 0.35em; }
+.level-node .stars { font-size: 1.2rem; padding: 0.05em 0.35em; color: var(--plate-star, var(--star)); }
 .level-node__locked { font-size: 0.8rem; padding: 0 0.4em; }
 .level-node.is-locked .level-node__gear { color: var(--gear-locked); }
 .level-node.is-locked .level-node__num { text-shadow: none; }
@@ -469,3 +468,63 @@ kbd {
   margin-top: 1rem;
 }
 .remind p { margin-bottom: 0.5em; }
+
+/* ---------- Avatar (Tipp in verschiedenen Farben) ---------- */
+.tipp,
+.rain__tipp,
+.monster__tipp,
+.race__car svg { filter: var(--avatar-filter, none); }
+.avatars { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.avatar-choice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  width: 6rem;
+  padding: 0.3rem;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  text-align: center;
+}
+.avatar-choice img { width: 3rem; height: auto; }
+.avatar-choice input { accent-color: var(--primary); }
+.avatar-choice:has(input:checked) { outline: 3px solid var(--primary); }
+.avatar-choice:focus-within { outline: 4px solid var(--focus); }
+.avatar-choice.is-locked,
+.choice__item.is-locked { cursor: not-allowed; color: var(--muted); }
+.avatar-choice__lock { font-size: 0.75rem; }
+
+/* ---------- Meine Knackpunkte ---------- */
+.knack {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-radius: 18px;
+  padding: 0.8rem 1.4rem;
+  margin-bottom: 1.5rem;
+}
+.knack__icon { width: 3.2rem; height: 3.2rem; color: var(--gear); flex: none; animation: gear-turn 12s linear infinite; }
+.knack__icon svg { width: 100%; height: 100%; }
+.knack__text { flex: 1; }
+.knack__text h2 { margin: 0 0 0.1em; font-size: 1.3rem; }
+.knack__text p { margin: 0; }
+.level-node__bonus { color: var(--primary); font-size: 0.75rem; }
+
+/* ---------- Vorschau: Tastenkunde und Geschichte ---------- */
+.intro__keyhunt,
+.intro__story {
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 18px;
+  padding: 0.8rem 1.1rem;
+}
+.intro__keyhunt p:last-child,
+.intro__story p:last-child { margin: 0; }
+.chapters { list-style: none; margin: 0 0 0.6rem; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0.3rem 1.5rem; }
+.chapters li { display: flex; align-items: center; gap: 0.5rem; }
+.chapters__mark { width: 1.3em; font-weight: bold; color: var(--ok); }
+.chapters li.is-next .chapters__mark { color: var(--primary); }
+.chapters__title { font-weight: bold; }
+.result__reward { font-weight: bold; color: var(--primary); }

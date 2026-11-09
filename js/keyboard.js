@@ -47,11 +47,20 @@ function span(cls, text) {
 /**
  * Erstellt die Tastatur im Container.
  * options.sections: welche Teile gezeichnet werden ('fn', 'main', 'nav')
+ * options.onKeyClick(code): wenn gesetzt, kann man Tasten anklicken (Tastenkunde)
  */
-export function createKeyboard(container, index, { sections = ['main'] } = {}) {
+export function createKeyboard(container, index, { sections = ['main'], onKeyClick = null } = {}) {
   const root = document.createElement('div');
   root.className = 'kb kb--colors';
-  root.setAttribute('aria-hidden', 'true'); // rein visuelle Hilfe, Hinweise gibt es auch als Text
+  if (onKeyClick) {
+    root.classList.add('kb--clickable');
+    root.addEventListener('click', (e) => {
+      const key = e.target.closest('.key');
+      if (key && root.contains(key)) onKeyClick(key.dataset.code);
+    });
+  } else {
+    root.setAttribute('aria-hidden', 'true'); // rein visuelle Hilfe, Hinweise gibt es auch als Text
+  }
   const byCode = new Map();
 
   // 1. Durchgang: Positionen berechnen

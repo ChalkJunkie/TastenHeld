@@ -51,6 +51,9 @@
   --ground-dark: #4f9a43;
   --drop-bg: #fbf3df;
   --drop-border: #b0703a;
+  --drop-text: #3b2a1a;
+  --plate-bg: rgba(251, 243, 223, 0.95);
+  --plate-text: #3b2a1a;
 }
 
 :root[data-theme="kontrast"] {
@@ -99,6 +102,91 @@
   --ground-dark: #ffffff;
   --drop-bg: #000000;
   --drop-border: #ffe600;
+  --drop-text: #ffffff;
+  --plate-bg: #000000;
+  --plate-text: #ffffff;
+}
+
+/* Freischaltbar: Messing & Holz (dunkel) */
+:root[data-theme="messing"] {
+  --bg: #2b1d14;
+  --bg-2: #3d2a1c;
+  --surface: #3a281b;
+  --text: #f6e7c8;
+  --muted: #dcc6a2;
+  --border: #b8862b;
+  --border-dark: #140c07;
+  --primary: #a87420;
+  --primary-top: #e2b45a;
+  --primary-hover: #8f6118;
+  --primary-text: #2b1d14;
+  --accent: #8fd3e0;
+  --focus: #ffd27a;
+  --ok: #9be29f;
+  --ok-bg: #24361f;
+  --bad: #ffab9e;
+  --bad-bg: #4a2219;
+  --info-bg: #4a3424;
+  --warn-bg: #54401a;
+  --star: #ffc93c;
+  --star-off: #7a6a58;
+  --rivet: #e2b45a;
+  --gear: #c9932f;
+  --gear-locked: #6b5a4a;
+  --shadow: 0 4px 0 rgba(0, 0, 0, 0.45);
+  --key-bg: #f3e2bd;
+  --key-text: #2b1d14;
+  --key-border: #5a3d12;
+  --next-ring: #ffd27a;
+  --hand-skin: #f6dcc0;
+  --hand-line: #5a3d12;
+  --drop-bg: #f3e2bd;
+  --drop-border: #a87420;
+  --drop-text: #2b1d14;
+  --plate-bg: rgba(233, 207, 150, 0.96);
+  --plate-text: #3a2412;
+  --plate-star: #a86a00;
+}
+
+/* Freischaltbar: Bunte Werkstatt */
+:root[data-theme="werkstatt"] {
+  --bg: #14394a;
+  --bg-2: #0e2a37;
+  --surface: #103444;
+  --text: #ffffff;
+  --muted: #cfe0e6;
+  --border: #ffcf4a;
+  --border-dark: #07171e;
+  --primary: #ff6a2b;
+  --primary-top: #ff9a5e;
+  --primary-hover: #e85a1d;
+  --primary-text: #ffffff;
+  --accent: #5fd0c4;
+  --focus: #ffcf4a;
+  --ok: #6be3a0;
+  --ok-bg: #0f3b2c;
+  --bad: #ffab9e;
+  --bad-bg: #4a1f1a;
+  --info-bg: #17475a;
+  --warn-bg: #4a3d10;
+  --star: #ffcf4a;
+  --star-off: #4b6470;
+  --rivet: #ffcf4a;
+  --gear: #5fd0c4;
+  --gear-locked: #4b6470;
+  --shadow: 0 4px 0 rgba(0, 0, 0, 0.45);
+  --key-bg: #e9f3f5;
+  --key-text: #0b222c;
+  --key-border: #0b222c;
+  --next-ring: #ffcf4a;
+  --hand-skin: #f6dcc0;
+  --hand-line: #0b222c;
+  --drop-bg: #ffffff;
+  --drop-border: #ff7a3d;
+  --drop-text: #14394a;
+  --plate-bg: rgba(255, 255, 255, 0.96);
+  --plate-text: #14394a;
+  --plate-star: #c27c00;
 }
 
 /* Im Kontrast-Theme werden Fingerfarben als dicke Rahmen gezeigt */
@@ -141,6 +229,37 @@
   --sky-bottom: #5d4c72;
   --ground: #2b2338;
   --ground-dark: #1e1828;
+}
+
+:root:not([data-theme="kontrast"]) .world--uhrturm {
+  --sky-top: #f2c48d;
+  --sky-bottom: #fbe9cf;
+  --ground: #b9a27e;
+  --ground-dark: #8f7a58;
+}
+:root:not([data-theme="kontrast"]) .world--werkstatt {
+  --sky-top: #c9a27a;
+  --sky-bottom: #ead6b8;
+  --ground: #8a5a2b;
+  --ground-dark: #6b4220;
+}
+:root:not([data-theme="kontrast"]) .world--maschinenraum {
+  --sky-top: #4f5a63;
+  --sky-bottom: #7d8a93;
+  --ground: #3a4248;
+  --ground-dark: #2a3035;
+}
+:root:not([data-theme="kontrast"]) .world--sternwarte {
+  --sky-top: #1d2550;
+  --sky-bottom: #4a4f8a;
+  --ground: #2e3560;
+  --ground-dark: #1d2244;
+}
+:root:not([data-theme="kontrast"]) .world--wald {
+  --sky-top: #9fd3b0;
+  --sky-bottom: #e8f4dc;
+  --ground: #5a8f4a;
+  --ground-dark: #3f6e33;
 }
 
 /* Im Kontrast-Theme keine Bilder hinter Text */

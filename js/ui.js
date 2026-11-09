@@ -1,5 +1,7 @@
 // Kleine UI-Helfer: Elemente bauen, Bildschirme wechseln, Dialoge, Meldungen, Einstellungen.
 
+import { AVATARS, THEMES, avatarFilter } from './rewards.js';
+
 /**
  * Baut ein DOM-Element.  el('button', { class: 'btn', onclick: fn }, 'Text', kindElement)
  * Attribute mit on... werden als Ereignis-Listener gesetzt.
@@ -124,36 +126,68 @@ export const FONT_SCALES = [
   { value: 1.4, label: 'Sehr groß' },
 ];
 
-export const THEMES = [
-  { id: 'standard', label: 'Bunt' },
-  { id: 'kontrast', label: 'Hoher Kontrast' },
-];
-
-/** Einstellungen (Theme, Schriftgröße) auf die Seite anwenden. */
-export function applySettings(settings) {
+/** Einstellungen (Theme, Schriftgröße) und Avatar auf die Seite anwenden. */
+export function applySettings(settings, avatar = 'tipp') {
   const root = document.documentElement;
   root.dataset.theme = settings.theme ?? 'standard';
   root.style.setProperty('--font-scale', settings.fontScale ?? 1);
+  root.style.setProperty('--avatar-filter', avatarFilter(avatar));
 }
 
-/** Einstellungs-Dialog. onChange(neueSettings) wird bei jeder Änderung aufgerufen. */
-export function openSettings(settings, unlockedThemes, onChange) {
-  const current = { ...settings };
-  const group = (legend, name, options, value, apply) =>
-    el('fieldset', { class: 'choice' },
-      el('legend', {}, legend),
-      options.map((o) =>
-        el('label', { class: 'choice__item' },
-          el('input', {
-            type: 'radio', name, value: o.value ?? o.id, checked: (o.value ?? o.id) === value,
-            onchange: () => { apply(o.value ?? o.id); applySettings(current); onChange({ ...current }); },
-          }),
-          el('span', {}, o.label))));
+/**
+ * Einstellungs-Dialog: Schriftgröße, Farbthema, Avatar ("Mein Tipp").
+ * Gesperrte Themen/Avatare werden mit der nötigen XP-Zahl angezeigt.
+ * onChange({ settings, avatar }) wird bei jeder Änderung aufgerufen.
+ */
+export function openSettings(state, onChange) {
+  const settings = { ...state.settings };
+  let avatar = state.profile.avatar;
+  const changed = () => {
+    applySettings(settings, avatar);
+    onChange({ settings: { ...settings }, avatar });
+  };
+  const radio = (name, value, checked, disabled, apply) =>
+    el('input', { type: 'radio', name, value, checked, disabled, onchange: () => { apply(value); changed(); } });
 
-  const content = el('div', { class: 'settings' },
-    group('Schriftgröße', 'fontScale', FONT_SCALES, current.fontScale, (v) => (current.fontScale = v)),
-    group('Farben', 'theme', THEMES.filter((t) => unlockedThemes.includes(t.id)), current.theme, (v) => (current.theme = v)));
-  openDialog('Einstellungen', content);
+  const fontGroup = el('fieldset', { class: 'choice' }, el('legend', {}, 'Schriftgröße'),
+    FONT_SCALES.map((o) => el('label', { class: 'choice__item' },
+      radio('fontScale', o.value, o.value === settings.fontScale, false, (v) => (settings.fontScale = v)),
+      el('span', {}, o.label))));
+
+  const themeGroup = el('fieldset', { class: 'choice' }, el('legend', {}, 'Farben'),
+    THEMES.map((t) => {
+      const open = state.unlocked.themes.includes(t.id);
+      return el('label', { class: `choice__item${open ? '' : ' is-locked'}` },
+        radio('theme', t.id, t.id === settings.theme, !open, (v) => (settings.theme = v)),
+        el('span', {}, t.name, open ? '' : ` (🔒 ab ${t.xp} XP)`));
+    }));
+
+  const avatarGroup = el('fieldset', { class: 'choice' }, el('legend', {}, 'Mein Tipp'),
+    el('div', { class: 'avatars' }, AVATARS.map((a) => {
+      const open = state.unlocked.avatars.includes(a.id);
+      return el('label', { class: `avatar-choice${open ? '' : ' is-locked'}` },
+        radio('avatar', a.id, a.id === avatar, !open, (v) => (avatar = v)),
+        el('img', { src: 'assets/svg/tipp.svg', alt: '', style: { filter: open ? a.filter : 'grayscale(1) opacity(.45)' } }),
+        el('span', {}, a.name),
+        open ? null : el('span', { class: 'avatar-choice__lock' }, `🔒 ab ${a.xp} XP`));
+    })));
+
+  openDialog('Einstellungen', el('div', { class: 'settings' }, fontGroup, themeGroup, avatarGroup));
+}
+
+/** Beschriftung einer Welt ("Welt 2: Die obere Reihe I" oder eigener Text). */
+export function worldLabel(world) {
+  return world.label ?? `Welt ${world.id}: ${world.title}`;
+}
+
+/** Liste zufällig mischen (Kopie). */
+export function shuffleList(list) {
+  const a = [...list];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
 }
 
 /** Zahl hübsch auf Deutsch (Komma statt Punkt). */

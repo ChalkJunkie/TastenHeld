@@ -4,8 +4,10 @@ import { buildLayoutIndex } from './layout.js';
 import { createInput } from './input.js';
 import { el, applySettings, toast } from './ui.js';
 import {
-  createState, saveBackup, loadBackup, saveToFile, recordResult, fileName,
+  createState, saveBackup, loadBackup, saveToFile, recordResult, fileName, recordChapter, storyProgress,
 } from './progress.js';
+import { AVATARS, THEMES } from './rewards.js';
+import { starsFor } from './engine.js';
 import { renderStart } from './screens/start.js';
 import { renderMap } from './screens/map.js';
 import { renderLevelIntro } from './screens/levelintro.js';
@@ -81,7 +83,10 @@ async function boot() {
     dirty: false,
     backup: TEACHER ? null : loadBackup(),
 
+    knackpunkte: null, // wird beim Öffnen von "Meine Knackpunkte" erzeugt
+
     levelById(id) {
+      if (id === 'knackpunkte') return app.knackpunkte;
       const i = allLevels.findIndex((x) => x.level.id === id);
       if (i < 0) return null;
       return { ...allLevels[i], next: allLevels[i + 1]?.level ?? null };
@@ -93,7 +98,7 @@ async function boot() {
 
     /** Spielstand wurde verändert: Sicherung im Browser, Knopf "nicht gespeichert". */
     commit() {
-      applySettings(app.state.settings);
+      applySettings(app.state.settings, app.state.profile.avatar);
       if (TEACHER) return;
       app.dirty = true;
       saveBackup(app.state);
@@ -108,7 +113,7 @@ async function boot() {
 
     loadState(state) {
       app.state = state;
-      applySettings(state.settings);
+      applySettings(state.settings, state.profile.avatar);
       saveBackup(state);
       app.dirty = false;
       app.backup = null;
@@ -137,7 +142,26 @@ async function boot() {
       return btn;
     },
 
+    /** Story-Kapitel getippt: sofort speichern (man kann jederzeit aufhören). */
+    recordChapter(chapterId, stars, accuracy) {
+      recordChapter(app.state, chapterId, stars, accuracy);
+      app.commit();
+    },
+
     finishLevel(level, result) {
+      if (level.mode === 'story') {
+        // Der Boss gilt erst als geschafft, wenn ALLE Kapitel getippt sind.
+        // Sterne des Bosses nach der durchschnittlichen (besten) Genauigkeit aller Kapitel.
+        const sp = storyProgress(app.state, data.story.chapters);
+        result.valid = sp.allDone;
+        if (sp.allDone) {
+          result.accuracy = Math.round(sp.accuracy * 10) / 10;
+          result.stars = starsFor(result.accuracy, level.stars?.accuracy);
+        } else {
+          result.stars = 0;
+        }
+        result.story = { done: sp.done, total: sp.total, nextTitle: sp.next?.title ?? null };
+      }
       const summary = recordResult(app.state, result);
       app.commit();
       app.go.result(level.id, result, summary);
@@ -165,7 +189,9 @@ async function boot() {
     document.body.prepend(el('div', { class: 'teacher-banner', role: 'note' },
       'Lehrkraft-Ansicht: Alle Level sind offen. Es wird nichts gespeichert.'));
     app.state = createState('Lehrkraft');
-    applySettings(app.state.settings);
+    // Zum Vorführen: alle Avatare und Farbthemen offen
+    app.state.unlocked = { avatars: AVATARS.map((a) => a.id), themes: THEMES.map((t) => t.id) };
+    applySettings(app.state.settings, app.state.profile.avatar);
     app.go.map();
   } else {
     app.go.start();

@@ -7,9 +7,21 @@ import { createSession, drawItems, HINTS } from '../engine.js';
 import { createRain } from '../modes/rain.js';
 import { createMonster } from '../modes/monster.js';
 import { createRace } from '../modes/race.js';
+import { createKeyhunt, buildCards } from '../modes/keyhunt.js';
+import { createStory } from '../modes/story.js';
+import { storyProgress } from '../progress.js';
 
-// Verfügbare Modi (keyhunt und story folgen in Meilenstein 3)
-const MODES = { rain: createRain, monster: createMonster, race: createRace };
+// Verfügbare Spielmodi
+const MODES = { rain: createRain, monster: createMonster, race: createRace, keyhunt: createKeyhunt, story: createStory };
+
+/** Inhalte einer Runde: fertige Liste (Knackpunkte), Karten, Geschichte oder Wörter. */
+function roundItems(app, level) {
+  if (level.items) return level.items;
+  const { type } = level.content;
+  if (type === 'keycards' || type === 'combos') return buildCards(level.content, app.data.keys);
+  if (type === 'story') return app.data.story.chapters;
+  return drawItems(level.content, app.data.words);
+}
 
 export function renderGame(app, id) {
   const { world, level } = app.levelById(id);
@@ -25,6 +37,8 @@ export function renderGame(app, id) {
     return;
   }
   const helps = { keyboard: true, hands: true, fingerColors: true, highlightNext: true, ...level.helps };
+  const isKeyhunt = level.mode === 'keyhunt';
+  const policy = isKeyhunt ? 'keyhunt' : 'game';
 
   // --- Aufbau -------------------------------------------------------------
   const progressBar = el('div', { class: 'progress', role: 'progressbar', 'aria-valuemin': 0, 'aria-valuemax': 100, 'aria-valuenow': 0, 'aria-label': 'Fortschritt' },
@@ -55,9 +69,13 @@ export function renderGame(app, id) {
     el('div', { class: 'game__kb' }, handL, kbWrap, handR));
   showScreen(screen, { focus: false });
 
-  const keyboard = createKeyboard(kbWrap, index);
+  // Tastenkunde: ganze Tastatur (mit F-Tasten und Pfeilblock), Tasten anklickbar
+  const keyboard = createKeyboard(kbWrap, index, isKeyhunt
+    ? { sections: ['fn', 'main', 'nav'], onKeyClick: (code) => phase === 'running' && mode.onClick?.(code) }
+    : {});
   const hands = createHands(handL, handR);
-  keyboard.setActive((level.activeKeys ?? []).map((t) => index.resolveToken(t)).filter(Boolean));
+  if (level.activeKeys) keyboard.setActive(level.activeKeys.map((t) => index.resolveToken(t)).filter(Boolean));
+  if (isKeyhunt) screen.classList.add('game--keyhunt');
 
   function applyHelps() {
     kbWrap.style.visibility = helps.keyboard ? 'visible' : 'hidden';
@@ -74,7 +92,7 @@ export function renderGame(app, id) {
       hintBar.classList.remove('is-visible');
       return;
     }
-    const icons = { error: '☝', caps: '⇪', shift: '⇧', capsOff: '⇪', info: '💡' };
+    const icons = { error: '☝', caps: '⇪', shift: '⇧', capsOff: '⇪', capsMixed: '⇪', shiftSide: '⇧', info: '💡' };
     hintIcon.textContent = icons[kind] ?? 'i';
     hintText.textContent = text;
     hintBar.className = `hint is-visible hint--${kind}`;
@@ -84,9 +102,11 @@ export function renderGame(app, id) {
 
   // --- Runde --------------------------------------------------------------
   const session = createSession({ level, index, keyboard, hands, onHint: showHint });
-  const items = drawItems(level.content, app.data.words);
+  const items = roundItems(app, level);
+  const startIndex = level.mode === 'story' ? Math.max(0, items.indexOf(storyProgress(app.state, items).next)) : 0;
   const mode = createMode({
-    field, items, session, level,
+    field, items, session, level, keyboard, startIndex,
+    onChapter: (chapterId, stars, accuracy) => app.recordChapter(chapterId, stars, accuracy),
     onProgress(done, total) {
       const pct = total ? Math.round((done / total) * 100) : 0;
       progressBar.setAttribute('aria-valuenow', pct);
@@ -111,7 +131,9 @@ export function renderGame(app, id) {
   function showReady() {
     overlay.replaceChildren(el('div', { class: 'overlay__box' },
       tippImage('tipp--small tipp--wave'),
-      el('p', { class: 'label-big' }, 'Leg deine Finger auf die Grundstellung.'),
+      el('p', { class: 'label-big' }, isKeyhunt
+        ? 'Jede Karte stellt dir eine Frage zu einer Taste.'
+        : level.mode === 'story' ? `Kapitel ${startIndex + 1}: ${items[startIndex].title}` : 'Leg deine Finger auf die Grundstellung.'),
       el('p', {}, 'Drück die ', el('kbd', {}, 'Leertaste'), ', um zu starten.')));
     overlay.hidden = false;
   }
@@ -150,7 +172,7 @@ export function renderGame(app, id) {
     if (phase !== 'paused') return;
     overlay.hidden = true;
     phase = 'running';
-    input.listen(onKey, 'game');
+    input.listen(onKey, policy);
     last = performance.now();
   }
 
@@ -165,7 +187,8 @@ export function renderGame(app, id) {
   }
 
   function onKey(ev) {
-    if (ev.type === 'down' && ev.key === 'Escape') {
+    // In der Tastenkunde ist Esc eine Antwort, dort pausiert nur der Pause-Knopf
+    if (ev.type === 'down' && ev.key === 'Escape' && !(isKeyhunt && phase === 'running')) {
       pause();
       return;
     }
@@ -201,7 +224,7 @@ export function renderGame(app, id) {
     mode.destroy?.();
   });
 
-  input.listen(onKey, 'game');
+  input.listen(onKey, policy);
   showReady();
 }
 

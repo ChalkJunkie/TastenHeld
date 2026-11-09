@@ -206,6 +206,7 @@
   border: 3px solid var(--drop-border);
   border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
   padding: 0.45em 0.9em 0.55em;
+  color: var(--drop-text);
   font-size: 1.7rem;
   font-weight: bold;
   white-space: nowrap;
@@ -419,3 +420,53 @@
 @keyframes wheel-spin { to { transform: rotate(360deg); } }
 @keyframes car-stutter { 25% { transform: translateX(-10%) rotate(-3deg); } 75% { transform: translateX(-10%) rotate(3deg); } }
 @keyframes car-cheer { 50% { transform: translateX(-10%) translateY(-16px); } }
+
+/* ---------- Tastenkunde ---------- */
+.game--keyhunt .game__kb { --u: min(3vw, 5vh, 46px); }
+.game--keyhunt .game__hand { display: none; }
+.kb--clickable .key { cursor: pointer; }
+.kb--clickable .key:hover { outline: 3px solid var(--focus); z-index: 3; }
+.keyhunt { display: grid; place-items: center; padding: 1rem; }
+.keyhunt__card {
+  width: min(92%, 40rem);
+  text-align: center;
+  padding: 1.1rem 1.6rem;
+}
+.keyhunt__question { font-family: var(--font-head); font-size: 1.7rem; font-weight: bold; line-height: 1.25; margin-bottom: 0.4em; }
+.keyhunt__verdict { font-size: 1.5rem; font-weight: bold; margin-bottom: 0.3em; }
+.keyhunt__card.is-right .keyhunt__verdict { color: var(--ok); }
+.keyhunt__card.is-wrong .keyhunt__verdict { color: var(--primary); }
+.keyhunt__answer { font-size: 1.2rem; font-weight: bold; }
+.keyhunt__card .row { margin-top: 0.5rem; }
+.keyhunt__done { font-size: 1.6rem; font-weight: bold; color: var(--ok); margin: 0; }
+
+/* ---------- Geschichte ---------- */
+.story__panel { text-align: left; }
+.story__title { font-family: var(--font-head); font-weight: bold; margin: 0 0 0.2rem; color: var(--muted); }
+.story__between { background: rgba(59, 42, 26, 0.35); }
+/* Kapitel geschafft: Bild links, Sterne und Knöpfe rechts (passt auch bei 768 px Höhe) */
+.story__box {
+  max-width: 56rem;
+  width: 94%;
+  padding: 0.9rem 1.2rem;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  grid-template-rows: auto auto auto 1fr;
+  column-gap: 1.25rem;
+  align-items: center;
+  text-align: left;
+}
+.story__box .story__img { grid-row: 1 / span 5; }
+.story__box h2 { margin: 0 0 0.2rem; }
+.story__box p { margin: 0.2rem 0; }
+.story__box p.muted { font-size: 0.85rem; }
+.story__box .row { justify-content: flex-start; margin-top: 0.5rem; }
+.story__img {
+  display: block;
+  width: 100%;
+  max-height: calc(100% - 0.5rem);
+  aspect-ratio: 2 / 1;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 3px solid var(--border);
+}

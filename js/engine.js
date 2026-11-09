@@ -53,7 +53,11 @@ export const HINTS = {
   caps: "Die Feststelltaste ist an. Drück sie einmal, dann geht's weiter.",
   shift: "Hier brauchst du nur kleine Buchstaben. Lass die Umschalttaste los, dann geht's weiter.",
   capsOff: 'Feststelltaste wieder ausschalten!',
+  capsMixed: 'Die Feststelltaste ist an. Drück sie einmal, dann klappen auch die kleinen Buchstaben.',
 };
+
+const isUpperLetter = (c) => c != null && c !== c.toLowerCase() && c === c.toUpperCase();
+const isLowerLetter = (c) => c != null && c !== c.toUpperCase() && c === c.toLowerCase();
 
 /**
  * Vergleicht das getippte Zeichen mit dem erwarteten.
@@ -197,8 +201,11 @@ export function buildResult(level, tracker, extra = {}) {
  */
 export function createSession({ level, index, keyboard, hands, onHint }) {
   const tracker = new Tracker();
+  const capsCheck = !!level.params?.capsCheck;
   let expected = null;
   let hintKind = null;
+  let lastChar = null; // zuletzt richtig getipptes Zeichen
+  let lastCaps = false; // war dabei die Feststelltaste an?
 
   function hint(text, kind) {
     hintKind = kind;
@@ -214,8 +221,15 @@ export function createSession({ level, index, keyboard, hands, onHint }) {
 
     /** Nächstes erwartetes Zeichen festlegen (null = gerade nichts zu tippen). */
     expect(ch) {
+      // Level mit Feststelltaste: Wort in Großbuchstaben fertig -> Feststelltaste wieder aus
+      if (capsCheck && lastCaps && isUpperLetter(lastChar) && (ch == null || ch === ' ' || isLowerLetter(ch))) {
+        hint(HINTS.capsOff, 'capsOff');
+      }
       expected = ch;
-      keyboard?.setNext(ch == null ? [] : index.keysForChar(ch));
+      let keys = ch == null ? [] : index.keysForChar(ch);
+      // Feststelltasten-Level: bei Großbuchstaben die Feststelltaste zeigen statt der Umschalttaste
+      if (capsCheck && isUpperLetter(ch)) keys = lastCaps ? [keys[0]] : [keys[0], 'CapsLock'];
+      keyboard?.setNext(keys);
       hands?.setFinger(ch == null ? null : index.fingerOf(ch));
     },
 
@@ -225,7 +239,7 @@ export function createSession({ level, index, keyboard, hands, onHint }) {
       if (hintKind === 'caps' && !ev.caps) hint(null, null);
       if (ev.type !== 'down' || !ev.char || expected == null) return 'none';
 
-      const r = checkInput(ev, expected, level.caseMode, { capsCheck: !!level.params?.capsCheck });
+      const r = checkInput(ev, expected, level.caseMode, { capsCheck });
       if (r.result === 'ignore') {
         keyboard?.press(ev.code);
         hint(HINTS[r.hint], r.hint);
@@ -234,12 +248,22 @@ export function createSession({ level, index, keyboard, hands, onHint }) {
       if (r.result === 'correct') {
         keyboard?.press(ev.code, 'ok');
         tracker.hit(expected);
-        if (hintKind === 'error' || hintKind === 'shift') hint(null, null);
+        lastChar = expected;
+        lastCaps = ev.caps;
+        if (hintKind === 'error' || hintKind === 'shift' || hintKind === 'capsMixed') hint(null, null);
+        // Großbuchstabe mit der Umschalttaste der falschen Hand: kein Fehler, nur ein Tipp
+        const info = index.chars.get(expected);
+        const side = info?.shiftCode === 'ShiftLeft' ? 'L' : 'R';
+        if (info?.mod === 'shift' && !ev.caps && ev.shiftSide && ev.shiftSide !== 'LR' && ev.shiftSide !== side) {
+          hint(`Richtig! Noch besser: Für ${expected} nimmst du die ${side === 'L' ? 'linke' : 'rechte'} Umschalttaste. Immer die Hand, die gerade nicht tippt.`, 'shiftSide');
+        }
         return 'correct';
       }
       keyboard?.press(ev.code, 'bad');
       tracker.miss(expected);
-      hint(fingerHint(expected, index), 'error');
+      // Feststelltaste an, aber Kleinbuchstabe gesucht: Fehler, aber mit passender Erklärung
+      if (ev.caps && isLowerLetter(expected) && ev.char === expected.toUpperCase()) hint(HINTS.capsMixed, 'capsMixed');
+      else hint(fingerHint(expected, index), 'error');
       return 'wrong';
     },
 

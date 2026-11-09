@@ -18,7 +18,10 @@ export function renderResult(app, levelId, result, summary) {
 
   // Was fehlt bis zum nächsten Stern?
   let tip = null;
-  if (!result.valid) {
+  if (result.story && !result.valid) {
+    const left = result.story.total - result.story.done;
+    tip = `Du hast ${result.story.done} von ${result.story.total} Kapiteln geschafft. Noch ${left} Kapitel bis zum Ende der Geschichte! Beim nächsten Mal geht es mit „${result.story.nextTitle}“ weiter.`;
+  } else if (!result.valid) {
     tip = level.mode === 'rain'
       ? 'Diese Runde war zu kurz für Sterne. Versuch, alle Tropfen zu erwischen. Der Regen wird langsamer, wenn einer landet.'
       : 'Diese Runde war zu kurz für Sterne. Spiel sie bis zum Ende, dann klappt es!';
@@ -35,6 +38,7 @@ export function renderResult(app, levelId, result, summary) {
 
   const badges = [];
   if (summary.newStars && result.stars > 0) badges.push('Neuer Rekord: mehr Sterne!');
+  if (result.story?.done === result.story?.total && result.valid) badges.push('Du hast die goldene Taste zurückgebracht!');
   if (summary.newAccuracy) badges.push('Neue Bestleistung bei der Genauigkeit!');
   if (summary.newCpm) badges.push('So schnell warst du hier noch nie!');
 
@@ -52,10 +56,14 @@ export function renderResult(app, levelId, result, summary) {
       starsNode(result.stars, 3, 'stars--big stars--animate'),
       el('dl', { class: 'result__stats' },
         el('div', {}, el('dt', {}, 'Genauigkeit'), el('dd', {}, `${formatNumber(result.accuracy, 1)} %`)),
-        el('div', {}, el('dt', {}, 'Tempo'), el('dd', {}, `${formatNumber(result.cpm)} Zeichen pro Minute`)),
+        level.mode === 'keyhunt' ? null : el('div', {}, el('dt', {}, 'Tempo'), el('dd', {}, `${formatNumber(result.cpm)} Zeichen pro Minute`)),
         el('div', {}, el('dt', {}, 'Erfahrung'), el('dd', {}, `+${summary.xp} XP`, result.tempoBonus ? el('span', { class: 'pill pill--bonus' }, 'Tempo-Bonus!') : null))),
       badges.length ? el('ul', { class: 'result__badges' }, badges.map((b) => el('li', {}, el('span', { 'aria-hidden': 'true' }, '🏅 '), b))) : null,
       summary.firstStar && nextOpen ? el('p', { class: 'result__unlock' }, el('span', { 'aria-hidden': 'true' }, '🔓 '), `Neues Level freigeschaltet: ${next.id} ${next.title}!`) : null,
+      (summary.rewards ?? []).map((r) => el('p', { class: 'result__reward' },
+        el('span', { 'aria-hidden': 'true' }, r.kind === 'avatars' ? '🤖 ' : '🎨 '),
+        `Neu freigeschaltet: ${r.name}! `,
+        el('span', { class: 'muted' }, 'Du findest es unter Einstellungen.'))),
       tip ? el('p', { class: 'result__tip' }, tip) : null,
       tricky.length ? el('p', { class: 'result__tricky' }, 'Diese Tasten waren heute knifflig: ',
         tricky.map((ch) => el('kbd', {}, ch === ' ' ? 'Leertaste' : charName(ch)))) : null,

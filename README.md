@@ -8,8 +8,21 @@ Die Kinder reisen mit dem kleinen Roboter **Tipp** durch Welten. Tippen ist ihre
 - Kein Sound, alle Rückmeldungen sind sichtbar (Farbe, Symbol, Text).
 - Reines HTML/CSS/JavaScript ohne Build-Schritt und ohne externe Dateien.
 
-**Stand:** Meilenstein 2. Die Welten 1–4 (Grundreihe, obere Reihe, untere Reihe mit Komma und Punkt) sind spielbar,
-in den Modi Regen, Monster und Rennen.
+**Stand:** Meilenstein 3. Alle Welten sind spielbar: Grundreihe, obere und untere Reihe, Groß- und Kleinschreibung,
+Satzzeichen und Zahlen, Tastenkunde, Fortgeschrittene und die Boss-Geschichte „Tipp und die verschwundene Taste“.
+Dazu kommen XP mit freischaltbaren Tipp-Farben und Farbthemen sowie das Übungslevel „Meine Knackpunkte“.
+
+| Welt | Inhalt | Modi |
+|---|---|---|
+| 1 Blumenwiese | Grundreihe, Leertaste | Regen |
+| 2 Berge | E I R U | Regen, Monster, Rennen |
+| 3 Über den Wolken | T Z W O Q P Ü | Regen, Monster, Rennen |
+| 4 Kristallhöhle | V B N M C X Y | Regen, Monster, Rennen |
+| 5 Uhrturmstadt | Umschalttasten, Feststelltaste, ab 5-7 Komma und Punkt | alle drei |
+| 6 Erfinderwerkstatt | ß, Zahlen, Satzzeichen | alle drei |
+| 7 Maschinenraum | Tastenkunde (Fragekarten) | Tastenkunde |
+| 8 Sternwarte | lange Wörter, Zungenbrecher, Sonderzeichen, AltGr, Tastenkombinationen, Tempo-Sprint, große Prüfung | alle |
+| Boss | Geschichte in 6 Kapiteln | Geschichte |
 
 ---
 
@@ -36,6 +49,15 @@ Der Spielstand wird als Datei gespeichert, z. B. `Spielstand_Tastenheld_Lena_202
 - Tempo (Zeichen pro Minute) bringt nur Bonus-XP. Pausen über 3 Sekunden zählen nicht mit.
 - Im Regen-Modus ist ein gelandeter Tropfen kein Fehler: Er kommt noch einmal, und der Regen wird langsamer.
 - Im Monster-Modus gibt es kein „Game Over“: Erreicht das Monster Tipp, hüpft es zurück.
+- Großbuchstabe mit der Umschalttaste der falschen Hand: zählt als richtig, Tipp erklärt aber die bessere Hand.
+- Tastenkunde (Welt 7, Tastenkombinationen in 8-6): gewertet wird nur der erste Versuch jeder Karte (Sterne ab 70/85/95 %).
+  Falsche Karten kommen am Ende noch einmal. Beim zweiten Fehlversuch zeigt Tipp die Lösung.
+- Boss-Geschichte: Jedes Kapitel wird sofort gespeichert. Der Boss gilt als geschafft, wenn alle 6 Kapitel getippt sind.
+  Die Sterne richten sich nach der durchschnittlichen (besten) Genauigkeit aller Kapitel.
+- „Meine Knackpunkte“ (oben auf der Weltkarte): Tipp sammelt Zeichen mit hoher Fehlerquote und baut daraus eine Übung
+  mit Wörtern aus Leveln, die schon freigeschaltet sind.
+- XP: Tipp-Farben gibt es ab 150, 400, 800 und 1500 XP, die Farbthemen „Messing & Holz“ ab 300 und
+  „Bunte Werkstatt“ ab 1000 XP. „Hoher Kontrast“ ist immer verfügbar.
 - Es gibt keine Ranglisten, nur die persönliche Bestleistung.
 
 ---
@@ -79,7 +101,9 @@ Jeder Fehler nennt Level-ID und Wort.
 | `layout-de.json` | komplette deutsche Tastatur (Position, Beschriftung, Finger, Shift/AltGr) |
 
 ### Welten und Weltbilder
-Jede Welt in `levels.json` hat ein `theme` (`wiese`, `berge`, `wolken`, `hoehle`). Das Bild dazu liegt unter
+Jede Welt in `levels.json` hat ein `theme` (`wiese`, `berge`, `wolken`, `hoehle`, `uhrturm`, `werkstatt`,
+`maschinenraum`, `sternwarte`, `wald`). Mit `label` lässt sich die Überschrift auf der Karte ersetzen
+(z. B. „Das große Abenteuer“ statt „Welt 9“). Das Bild dazu liegt unter
 `assets/svg/welten/<theme>.svg` und erscheint auf der Weltkarte und als Hintergrund im Spielfeld.
 Für eine neue Welt also ein Bild mit passendem Namen ablegen. Die Level-Zahnräder sitzen links und unten im Bild,
 die Deko sollte deshalb eher rechts und oben liegen.
@@ -123,12 +147,20 @@ Beispiel aus `levels.json`:
 - **`stars.minChars`:** so viele Zeichen müssen getippt sein, damit die Runde Sterne bekommt.
   `tempoBonusCpm` (optional): ab so vielen Zeichen pro Minute gibt es Bonus-XP.
 - **`unlock.after`:** ID des Levels, das mit mindestens einem Stern geschafft sein muss (`null` = immer offen).
-- **`mode`:** `rain`, `monster` oder `race`. Jeder Modus liest nur seine eigenen `params`:
+- **`mode`:** `rain`, `monster`, `race`, `keyhunt` oder `story`. Jeder Modus liest nur seine eigenen `params`:
   - **rain** (Regen): `fallSpeed` (Anteil der Spielfeldhöhe pro Sekunde), `maxOnScreen` (gleichzeitige Tropfen),
     `spawnGap` (Sekunden zwischen Tropfen), `confirmSpace` (Wort zusätzlich mit Leertaste bestätigen, Standard: nein).
   - **monster:** `monsterSpeed` (Anteil der Strecke pro Sekunde, z. B. 0.02), `push` (so weit schubst ein
     fertiges Wort zurück), `errorBoost` (so viel schneller pro Fehler), `maxBoost` (höchstens so viel schneller).
-  - **race** (Rennen): keine Parameter. Alle Wörter/Sätze werden zu einem fortlaufenden Text mit Leerzeichen.
+  - **race** (Rennen): keine eigenen Parameter. Alle Wörter/Sätze werden zu einem fortlaufenden Text mit Leerzeichen.
+  - **keyhunt** (Tastenkunde): `repeatWrong` (falsche Karten am Ende wiederholen, Standard: ja).
+    `content` ist `{ "type": "keycards", "source": "7.1" }` (Stufe aus keys.json) oder `{ "type": "combos" }`.
+  - **story** (Geschichte): `content` ist `{ "type": "story", "source": "story" }`, die Kapitel kommen aus story.json.
+    Die Bilder zu den Kapiteln liegen unter `assets/svg/story/` (Dateiname wie im Feld `svg`).
+  - **Alle Modi:** `capsCheck: true` für Feststelltasten-Level (Kleinbuchstaben bei aktiver Feststelltaste zählen
+    nicht als Fehler, nach Wörtern in Großbuchstaben erinnert Tipp ans Ausschalten).
+- **`optional: true`:** Bonus-Level (z. B. 8-5). Es wird nicht als „Hier geht's weiter“ vorgeschlagen,
+  und das nächste Level hängt nicht davon ab.
 - Texte mit Leerzeichen (Sätze) passen besser zu `monster` und `race` als zu `rain`.
 
 ---
@@ -148,7 +180,9 @@ js/       main.js        Start, Daten laden, Bildschirme steuern
           ui.js          kleine UI-Helfer, Dialoge, Einstellungen
           validator.js   Prüfung der JSON-Dateien (nur mit ?debug=1)
           screens/       Startseite, Weltkarte, Level-Vorschau/Tutorial, Spiel, Ergebnis
-          modes/         Spielmodi (rain.js, monster.js, race.js, textline.js)
+          rewards.js     freischaltbare Tipp-Farben und Farbthemen
+          knackpunkte.js Übungslevel aus den Tasten mit vielen Fehlern
+          modes/         Spielmodi (rain, monster, race, keyhunt, story) und textline.js
 data/     JSON-Inhalte
 assets/svg/  selbst gezeichnete Grafiken
 ```
