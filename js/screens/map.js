@@ -75,4 +75,7 @@ export function renderMap(app) {
   }
 
   showScreen(el('section', { class: 'screen map' }, header, el('div', { class: 'map__worlds' }, worlds)));
+  // Bei langer Karte direkt zum nächsten Level scrollen (ab Welt 2)
+  const next = document.querySelector('.level-node.is-suggested');
+  if (next && suggestion.world.id > 1) next.scrollIntoView({ block: 'center' });
 }

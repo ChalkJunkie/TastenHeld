@@ -111,3 +111,26 @@
   color: #000 !important;
 }
 :root[data-theme="kontrast"] .hand__finger.is-active { fill: #ffe600 !important; }
+
+/* Welt-Themes: Himmel und Boden je Welt (im Kontrast-Theme bleibt alles schwarz-weiß) */
+:root:not([data-theme="kontrast"]) .world--strand {
+  --sky-top: #8fd3f5;
+  --sky-bottom: #fff4d6;
+  --ground: #f2d38b;
+  --ground-dark: #d9b25f;
+  --drop-border: #1f8fb3;
+}
+:root:not([data-theme="kontrast"]) .world--wald {
+  --sky-top: #b7e4c7;
+  --sky-bottom: #eaf7ee;
+  --ground: #5aa165;
+  --ground-dark: #3d7d48;
+  --drop-border: #2f8a4a;
+}
+:root:not([data-theme="kontrast"]) .world--berge {
+  --sky-top: #c6d6f2;
+  --sky-bottom: #f1f5fc;
+  --ground: #9cb58f;
+  --ground-dark: #6f8f66;
+  --drop-border: #5b6fb3;
+}

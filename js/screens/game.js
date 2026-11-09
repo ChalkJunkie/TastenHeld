@@ -5,9 +5,11 @@ import { createKeyboard } from '../keyboard.js';
 import { createHands } from '../hands.js';
 import { createSession, drawItems, HINTS } from '../engine.js';
 import { createRain } from '../modes/rain.js';
+import { createMonster } from '../modes/monster.js';
+import { createRace } from '../modes/race.js';
 
-// Verfügbare Modi (weitere folgen in späteren Meilensteinen)
-const MODES = { rain: createRain };
+// Verfügbare Modi (keyhunt und story folgen in Meilenstein 3)
+const MODES = { rain: createRain, monster: createMonster, race: createRace };
 
 export function renderGame(app, id) {
   const { world, level } = app.levelById(id);
@@ -63,7 +65,7 @@ export function renderGame(app, id) {
       hintBar.classList.remove('is-visible');
       return;
     }
-    const icons = { error: '☝', caps: '⇪', shift: '⇧', capsOff: '⇪', info: '💧' };
+    const icons = { error: '☝', caps: '⇪', shift: '⇧', capsOff: '⇪', info: '💡' };
     hintIcon.textContent = icons[kind] ?? 'i';
     hintText.textContent = text;
     hintBar.className = `hint is-visible hint--${kind}`;

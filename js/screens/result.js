@@ -19,7 +19,9 @@ export function renderResult(app, levelId, result, summary) {
   // Was fehlt bis zum nächsten Stern?
   let tip = null;
   if (!result.valid) {
-    tip = 'Diese Runde war zu kurz für Sterne. Versuch, alle Tropfen zu erwischen. Der Regen wird langsamer, wenn einer landet.';
+    tip = level.mode === 'rain'
+      ? 'Diese Runde war zu kurz für Sterne. Versuch, alle Tropfen zu erwischen. Der Regen wird langsamer, wenn einer landet.'
+      : 'Diese Runde war zu kurz für Sterne. Spiel sie bis zum Ende, dann klappt es!';
   } else if (result.stars < 3) {
     tip = `Für ${result.stars === 0 ? 'den ersten' : 'den nächsten'} Stern brauchst du ${thresholds[result.stars]} % Genauigkeit. Tipp: Langsam und genau ist besser als schnell.`;
   }

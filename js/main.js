@@ -161,6 +161,7 @@ async function boot() {
   });
 
   if (TEACHER) {
+    document.documentElement.classList.add('is-teacher');
     document.body.prepend(el('div', { class: 'teacher-banner', role: 'note' },
       'Lehrkraft-Ansicht: Alle Level sind offen. Es wird nichts gespeichert.'));
     app.state = createState('Lehrkraft');

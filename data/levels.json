@@ -93,6 +93,198 @@
           "unlock": { "after": "1-5" }
         }
       ]
+    },
+    {
+      "id": 2,
+      "title": "Die obere Reihe I",
+      "intro": "Tipp reist an den Strand! Deine Finger machen jetzt kleine Ausflüge nach oben zu E, I, R und U. Danach kehren sie immer zur Grundreihe zurück.",
+      "theme": "strand",
+      "levels": [
+        {
+          "id": "2-1",
+          "title": "E und I",
+          "intro": "Der linke Mittelfinger holt das E, der rechte Mittelfinger das I.",
+          "mode": "rain",
+          "caseMode": "lower",
+          "newKeys": ["e", "i"],
+          "activeKeys": ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä", "Space", "e", "i"],
+          "content": { "type": "words", "source": "w2_ei", "count": 12 },
+          "helps": { "keyboard": true, "hands": true, "fingerColors": true, "highlightNext": true },
+          "params": { "fallSpeed": 0.05, "maxOnScreen": 2, "spawnGap": 2.5, "confirmSpace": false },
+          "stars": { "accuracy": [85, 93, 98], "minChars": 40 },
+          "unlock": { "after": "1-6" }
+        },
+        {
+          "id": "2-2",
+          "title": "R und U",
+          "intro": "Die Zeigefinger holen R und U. Jedes fertige Wort ist ein Zauberstern!",
+          "mode": "monster",
+          "caseMode": "lower",
+          "newKeys": ["r", "u"],
+          "activeKeys": ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä", "Space", "e", "i", "r", "u"],
+          "content": { "type": "words", "source": "w2_ru", "count": 12 },
+          "helps": { "keyboard": true, "hands": true, "fingerColors": true, "highlightNext": true },
+          "params": { "monsterSpeed": 0.02, "push": 0.2, "errorBoost": 0.25, "maxBoost": 1.8 },
+          "stars": { "accuracy": [85, 93, 98], "minChars": 45 },
+          "unlock": { "after": "2-1" }
+        },
+        {
+          "id": "2-3",
+          "title": "Wörter-Rennen",
+          "intro": "Tipps Auto fährt, sobald du richtig tippst. Zwischen den Wörtern kommt die Leertaste.",
+          "mode": "race",
+          "caseMode": "lower",
+          "newKeys": [],
+          "activeKeys": ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä", "Space", "e", "i", "r", "u"],
+          "content": { "type": "words", "source": "w2_woerter", "count": 12 },
+          "helps": { "keyboard": true, "hands": false, "fingerColors": true, "highlightNext": true },
+          "params": {},
+          "stars": { "accuracy": [85, 93, 98], "minChars": 55, "tempoBonusCpm": 60 },
+          "unlock": { "after": "2-2" }
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Die obere Reihe II",
+      "intro": "Im Zauberwald warten T, Z, W, O, Q, P und Ü auf dich. Danach kennst du die ganze obere Reihe!",
+      "theme": "wald",
+      "levels": [
+        {
+          "id": "3-1",
+          "title": "T und Z",
+          "intro": "Die Zeigefinger strecken sich nach oben zu T und Z.",
+          "mode": "rain",
+          "caseMode": "lower",
+          "newKeys": ["t", "z"],
+          "activeKeys": ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä", "Space", "e", "i", "r", "u", "t", "z"],
+          "content": { "type": "words", "source": "w3_tz", "count": 12 },
+          "helps": { "keyboard": true, "hands": false, "fingerColors": true, "highlightNext": true },
+          "params": { "fallSpeed": 0.05, "maxOnScreen": 2, "spawnGap": 2.5, "confirmSpace": false },
+          "stars": { "accuracy": [85, 93, 98], "minChars": 45 },
+          "unlock": { "after": "2-3" }
+        },
+        {
+          "id": "3-2",
+          "title": "W und O",
+          "intro": "Der linke Ringfinger holt das W, der rechte Ringfinger das O.",
+          "mode": "monster",
+          "caseMode": "lower",
+          "newKeys": ["w", "o"],
+          "activeKeys": ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä", "Space", "e", "i", "r", "u", "t", "z", "w", "o"],
+          "content": { "type": "words", "source": "w3_wo", "count": 12 },
+          "helps": { "keyboard": true, "hands": false, "fingerColors": true, "highlightNext": true },
+          "params": { "monsterSpeed": 0.022, "push": 0.2, "errorBoost": 0.25, "maxBoost": 1.8 },
+          "stars": { "accuracy": [85, 93, 98], "minChars": 50 },
+          "unlock": { "after": "3-1" }
+        },
+        {
+          "id": "3-3",
+          "title": "Q, P und Ü",
+          "intro": "Die kleinen Finger holen Q, P und Ü.",
+          "mode": "rain",
+          "caseMode": "lower",
+          "newKeys": ["q", "p", "ü"],
+          "activeKeys": ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä", "Space", "e", "i", "r", "u", "t", "z", "w", "o", "q", "p", "ü"],
+          "content": { "type": "words", "source": "w3_qpue", "count": 12 },
+          "helps": { "keyboard": true, "hands": false, "fingerColors": true, "highlightNext": true },
+          "params": { "fallSpeed": 0.05, "maxOnScreen": 2, "spawnGap": 2.5, "confirmSpace": false },
+          "stars": { "accuracy": [85, 93, 98], "minChars": 45 },
+          "unlock": { "after": "3-2" }
+        },
+        {
+          "id": "3-4",
+          "title": "Wörter-Rennen",
+          "intro": "Jetzt kennst du die ganze obere Reihe. Gib Gas!",
+          "mode": "race",
+          "caseMode": "lower",
+          "newKeys": [],
+          "activeKeys": ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä", "Space", "e", "i", "r", "u", "t", "z", "w", "o", "q", "p", "ü"],
+          "content": { "type": "words", "source": "w3_woerter", "count": 14 },
+          "helps": { "keyboard": true, "hands": false, "fingerColors": true, "highlightNext": true },
+          "params": {},
+          "stars": { "accuracy": [85, 93, 98], "minChars": 60, "tempoBonusCpm": 70 },
+          "unlock": { "after": "3-3" }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Die untere Reihe",
+      "intro": "In den Bergen geht es nach unten: V, B, N, M, C, X, Y, Komma und Punkt. Am Ende tippst du schon ganze Sätze!",
+      "theme": "berge",
+      "levels": [
+        {
+          "id": "4-1",
+          "title": "V, B, N und M",
+          "intro": "Die Zeigefinger holen V und B links, N und M rechts.",
+          "mode": "rain",
+          "caseMode": "lower",
+          "newKeys": ["v", "b", "n", "m"],
+          "activeKeys": ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä", "Space", "e", "i", "r", "u", "t", "z", "w", "o", "q", "p", "ü", "v", "b", "n", "m"],
+          "content": { "type": "words", "source": "w4_vbnm", "count": 12 },
+          "helps": { "keyboard": true, "hands": false, "fingerColors": true, "highlightNext": true },
+          "params": { "fallSpeed": 0.05, "maxOnScreen": 2, "spawnGap": 2.5, "confirmSpace": false },
+          "stars": { "accuracy": [85, 93, 98], "minChars": 45 },
+          "unlock": { "after": "3-4" }
+        },
+        {
+          "id": "4-2",
+          "title": "C und X",
+          "intro": "Der linke Mittelfinger holt das C, der linke Ringfinger das X.",
+          "mode": "monster",
+          "caseMode": "lower",
+          "newKeys": ["c", "x"],
+          "activeKeys": ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä", "Space", "e", "i", "r", "u", "t", "z", "w", "o", "q", "p", "ü", "v", "b", "n", "m", "c", "x"],
+          "content": { "type": "words", "source": "w4_cx", "count": 12 },
+          "helps": { "keyboard": true, "hands": false, "fingerColors": true, "highlightNext": true },
+          "params": { "monsterSpeed": 0.025, "push": 0.2, "errorBoost": 0.25, "maxBoost": 1.8 },
+          "stars": { "accuracy": [85, 93, 98], "minChars": 50 },
+          "unlock": { "after": "4-1" }
+        },
+        {
+          "id": "4-3",
+          "title": "Das Y",
+          "intro": "Das Y holt der linke kleine Finger. Es liegt ganz unten links.",
+          "mode": "rain",
+          "caseMode": "lower",
+          "newKeys": ["y"],
+          "activeKeys": ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä", "Space", "e", "i", "r", "u", "t", "z", "w", "o", "q", "p", "ü", "v", "b", "n", "m", "c", "x", "y"],
+          "content": { "type": "words", "source": "w4_y", "count": 10 },
+          "helps": { "keyboard": true, "hands": false, "fingerColors": true, "highlightNext": true },
+          "params": { "fallSpeed": 0.05, "maxOnScreen": 2, "spawnGap": 2.5, "confirmSpace": false },
+          "stars": { "accuracy": [85, 93, 98], "minChars": 40 },
+          "unlock": { "after": "4-2" }
+        },
+        {
+          "id": "4-4",
+          "title": "Wörter-Rennen",
+          "intro": "Alle Buchstaben sind dabei! Die nächste Taste blinkt jetzt nicht mehr. Du schaffst das!",
+          "mode": "race",
+          "caseMode": "lower",
+          "newKeys": [],
+          "activeKeys": ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä", "Space", "e", "i", "r", "u", "t", "z", "w", "o", "q", "p", "ü", "v", "b", "n", "m", "c", "x", "y"],
+          "content": { "type": "words", "source": "w4_woerter", "count": 14 },
+          "helps": { "keyboard": true, "hands": false, "fingerColors": true, "highlightNext": false },
+          "params": {},
+          "stars": { "accuracy": [85, 93, 98], "minChars": 60, "tempoBonusCpm": 80 },
+          "unlock": { "after": "4-3" }
+        },
+        {
+          "id": "4-5",
+          "title": "Kurze Sätze",
+          "intro": "Komma und Punkt holen der rechte Mittelfinger und der rechte Ringfinger. Jetzt tippst du ganze Sätze!",
+          "mode": "race",
+          "caseMode": "lower",
+          "newKeys": [",", "."],
+          "activeKeys": ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä", "Space", "e", "i", "r", "u", "t", "z", "w", "o", "q", "p", "ü", "v", "b", "n", "m", "c", "x", "y", ",", "."],
+          "content": { "type": "sentences", "source": "w4_saetze", "count": 5 },
+          "helps": { "keyboard": true, "hands": false, "fingerColors": true, "highlightNext": false },
+          "params": {},
+          "stars": { "accuracy": [85, 93, 98], "minChars": 100, "tempoBonusCpm": 80 },
+          "unlock": { "after": "4-4" }
+        }
+      ]
     }
   ]
 }

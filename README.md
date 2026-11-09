@@ -8,8 +8,8 @@ Die Kinder reisen mit dem kleinen Roboter **Tipp** durch Welten. Tippen ist ihre
 - Kein Sound, alle Rückmeldungen sind sichtbar (Farbe, Symbol, Text).
 - Reines HTML/CSS/JavaScript ohne Build-Schritt und ohne externe Dateien.
 
-**Stand:** Meilenstein 1. Welt 1 (Grundreihe) ist komplett spielbar, im Regen-Modus mit virtueller Tastatur,
-Händen, Sternen, Speichern/Laden und Validator.
+**Stand:** Meilenstein 2. Die Welten 1–4 (Grundreihe, obere Reihe, untere Reihe mit Komma und Punkt) sind spielbar,
+in den Modi Regen, Monster und Rennen.
 
 ---
 
@@ -35,6 +35,7 @@ Der Spielstand wird als Datei gespeichert, z. B. `Spielstand_Tastenheld_Lena_202
 - Bei einem Fehler wartet der Cursor auf das richtige Zeichen. Pro Zeichen zählt höchstens ein Fehler.
 - Tempo (Zeichen pro Minute) bringt nur Bonus-XP. Pausen über 3 Sekunden zählen nicht mit.
 - Im Regen-Modus ist ein gelandeter Tropfen kein Fehler: Er kommt noch einmal, und der Regen wird langsamer.
+- Im Monster-Modus gibt es kein „Game Over“: Erreicht das Monster Tipp, hüpft es zurück.
 - Es gibt keine Ranglisten, nur die persönliche Bestleistung.
 
 ---
@@ -112,8 +113,13 @@ Beispiel aus `levels.json`:
 - **`stars.minChars`:** so viele Zeichen müssen getippt sein, damit die Runde Sterne bekommt.
   `tempoBonusCpm` (optional): ab so vielen Zeichen pro Minute gibt es Bonus-XP.
 - **`unlock.after`:** ID des Levels, das mit mindestens einem Stern geschafft sein muss (`null` = immer offen).
-- **`params` für den Regen-Modus:** `fallSpeed` (Anteil der Spielfeldhöhe pro Sekunde), `maxOnScreen`
-  (gleichzeitige Tropfen), `spawnGap` (Sekunden zwischen Tropfen), `confirmSpace` (Wort mit Leertaste bestätigen).
+- **`mode`:** `rain`, `monster` oder `race`. Jeder Modus liest nur seine eigenen `params`:
+  - **rain** (Regen): `fallSpeed` (Anteil der Spielfeldhöhe pro Sekunde), `maxOnScreen` (gleichzeitige Tropfen),
+    `spawnGap` (Sekunden zwischen Tropfen), `confirmSpace` (Wort zusätzlich mit Leertaste bestätigen, Standard: nein).
+  - **monster:** `monsterSpeed` (Anteil der Strecke pro Sekunde, z. B. 0.02), `push` (so weit schubst ein
+    fertiges Wort zurück), `errorBoost` (so viel schneller pro Fehler), `maxBoost` (höchstens so viel schneller).
+  - **race** (Rennen): keine Parameter. Alle Wörter/Sätze werden zu einem fortlaufenden Text mit Leerzeichen.
+- Texte mit Leerzeichen (Sätze) passen besser zu `monster` und `race` als zu `rain`.
 
 ---
 
@@ -132,7 +138,7 @@ js/       main.js        Start, Daten laden, Bildschirme steuern
           ui.js          kleine UI-Helfer, Dialoge, Einstellungen
           validator.js   Prüfung der JSON-Dateien (nur mit ?debug=1)
           screens/       Startseite, Weltkarte, Level-Vorschau/Tutorial, Spiel, Ergebnis
-          modes/         Spielmodi (rain.js)
+          modes/         Spielmodi (rain.js, monster.js, race.js, textline.js)
 data/     JSON-Inhalte
 assets/svg/  selbst gezeichnete Grafiken
 ```

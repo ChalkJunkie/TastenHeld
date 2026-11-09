@@ -281,3 +281,131 @@
 @media (prefers-reduced-motion: reduce) {
   .key.is-next, .level-node.is-suggested .level-node__bubble, .tipp--wave { animation: none; }
 }
+
+/* ---------- Textzeile (Monster, Rennen) ---------- */
+.scroll-panel {
+  position: absolute;
+  top: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(92%, 52rem);
+  background: var(--surface);
+  border: 3px solid var(--text);
+  border-radius: 18px;
+  padding: 0.5rem 1rem 0.4rem;
+  box-shadow: var(--shadow);
+  z-index: 3;
+  text-align: center;
+}
+.textline { overflow: hidden; white-space: nowrap; }
+.textline--big { font-size: 2.1rem; font-weight: bold; }
+.textline__inner { position: relative; display: inline-block; transition: transform 0.15s ease-out; }
+.textline--ticker { text-align: left; }
+.tl__ch { display: inline-block; min-width: 0.35em; text-align: center; border-bottom: 5px solid transparent; }
+.tl__ch.is-done { color: var(--ok); opacity: 0.55; }
+.tl__ch.is-current { border-bottom-color: var(--primary); }
+.tl__ch--space { color: var(--muted); font-weight: normal; }
+.tl__ch.is-wrong { animation: ch-wrong 0.3s; }
+@keyframes ch-wrong { 25% { transform: translateX(-5px); color: var(--bad); } 75% { transform: translateX(5px); color: var(--bad); } }
+
+/* ---------- Gemeinsame Szene ---------- */
+.scene { position: absolute; inset: 0; }
+.scene__ground {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 22%;
+  background: linear-gradient(var(--ground), var(--ground-dark));
+  border-top: 3px solid var(--ground-dark);
+}
+@keyframes pop-in { from { transform: scale(0.6); opacity: 0; } }
+@keyframes tipp-hop2 { 50% { transform: translateY(-18px); } }
+@keyframes tipp-shake { 25% { transform: rotate(-8deg); } 75% { transform: rotate(8deg); } }
+
+/* ---------- Monster-Modus ---------- */
+.monster__next { margin: 0.2rem 0 0; color: var(--muted); font-size: 0.95rem; }
+.monster__win { margin: 0.3rem 0; font-size: 1.6rem; font-weight: bold; color: var(--ok); }
+.monster__tipp {
+  position: absolute;
+  left: 4%;
+  bottom: 12%;
+  width: clamp(80px, 11vh, 130px);
+}
+.monster__tipp.is-happy { animation: tipp-hop2 0.5s ease-out; }
+.monster__tipp.is-oops { animation: tipp-shake 0.5s ease-in-out; }
+.monster__monster {
+  position: absolute;
+  bottom: 10%;
+  width: clamp(110px, 20vh, 190px);
+  transition: left 0.25s linear;
+  transform-origin: 50% 100%;
+}
+.monster__monster.is-hit { animation: monster-hit 0.4s ease-out; }
+.monster__monster.is-grow { animation: monster-grow 0.4s ease-out; }
+.monster__monster.is-bounce { animation: monster-bounce 0.7s ease-out; }
+.monster__monster.is-friend { animation: monster-friend 1s ease-in-out 2; }
+@keyframes monster-hit { 30% { transform: rotate(10deg) scale(0.92); filter: brightness(1.4); } }
+@keyframes monster-grow { 40% { transform: scale(1.12); } }
+@keyframes monster-bounce { 0% { transform: translateY(0); } 40% { transform: translateY(-60px) rotate(-15deg); } 100% { transform: translateY(0); } }
+@keyframes monster-friend { 50% { transform: translateY(-20px) rotate(5deg); } }
+.spell {
+  position: absolute;
+  bottom: 30%;
+  font-size: 2.6rem;
+  color: var(--star);
+  text-shadow: 0 0 10px #fff, 0 0 3px var(--text);
+  animation: spell-fly 0.45s ease-in forwards;
+  z-index: 4;
+  pointer-events: none;
+}
+.spell--small { font-size: 1.6rem; }
+@keyframes spell-fly {
+  from { transform: translateX(0) rotate(0) scale(0.6); opacity: 1; }
+  80% { opacity: 1; }
+  to { transform: translateX(var(--dx)) rotate(360deg) scale(1.2); opacity: 0; }
+}
+
+/* ---------- Renn-Modus ---------- */
+.race__panel { top: 1rem; }
+.race__road {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 8%;
+  height: 22%;
+  background: #5b6075;
+  border-top: 4px solid #3f4357;
+  border-bottom: 4px solid #3f4357;
+}
+.race__road::after {
+  /* Mittelstreifen */
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  top: 50%;
+  height: 5px;
+  background: repeating-linear-gradient(90deg, #fff 0 34px, transparent 34px 60px);
+  opacity: 0.8;
+}
+:root[data-theme="kontrast"] .race__road { background: #000; border-color: #fff; }
+.race__finish {
+  position: absolute;
+  right: 5%;
+  bottom: 8%;
+  height: 22%;
+  width: 22px;
+  background: repeating-conic-gradient(#222 0 25%, #fff 0 50%) 0 0 / 11px 11px;
+  border: 2px solid #222;
+}
+.race__flag { position: absolute; bottom: 100%; left: -6px; font-size: 2.2rem; }
+.race__car {
+  position: absolute;
+  bottom: 12%;
+  width: clamp(130px, 22vh, 190px);
+  transform: translateX(-10%);
+}
+.race__car svg { display: block; width: 100%; height: auto; }
+.race__car.is-driving .car__wheel { animation: wheel-spin 0.4s linear infinite; }
+.race__car.is-stutter { animation: car-stutter 0.35s; }
+.race__car.is-finished { animation: car-cheer 0.6s ease-out 2; }
+@keyframes wheel-spin { to { transform: rotate(360deg); } }
+@keyframes car-stutter { 25% { transform: translateX(-10%) rotate(-3deg); } 75% { transform: translateX(-10%) rotate(3deg); } }
+@keyframes car-cheer { 50% { transform: translateX(-10%) translateY(-16px); } }
