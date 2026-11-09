@@ -115,6 +115,32 @@ export function applySettings(settings, avatar = 'tipp') {
   root.dataset.theme = settings.theme ?? 'standard';
   root.style.setProperty('--font-scale', settings.fontScale ?? 1);
   root.style.setProperty('--avatar-filter', avatarFilter(avatar));
+  root.classList.toggle('reduce-motion', !!settings.reduceMotion || prefersReducedMotion());
+}
+
+/** Wünscht das Betriebssystem weniger Bewegung? */
+export function prefersReducedMotion() {
+  return window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+}
+
+/** Sollen Effekte (Funken, Konfetti) gezeigt werden? */
+export function effectsOn() {
+  return !document.documentElement.classList.contains('reduce-motion');
+}
+
+/**
+ * Pixelbild als Hintergrund immer in GANZEN Vielfachen vergrößern (sonst werden
+ * manche Pixel breiter als andere). Passt sich bei Größenänderungen an.
+ */
+export function pixelBackground(node, w, h) {
+  const size = { w, h };
+  const update = () => {
+    const s = Math.max(1, Math.ceil(Math.max(node.clientWidth / size.w, node.clientHeight / size.h)));
+    node.style.backgroundSize = `${size.w * s}px ${size.h * s}px`;
+  };
+  new ResizeObserver(update).observe(node);
+  node._pixelSize = (nw, nh) => { size.w = nw; size.h = nh; update(); };
+  update();
 }
 
 /**
@@ -155,7 +181,15 @@ export function openSettings(state, onChange) {
         open ? null : el('span', { class: 'avatar-choice__lock' }, `🔒 ab ${a.xp} XP`));
     })));
 
-  openDialog('Einstellungen', el('div', { class: 'settings' }, fontGroup, themeGroup, avatarGroup));
+  const motionGroup = el('fieldset', { class: 'choice' }, el('legend', {}, 'Bewegung'),
+    el('label', { class: 'choice__item' },
+      el('input', {
+        type: 'checkbox', checked: !!settings.reduceMotion,
+        onchange: (e) => { settings.reduceMotion = e.target.checked; changed(); },
+      }),
+      el('span', {}, 'Weniger Bewegung (keine Wackel- und Hüpfeffekte)')));
+
+  openDialog('Einstellungen', el('div', { class: 'settings' }, fontGroup, themeGroup, motionGroup, avatarGroup));
 }
 
 /** Beschriftung einer Welt ("Welt 2: Die obere Reihe I" oder eigener Text). */

@@ -11,14 +11,15 @@
 }
 .hud {
   display: grid;
-  grid-template-columns: 1fr minmax(12rem, 22rem) 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(10rem, 22rem) auto;
   gap: 1rem;
   align-items: center;
 }
-.hud__title { font-size: 1.1rem; margin: 0; }
+/* Lange Titel werden mit "…" gekürzt (der volle Titel steht im Tooltip) */
+.hud__title { font-size: 1.1rem; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .hud__progress { display: flex; align-items: center; gap: 0.6rem; }
 .hud__count { font-weight: bold; white-space: nowrap; font-size: 0.9rem; }
-.hud__buttons { display: flex; justify-content: flex-end; gap: 0.4rem; flex-wrap: wrap; }
+.hud__buttons { display: flex; justify-content: flex-end; gap: 0.4rem; }
 .progress {
   flex: 1;
   height: 1rem;
@@ -170,7 +171,6 @@
 .hand { width: 100%; height: auto; display: block; }
 .hand__palm, .hand__finger { fill: var(--hand-skin); stroke: var(--hand-line); stroke-width: 2.5; }
 .hand__finger { transition: transform 0.15s; transform-box: fill-box; transform-origin: 50% 100%; }
-.kb-colors-on .hand__finger { opacity: 1; }
 .hand__finger.finger-LP, .hand__finger.finger-RP { fill: var(--f-pinky); }
 .hand__finger.finger-LR, .hand__finger.finger-RR { fill: var(--f-ring); }
 .hand__finger.finger-LM, .hand__finger.finger-RM { fill: var(--f-middle); }
@@ -299,9 +299,18 @@
 .tut__card.is-done .tut__check::before { content: "✔ geschafft"; color: var(--ok); font-weight: bold; }
 
 /* Bewegungen reduzieren, wenn gewünscht */
-@media (prefers-reduced-motion: reduce) {
-  .key.is-next, .level-node.is-suggested .level-node__gear svg, .tipp--wave { animation: none; }
+/* "Weniger Bewegung" (Einstellung oder Betriebssystem): keine Wackel-, Hüpf- und Pulseffekte.
+   Die Tropfen fallen trotzdem, das ist das Spiel selbst. */
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.001s !important;
+  animation-iteration-count: 1 !important;
+  animation-delay: 0s !important;
+  transition: none !important;
 }
+.reduce-motion .confetti,
+.reduce-motion .spark { display: none; }
 
 /* ---------- Textzeile (Monster, Rennen) ---------- */
 .scroll-panel {
@@ -338,7 +347,6 @@
   background: linear-gradient(var(--ground), var(--ground-dark));
   border-top: 3px solid var(--ground-dark);
 }
-@keyframes pop-in { from { transform: scale(0.6); opacity: 0; } }
 @keyframes tipp-hop2 { 50% { transform: translateY(-18px); } }
 @keyframes tipp-shake { 25% { transform: rotate(-8deg); } 75% { transform: rotate(8deg); } }
 
@@ -435,7 +443,6 @@
 @keyframes car-frames { to { background-position: -288px 0; } }
 .race__car.is-stutter { animation: car-stutter 0.35s; }
 .race__car.is-finished { animation: car-cheer 0.6s ease-out 2; }
-@keyframes wheel-spin { to { transform: rotate(360deg); } }
 @keyframes car-stutter { 25% { transform: translateX(-10%) rotate(-3deg); } 75% { transform: translateX(-10%) rotate(3deg); } }
 @keyframes car-cheer { 50% { transform: translateX(-10%) translateY(-16px); } }
 
@@ -489,3 +496,29 @@
   border-radius: 0;
   border: 3px solid var(--border);
 }
+
+/* Pixel-Funken (Tropfen platzt) */
+.spark {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--star);
+  box-shadow: 0 0 0 2px var(--surface);
+  z-index: 4;
+  pointer-events: none;
+  animation: spark-fly 0.55s steps(5) forwards;
+}
+@keyframes spark-fly { to { transform: translate(var(--dx), var(--dy)); opacity: 0; } }
+
+/* Zahnrad-Konfetti bei drei Sternen */
+.confetti {
+  position: fixed;
+  top: -40px;
+  width: 24px;
+  height: 24px;
+  image-rendering: pixelated;
+  z-index: 40;
+  pointer-events: none;
+  animation: confetti-fall var(--t, 2.6s) steps(16) forwards;
+}
+@keyframes confetti-fall { to { transform: translate(var(--dx, 0), 110vh); } }

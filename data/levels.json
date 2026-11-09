@@ -349,7 +349,7 @@
           "unlock": { "after": "5-4" }
         },
         {
-          "id": "5-7",
+          "id": "5-6",
           "title": "Sätze mit Punkt und Komma",
           "intro": "Jetzt kommen Komma und Punkt dazu. Nach dem Punkt geht es groß weiter!",
           "mode": "race",
@@ -382,7 +382,7 @@
           "helps": { "keyboard": true, "hands": false, "fingerColors": true, "highlightNext": true },
           "params": { "fallSpeed": 0.05, "maxOnScreen": 2, "spawnGap": 2.5, "confirmSpace": false },
           "stars": { "accuracy": [85, 93, 98], "minChars": 35 },
-          "unlock": { "after": "5-7" }
+          "unlock": { "after": "5-6" }
         },
         {
           "id": "6-2",

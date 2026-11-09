@@ -11,9 +11,9 @@
   --muted: #6b5340;
   --border: #b0703a;
   --border-dark: #6b3612;
-  --primary: #b8642a;
+  --primary: #a3531c;
   --primary-top: #d88a4c;
-  --primary-hover: #a0521c;
+  --primary-hover: #8e4614;
   --primary-text: #ffffff;
   --accent: #2c6e86;
   --focus: #1f5fa8;
@@ -26,8 +26,6 @@
   --star: #d68a00;
   --star-off: #c7b49a;
   --rivet: #c98a52;
-  --gear: #c4783f;
-  --gear-locked: #bfae95;
   --shadow: 3px 3px 0 #6b3612;
 
   /* Tastatur */
@@ -80,8 +78,6 @@
   --border-dark: #ffffff;
   --primary-top: #ffe600;
   --rivet: transparent;
-  --gear: #ffe600;
-  --gear-locked: #8a8a8a;
 
   --key-bg: #000000;
   --key-text: #ffffff;
@@ -116,9 +112,9 @@
   --muted: #dcc6a2;
   --border: #b8862b;
   --border-dark: #140c07;
-  --primary: #a87420;
-  --primary-top: #e2b45a;
-  --primary-hover: #8f6118;
+  --primary: #c9932f;
+  --primary-top: #f0c46a;
+  --primary-hover: #b48024;
   --primary-text: #2b1d14;
   --accent: #8fd3e0;
   --focus: #ffd27a;
@@ -131,8 +127,6 @@
   --star: #ffc93c;
   --star-off: #7a6a58;
   --rivet: #e2b45a;
-  --gear: #c9932f;
-  --gear-locked: #6b5a4a;
   --shadow: 3px 3px 0 rgba(0, 0, 0, 0.6);
   --key-bg: #f3e2bd;
   --key-text: #2b1d14;
@@ -157,9 +151,9 @@
   --muted: #cfe0e6;
   --border: #ffcf4a;
   --border-dark: #07171e;
-  --primary: #ff6a2b;
-  --primary-top: #ff9a5e;
-  --primary-hover: #e85a1d;
+  --primary: #c2410c;
+  --primary-top: #ff7a3d;
+  --primary-hover: #a8380a;
   --primary-text: #ffffff;
   --accent: #5fd0c4;
   --focus: #ffcf4a;
@@ -172,8 +166,6 @@
   --star: #ffcf4a;
   --star-off: #4b6470;
   --rivet: #ffcf4a;
-  --gear: #5fd0c4;
-  --gear-locked: #4b6470;
   --shadow: 3px 3px 0 rgba(0, 0, 0, 0.6);
   --key-bg: #e9f3f5;
   --key-text: #0b222c;
@@ -190,7 +182,7 @@
 }
 
 /* Im Kontrast-Theme werden Fingerfarben als dicke Rahmen gezeigt */
-:root[data-theme="kontrast"] .kb--colors .key:not(.is-inactive) {
+:root[data-theme="kontrast"] .kb--colors .key {
   background: #000;
   border-width: 3px;
 }

@@ -3,7 +3,7 @@
 // Landet ein Tropfen, ist das KEIN Fehler: Er kommt später noch einmal,
 // und der Regen wird langsamer. So geht Genauigkeit vor Tempo.
 
-import { el } from '../ui.js';
+import { el, effectsOn } from '../ui.js';
 
 const DEFAULTS = {
   fallSpeed: 0.05, // Anteil der Spielfeldhöhe pro Sekunde
@@ -148,7 +148,25 @@ export function createRain({ field, items, session, level, onProgress, onEnd }) 
     pickTarget();
   }
 
+  /** Pixel-Funken, wenn ein Tropfen platzt */
+  function sparks(drop) {
+    if (!effectsOn()) return;
+    const x = drop.node.offsetLeft;
+    const y = drop.node.offsetTop + drop.y * (height - 110);
+    for (let i = 0; i < 8; i++) {
+      const a = (Math.PI * 2 * i) / 8;
+      const s = el('span', { class: 'spark', 'aria-hidden': 'true' });
+      s.style.left = `${x}px`;
+      s.style.top = `${y + 20}px`;
+      s.style.setProperty('--dx', `${Math.round(Math.cos(a) * 60)}px`);
+      s.style.setProperty('--dy', `${Math.round(Math.sin(a) * 45)}px`);
+      sky.append(s);
+      setTimeout(() => s.remove(), 600);
+    }
+  }
+
   function clear(drop) {
+    sparks(drop);
     removeDrop(drop, 'drop--pop');
     cleared++;
     resolved++;

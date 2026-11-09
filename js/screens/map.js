@@ -1,6 +1,6 @@
 // Weltkarte: alle Welten und Level mit Sternen, Sperren und dem Knopf "Spielstand speichern".
 
-import { el, showScreen, starsNode, tippImage, openSettings, openDialog, formatNumber, gearIcon, worldImage, worldLabel } from '../ui.js';
+import { el, showScreen, starsNode, tippImage, openSettings, openDialog, formatNumber, gearIcon, worldImage, worldLabel, pixelBackground } from '../ui.js';
 import { isUnlocked, levelProgress, totalStars } from '../progress.js';
 import { buildKnackpunkte, findTrickyChars } from '../knackpunkte.js';
 import { charName } from '../layout.js';
@@ -102,6 +102,8 @@ export function renderMap(app) {
       : null);
 
   showScreen(el('section', { class: 'screen map' }, el('div', { class: 'pipe', 'aria-hidden': 'true' }), header, knack, el('div', { class: 'map__worlds' }, worlds)));
+  // Weltbilder in ganzen Pixel-Vielfachen
+  for (const pic of document.querySelectorAll('.world__pic')) pixelBackground(pic, 280, 80);
   // Bei langer Karte direkt zum nächsten Level scrollen (ab Welt 2)
   const next = document.querySelector('.level-node.is-suggested');
   if (next && suggestion.world.id > 1) next.scrollIntoView({ block: 'center' });

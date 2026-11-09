@@ -1,6 +1,6 @@
 // Spielbildschirm: verbindet Modus, Tastatur, Hände, Hinweise, Pause und Spielschleife.
 
-import { el, showScreen, tippImage, openDialog, worldImage } from '../ui.js';
+import { el, showScreen, tippImage, openDialog, worldImage, pixelBackground } from '../ui.js';
 import { createKeyboard } from '../keyboard.js';
 import { createHands } from '../hands.js';
 import { createSession, drawItems, HINTS } from '../engine.js';
@@ -61,13 +61,14 @@ export function renderGame(app, id) {
 
   const screen = el('section', { class: `screen game world--${world.theme}` },
     el('header', { class: 'hud' },
-      el('h1', { class: 'hud__title' }, `Level ${level.id}: ${level.title}`),
+      el('h1', { class: 'hud__title', title: `Level ${level.id}: ${level.title}` }, `Level ${level.id}: ${level.title}`),
       el('div', { class: 'hud__progress' }, progressBar, progressText),
       el('div', { class: 'hud__buttons' }, toggleKb, toggleHands, pauseBtn)),
     field,
     hintBar,
     el('div', { class: 'game__kb' }, handL, kbWrap, handR));
   showScreen(screen, { focus: false });
+  pixelBackground(field, 280, 80);
 
   // Tastenkunde: ganze Tastatur (mit F-Tasten und Pfeilblock), Tasten anklickbar
   const keyboard = createKeyboard(kbWrap, index, isKeyhunt
@@ -110,6 +111,7 @@ export function renderGame(app, id) {
     onProgress(done, total) {
       const pct = total ? Math.round((done / total) * 100) : 0;
       progressBar.setAttribute('aria-valuenow', pct);
+      progressBar.setAttribute('aria-valuetext', `${done} von ${total} geschafft`);
       progressBar.firstChild.style.width = `${pct}%`;
       progressText.textContent = `${done} von ${total}`;
     },

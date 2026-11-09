@@ -18,7 +18,7 @@ Dazu kommen XP mit freischaltbaren Tipp-Farben und Farbthemen sowie das Übungsl
 | 2 Berge | E I R U | Regen, Monster, Rennen |
 | 3 Über den Wolken | T Z W O Q P Ü | Regen, Monster, Rennen |
 | 4 Kristallhöhle | V B N M C X Y | Regen, Monster, Rennen |
-| 5 Uhrturmstadt | Umschalttasten, Namen, Orte, ab 5-7 Komma und Punkt (ein Level 5-6 gibt es nicht mehr) | alle drei |
+| 5 Uhrturmstadt | Umschalttasten, Namen, Orte, ab 5-6 Komma und Punkt | alle drei |
 | 6 Erfinderwerkstatt | ß, Zahlen, Satzzeichen | alle drei |
 | 7 Maschinenraum | Tastenkunde (Fragekarten) | Tastenkunde |
 | 8 Sternwarte | lange Wörter, Zungenbrecher, Sonderzeichen, AltGr, Tastenkombinationen, Tempo-Sprint, große Prüfung | alle |

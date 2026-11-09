@@ -188,8 +188,6 @@ def make_monster(friend=False):
     d = ImageDraw.Draw(m)
     body, belly, feet = (('f59ac8', 'fcd0e6', 'e07ab0') if friend else ('8b6bd9', 'b9a2f0', '6a4fc0'))
     body, belly, feet = hexc(body), hexc(belly), hexc(feet)
-    for (x, y) in ((11, 6), (20, 4), (29, 6)):  # Hörner
-        pass
     d.polygon([(10, 11), (8, 2), (15, 8)], fill=hexc('ffe8a3'))
     d.polygon([(29, 11), (31, 2), (24, 8)], fill=hexc('ffe8a3'))
     for (cx, cy, r) in ((20, 22, 13), (10, 18, 6), (30, 18, 6), (12, 28, 6), (28, 28, 6), (20, 10, 7), (13, 11, 5), (27, 11, 5), (20, 33, 5)):
@@ -394,10 +392,6 @@ def world_wolken(seed=5):
     for x in range(cx - 10, cx + 12, 6):
         d.rectangle([x, cy + 20, x + 2, cy + 22], fill=P['Y'])
     gear_into(img, cx - 45, cy, 5, 8, P['B'], P['b'])
-    return outline_objects(img)
-
-
-def outline_objects(img):
     return img
 
 

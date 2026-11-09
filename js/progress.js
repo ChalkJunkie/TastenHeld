@@ -4,7 +4,7 @@
 import { unlockRewards } from './rewards.js';
 
 export const SAVE_FORMAT = 'tastenheld-spielstand';
-export const SAVE_VERSION = 1;
+export const SAVE_VERSION = 2;
 const BACKUP_KEY = 'tastenheld.sicherung';
 const FILE_EXT = '.tastenheld';
 
@@ -26,7 +26,7 @@ export function today(date = new Date()) {
 export function createState(nickname) {
   return {
     profile: { nickname, avatar: 'tipp', createdAt: today() },
-    settings: { theme: 'standard', fontScale: 1 },
+    settings: { theme: 'standard', fontScale: 1, reduceMotion: false },
     levels: {}, // Level-ID -> { stars, bestAccuracy, bestCpm, plays, lastPlayed }
     story: { chapters: {} }, // Kapitel-ID -> { done, stars, bestAccuracy }
     keyStats: {}, // Zeichen -> { hits, errors }
@@ -79,7 +79,24 @@ export function wrap(state) {
 
 // Migrationen: MIGRATIONS[n] macht aus Version n die Version n+1.
 // Beispiel für später:  1: (data) => { data.neuesFeld = []; return data; },
-const MIGRATIONS = {};
+const MIGRATIONS = {
+  // Version 2: Das Feststelltasten-Level wurde gestrichen, "5-7" (Sätze) heißt jetzt "5-6".
+  1: (data) => {
+    const rename = (obj) => {
+      if (!obj) return;
+      delete obj['5-6']; // altes Feststelltasten-Level
+      if (obj['5-7']) {
+        obj['5-6'] = obj['5-7'];
+        delete obj['5-7'];
+      }
+    };
+    rename(data.levels);
+    if (Array.isArray(data.tutorialsSeen)) {
+      data.tutorialsSeen = data.tutorialsSeen.filter((id) => id !== '5-6').map((id) => (id === '5-7' ? '5-6' : id));
+    }
+    return data;
+  },
+};
 
 /** Prüft eine geladene Hülle und gibt den (migrierten) Spielstand zurück. */
 export function unwrap(env) {
@@ -113,14 +130,6 @@ export function loadBackup() {
     return raw ? unwrap(JSON.parse(raw)) : null;
   } catch {
     return null;
-  }
-}
-
-export function clearBackup() {
-  try {
-    localStorage.removeItem(BACKUP_KEY);
-  } catch {
-    /* egal */
   }
 }
 

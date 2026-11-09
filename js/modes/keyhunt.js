@@ -53,7 +53,12 @@ export function createKeyhunt({ field, items, session, level, keyboard, onProgre
 
   function instruction(card) {
     if (card.kind === 'combo') return 'Drück die Tastenkombination auf deiner Tastatur.';
-    if (card.kind === 'click') return 'Klick unten auf der Tastatur auf die richtige Taste.';
+    if (card.kind === 'click') {
+      const meta = [card.code, ...(card.alsoAccept ?? [])].some((c) => /^(Meta|OS)/.test(c));
+      return meta
+        ? 'Klick unten auf der Tastatur auf die richtige Taste. Bitte nicht drücken, sonst öffnet sich das Startmenü!'
+        : 'Klick unten auf der Tastatur auf die richtige Taste.';
+    }
     return 'Drück die richtige Taste auf deiner Tastatur.';
   }
 

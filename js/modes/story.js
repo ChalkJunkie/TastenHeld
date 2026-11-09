@@ -33,6 +33,7 @@ export function createStory({ field, items, session, level, onProgress, onEnd, o
   field.append(scene);
 
   function setScene(chapter) {
+    field._pixelSize?.(200, 100); // Kapitelbilder sind 200 x 100 Pixel
     field.style.backgroundImage = `linear-gradient(rgba(251, 243, 223, 0.35), rgba(251, 243, 223, 0.35)), url(${storyImage(chapter.svg)})`;
   }
 

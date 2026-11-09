@@ -1,6 +1,6 @@
 // Ergebnis einer Runde: Sterne, Genauigkeit, Tempo, Bestleistungen, Speicher-Erinnerung.
 
-import { el, showScreen, starsNode, tippImage, formatNumber } from '../ui.js';
+import { el, showScreen, starsNode, tippImage, formatNumber, effectsOn } from '../ui.js';
 import { isUnlocked } from '../progress.js';
 import { DEFAULT_STARS } from '../engine.js';
 import { charName } from '../layout.js';
@@ -72,4 +72,20 @@ export function renderResult(app, levelId, result, summary) {
         app.makeSaveButton()),
       el('div', { class: 'row row--center' }, actions)));
   showScreen(screen);
+  if (result.valid && result.stars === 3) confetti();
+}
+
+/** Zahnrad-Konfetti bei drei Sternen */
+function confetti() {
+  if (!effectsOn()) return;
+  for (let i = 0; i < 26; i++) {
+    const c = el('img', { class: 'confetti', src: i % 3 ? 'assets/pixel/zahnrad.png' : 'assets/pixel/tipp.png', alt: '', 'aria-hidden': 'true' });
+    c.style.left = `${Math.random() * 100}vw`;
+    c.style.setProperty('--dx', `${Math.round((Math.random() - 0.5) * 160)}px`);
+    c.style.setProperty('--t', `${(2 + Math.random() * 1.6).toFixed(2)}s`);
+    c.style.animationDelay = `${(Math.random() * 0.8).toFixed(2)}s`;
+    if (i % 3 === 0) { c.style.width = '32px'; c.style.height = '32px'; }
+    document.body.append(c);
+    setTimeout(() => c.remove(), 4500);
+  }
 }

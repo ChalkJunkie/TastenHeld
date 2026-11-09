@@ -80,13 +80,6 @@ export function charName(ch) {
   return ch;
 }
 
-/** Wandelt ein Token aus newKeys in das Zeichen um, das man dafür tippt (oder null bei Sondertasten). */
-export function tokenToChar(token) {
-  if (token === 'Space') return ' ';
-  if ([...token].length === 1) return token;
-  return null;
-}
-
 /** Lesbarer Name eines Tokens für das Mini-Tutorial. */
 export function tokenLabel(token, index) {
   const names = {
