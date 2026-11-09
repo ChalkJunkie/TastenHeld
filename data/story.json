@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "title": "Tipp und die verschwundene Taste",
+  "chapters": [
+    {
+      "id": "story-1",
+      "title": "Der Morgen",
+      "svg": "wald.svg",
+      "caseMode": "mixed",
+      "text": "Tief im Wald lebt ein kleiner Roboter namens Tipp. Eines Morgens ist die goldene Taste verschwunden! Ohne sie kann niemand mehr schreiben. Tipp ruft: \"Ich finde sie, und zwar noch heute!\""
+    },
+    {
+      "id": "story-2",
+      "title": "Der Fluss",
+      "svg": "fluss.svg",
+      "caseMode": "mixed",
+      "text": "Tipp folgt einer Spur aus kleinen schwarzen Federn bis zum Fluss. Auf einem Stein sitzt ein dicker Frosch und gähnt. \"Hast du eine goldene Taste gesehen?\", fragt Tipp. Der Frosch quakt: \"Ja! Eine Elster hat sie über den Fluss getragen. Aber Vorsicht, die Brücke ist kaputt!\""
+    },
+    {
+      "id": "story-3",
+      "title": "Die Brücke",
+      "svg": "bruecke.svg",
+      "caseMode": "mixed",
+      "text": "Am Ufer findet Tipp drei lose Bretter. Auf jedem Brett steht ein Wort: Mut, Geduld und Fleiß. Sobald Tipp die Wörter richtig tippt, leuchten die Bretter auf und legen sich ganz von allein auf die Brücke. Auf der anderen Seite wartet ein hoher, dunkler Berg."
+    },
+    {
+      "id": "story-4",
+      "title": "Der Berg",
+      "svg": "berg.svg",
+      "caseMode": "mixed",
+      "text": "Der Weg nach oben ist steil und hat genau 99 Stufen. Bei Stufe 50 sitzt ein alter Bär und brummt: \"Die Elster wohnt ganz oben in einem Nest aus Silber. Sie lässt nur Besucher herein, die höflich sind!\" Tipp zählt tapfer weiter und erreicht um 12:30 Uhr den Gipfel."
+    },
+    {
+      "id": "story-5",
+      "title": "Das Nest",
+      "svg": "nest.svg",
+      "caseMode": "mixed",
+      "text": "Im Nest glitzert es überall: Löffel, Knöpfe, Münzen und mittendrin die goldene Taste. Die Elster blinzelt und sagt leise: \"Ich wollte nur ein bisschen Glanz! Hier oben ist es so einsam.\" Tipp setzt sich zu ihr und antwortet: \"Du kannst die Taste leider nicht behalten, denn ohne sie kann niemand schreiben (nicht einmal du!).\""
+    },
+    {
+      "id": "story-6",
+      "title": "Die erste Nachricht",
+      "svg": "abendhimmel.svg",
+      "caseMode": "mixed",
+      "text": "Dann hat Tipp eine Idee: \"Wenn du magst, zeige ich dir, wie man tippt. Dann kannst du allen Tieren im Wald Briefe schreiben!\" Die Elster strahlt und gibt die goldene Taste zurück. Noch am selben Abend tippt sie ihre erste Nachricht: \"Hallo, Freunde! Ich bin nicht mehr einsam!\" Ende? Vielleicht ist es erst der Anfang!"
+    }
+  ]
+}

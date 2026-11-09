@@ -1,0 +1,267 @@
+{
+  "version": 1,
+  "keys": [
+    {
+      "id": "enter",
+      "code": "Enter",
+      "label": "Enter",
+      "name": "Enter-Taste",
+      "answerMode": "press",
+      "question": "Mit welcher Taste beginnst du eine neue Zeile?",
+      "explanation": "Enter bedeutet \"Los!\" oder \"Fertig!\". Es springt in die nächste Zeile oder bestätigt, was du geschrieben hast.",
+      "wrongHint": "Fast! Gesucht ist die große Taste rechts neben dem Ö und Ä.",
+      "stage": "7.1"
+    },
+    {
+      "id": "backspace",
+      "code": "Backspace",
+      "label": "⌫",
+      "name": "Backspace (Rücktaste)",
+      "answerMode": "press",
+      "question": "Welche Taste löscht das Zeichen VOR dem Cursor?",
+      "explanation": "Backspace heißt Rücktaste. Sie radiert rückwärts, wie ein Radiergummi. Ein Tippfehler? Kein Problem!",
+      "wrongHint": "Fast! Gesucht ist die lange Taste ganz oben rechts mit dem Pfeil nach links.",
+      "stage": "7.1"
+    },
+    {
+      "id": "space",
+      "code": "Space",
+      "label": "Leertaste",
+      "name": "Leertaste",
+      "answerMode": "press",
+      "question": "Welche Taste ist die längste der ganzen Tastatur?",
+      "explanation": "Die Leertaste macht Platz zwischen den Wörtern. Du drückst sie mit dem Daumen.",
+      "wrongHint": "Fast! Die Taste liegt ganz unten in der Mitte.",
+      "stage": "7.1"
+    },
+    {
+      "id": "tab",
+      "code": "Tab",
+      "label": "Tab",
+      "name": "Tab-Taste",
+      "answerMode": "press",
+      "question": "Welche Taste springt ein großes Stück nach rechts?",
+      "explanation": "Tab springt weiter, zum Beispiel zum nächsten Feld in einem Formular.",
+      "wrongHint": "Fast! Sie liegt links, ganz oben in der Q-Reihe, mit zwei Pfeilen.",
+      "stage": "7.1"
+    },
+    {
+      "id": "arrow-left",
+      "code": "ArrowLeft",
+      "label": "←",
+      "name": "Pfeil nach links",
+      "answerMode": "press",
+      "question": "Wie bewegst du den Cursor nach links?",
+      "explanation": "Mit den Pfeiltasten wanderst du im Text umher, ohne etwas zu verändern.",
+      "wrongHint": "Fast! Die Pfeiltasten liegen unten rechts. Du brauchst den Pfeil, der nach links zeigt.",
+      "stage": "7.2"
+    },
+    {
+      "id": "arrow-right",
+      "code": "ArrowRight",
+      "label": "→",
+      "name": "Pfeil nach rechts",
+      "answerMode": "press",
+      "question": "Wie bewegst du den Cursor nach rechts?",
+      "explanation": "Mit dem Pfeil nach rechts geht der Cursor ein Zeichen weiter.",
+      "wrongHint": "Fast! Die Pfeiltasten liegen unten rechts. Du brauchst den Pfeil, der nach rechts zeigt.",
+      "stage": "7.2"
+    },
+    {
+      "id": "arrow-up",
+      "code": "ArrowUp",
+      "label": "↑",
+      "name": "Pfeil nach oben",
+      "answerMode": "press",
+      "question": "Wie bewegst du den Cursor eine Zeile nach oben?",
+      "explanation": "Mit dem Pfeil nach oben springt der Cursor in die Zeile darüber.",
+      "wrongHint": "Fast! Die Pfeiltasten liegen unten rechts. Du brauchst den Pfeil, der nach oben zeigt.",
+      "stage": "7.2"
+    },
+    {
+      "id": "arrow-down",
+      "code": "ArrowDown",
+      "label": "↓",
+      "name": "Pfeil nach unten",
+      "answerMode": "press",
+      "question": "Wie bewegst du den Cursor eine Zeile nach unten?",
+      "explanation": "Mit dem Pfeil nach unten springt der Cursor in die Zeile darunter.",
+      "wrongHint": "Fast! Die Pfeiltasten liegen unten rechts. Du brauchst den Pfeil, der nach unten zeigt.",
+      "stage": "7.2"
+    },
+    {
+      "id": "delete",
+      "code": "Delete",
+      "label": "Entf",
+      "name": "Entf-Taste (Entfernen)",
+      "answerMode": "press",
+      "question": "Welche Taste löscht das Zeichen HINTER dem Cursor?",
+      "explanation": "Entf ist die Abkürzung für Entfernen. Anders als Backspace löscht sie nach vorn.",
+      "wrongHint": "Fast! Sie liegt über den Pfeiltasten, links in der Gruppe mit sechs Tasten.",
+      "stage": "7.2"
+    },
+    {
+      "id": "home",
+      "code": "Home",
+      "label": "Pos1",
+      "name": "Pos1-Taste",
+      "answerMode": "press",
+      "question": "Welche Taste bringt den Cursor an den Anfang der Zeile?",
+      "explanation": "Pos1 springt zum Anfang (Position 1) der Zeile.",
+      "wrongHint": "Fast! Sie liegt über den Pfeiltasten, in der Gruppe mit sechs Tasten.",
+      "stage": "7.2"
+    },
+    {
+      "id": "end",
+      "code": "End",
+      "label": "Ende",
+      "name": "Ende-Taste",
+      "answerMode": "press",
+      "question": "Welche Taste bringt den Cursor ans Ende der Zeile?",
+      "explanation": "Ende springt ans Ende der Zeile. Das Gegenstück zu Pos1.",
+      "wrongHint": "Fast! Sie liegt über den Pfeiltasten, direkt neben Pos1.",
+      "stage": "7.2"
+    },
+    {
+      "id": "shift",
+      "code": "ShiftLeft",
+      "alsoAccept": [
+        "ShiftRight"
+      ],
+      "label": "⇧",
+      "name": "Shift-Taste (Umschalttaste)",
+      "answerMode": "press",
+      "question": "Welche Taste macht aus \"a\" ein \"A\"?",
+      "explanation": "Shift hält man gedrückt, solange man den Großbuchstaben tippt. Es gibt eine links und eine rechts.",
+      "wrongHint": "Fast! Gesucht ist die Taste mit dem dicken Pfeil nach oben, ganz links oder rechts unten in der Buchstabenreihe.",
+      "stage": "7.3"
+    },
+    {
+      "id": "capslock",
+      "code": "CapsLock",
+      "label": "⇪",
+      "name": "Feststelltaste",
+      "answerMode": "press",
+      "question": "Welche Taste schreibt dauerhaft in GROSSBUCHSTABEN?",
+      "explanation": "Einmal drücken, dann bleibt es groß. Noch einmal drücken, dann ist es wieder aus.",
+      "wrongHint": "Fast! Sie liegt links, zwischen Tab und Shift.",
+      "stage": "7.3"
+    },
+    {
+      "id": "escape",
+      "code": "Escape",
+      "label": "Esc",
+      "name": "Esc-Taste",
+      "answerMode": "press",
+      "question": "Welche Taste ist die \"Notausgang-Taste\"?",
+      "explanation": "Esc heißt Escape (Flucht). Sie bricht etwas ab oder schließt ein Fenster.",
+      "wrongHint": "Fast! Sie liegt ganz oben links in der Ecke.",
+      "stage": "7.3"
+    },
+    {
+      "id": "control",
+      "code": "ControlLeft",
+      "alsoAccept": [
+        "ControlRight"
+      ],
+      "label": "Strg",
+      "name": "Strg-Taste (Steuerung)",
+      "answerMode": "press",
+      "question": "Welche Taste braucht man für Tastenkombinationen wie Strg + C?",
+      "explanation": "Strg heißt Steuerung. Sie funktioniert nur zusammen mit einer anderen Taste. Strg + C kopiert, Strg + V fügt ein.",
+      "wrongHint": "Fast! Sie liegt ganz unten in der linken Ecke (und rechts nochmal).",
+      "stage": "7.3"
+    },
+    {
+      "id": "alt",
+      "code": "AltLeft",
+      "label": "Alt",
+      "name": "Alt-Taste",
+      "answerMode": "press",
+      "question": "Welche Taste liegt links neben der Leertaste?",
+      "explanation": "Alt ist eine Hilfstaste. Sie wird zusammen mit anderen Tasten benutzt.",
+      "wrongHint": "Fast! Schau direkt links neben die Leertaste.",
+      "stage": "7.3"
+    },
+    {
+      "id": "altgr",
+      "code": "AltRight",
+      "alsoAccept": [
+        "AltGraph"
+      ],
+      "label": "AltGr",
+      "name": "AltGr-Taste",
+      "answerMode": "press",
+      "question": "Welche Taste liegt RECHTS neben der Leertaste und holt Sonderzeichen wie @ und €?",
+      "explanation": "AltGr (Alt Graph) öffnet die dritte Ebene der Tastatur. Mit AltGr + Q tippst du das @ für E-Mail-Adressen.",
+      "wrongHint": "Fast! Schau rechts neben die Leertaste.",
+      "stage": "7.3"
+    },
+    {
+      "id": "meta",
+      "code": "MetaLeft",
+      "alsoAccept": [
+        "MetaRight",
+        "OSLeft",
+        "OSRight"
+      ],
+      "label": "Win",
+      "name": "Windows-Taste (Mac: Cmd)",
+      "answerMode": "click",
+      "question": "Welche Taste öffnet das Startmenü? Klicke sie auf der Bildschirm-Tastatur an.",
+      "explanation": "Die Windows-Taste (am Mac: Cmd) öffnet das Startmenü. Sie liegt unten links zwischen Strg und Alt.",
+      "wrongHint": "Fast! Sie liegt unten links, zwischen Strg und Alt.",
+      "stage": "7.4"
+    }
+  ],
+  "combos": [
+    {
+      "id": "copy",
+      "modifier": "Control",
+      "code": "KeyC",
+      "label": "Strg + C",
+      "meaning": "Kopieren",
+      "mnemonic": "C wie Copy"
+    },
+    {
+      "id": "paste",
+      "modifier": "Control",
+      "code": "KeyV",
+      "label": "Strg + V",
+      "meaning": "Einfügen",
+      "mnemonic": "V liegt direkt neben C"
+    },
+    {
+      "id": "cut",
+      "modifier": "Control",
+      "code": "KeyX",
+      "label": "Strg + X",
+      "meaning": "Ausschneiden",
+      "mnemonic": "X sieht aus wie eine Schere"
+    },
+    {
+      "id": "undo",
+      "modifier": "Control",
+      "code": "KeyZ",
+      "label": "Strg + Z",
+      "meaning": "Rückgängig machen",
+      "mnemonic": "Z wie Zurück"
+    },
+    {
+      "id": "save",
+      "modifier": "Control",
+      "code": "KeyS",
+      "label": "Strg + S",
+      "meaning": "Speichern",
+      "mnemonic": "S wie Speichern"
+    },
+    {
+      "id": "all",
+      "modifier": "Control",
+      "code": "KeyA",
+      "label": "Strg + A",
+      "meaning": "Alles auswählen",
+      "mnemonic": "A wie Alles"
+    }
+  ]
+}
