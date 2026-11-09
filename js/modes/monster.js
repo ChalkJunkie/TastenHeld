@@ -25,8 +25,8 @@ export function createMonster({ field, items, session, level, onProgress, onEnd 
   let reached = 0;
   let ended = false;
 
-  const tipp = el('img', { class: 'monster__tipp', src: 'assets/svg/tipp.svg', alt: '' });
-  const monster = el('img', { class: 'monster__monster', src: 'assets/svg/monster.svg', alt: 'Ein Wuschelmonster' });
+  const tipp = el('img', { class: 'monster__tipp pixel', src: 'assets/pixel/tipp.png', alt: '' });
+  const monster = el('img', { class: 'monster__monster pixel', src: 'assets/pixel/monster.png', alt: 'Ein Wuschelmonster' });
   const lineBox = el('div', { class: 'monster__line' });
   const next = el('p', { class: 'monster__next' });
   const panel = el('div', { class: 'scroll-panel' }, lineBox, next);
@@ -78,7 +78,7 @@ export function createMonster({ field, items, session, level, onProgress, onEnd 
     next.textContent = '';
     lineBox.replaceChildren(el('p', { class: 'monster__win' }, 'Geschafft! Das Monster ist jetzt dein Freund.'));
     setTimeout(() => {
-      monster.src = 'assets/svg/monster-freund.svg';
+      monster.src = 'assets/pixel/monster-freund.png';
       monster.alt = 'Das Monster lächelt und ist jetzt freundlich';
       anim(monster, 'is-friend');
       anim(tipp, 'is-happy');

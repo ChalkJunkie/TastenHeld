@@ -48,39 +48,22 @@ export function starsNode(count, max = 3, cls = '') {
   return wrap;
 }
 
-/** Pfad eines Zahnrads (Mitte 50/50 in einer 100er-Box). */
-function gearPath(teeth = 12, rOut = 48, rIn = 39, hole = 0) {
-  const pts = [];
-  for (let i = 0; i < teeth * 4; i++) {
-    const a = (2 * Math.PI * i) / (teeth * 4);
-    const r = i % 4 === 1 || i % 4 === 2 ? rOut : rIn;
-    pts.push(`${(50 + r * Math.cos(a)).toFixed(1)},${(50 + r * Math.sin(a)).toFixed(1)}`);
-  }
-  let d = `M${pts.join(' L')} Z`;
-  if (hole) d += ` M${50 + hole},50 A${hole},${hole} 0 1,0 ${50 - hole},50 A${hole},${hole} 0 1,0 ${50 + hole},50 Z`;
-  return d;
+/** Zahnrad als Pixelbild (gesperrt = grau). */
+export function gearIcon(locked = false) {
+  return el('img', {
+    src: locked ? 'assets/pixel/zahnrad-gesperrt.png' : 'assets/pixel/zahnrad.png',
+    class: 'pixel gear-img', alt: '', width: 24, height: 24, 'aria-hidden': 'true',
+  });
 }
 
-/** Zahnrad als SVG (Farbe über currentColor). */
-export function gearIcon(teeth = 12) {
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svg.setAttribute('viewBox', '0 0 100 100');
-  svg.setAttribute('aria-hidden', 'true');
-  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-  path.setAttribute('d', gearPath(teeth));
-  path.setAttribute('fill', 'currentColor');
-  svg.append(path);
-  return svg;
-}
-
-/** Pfad zum Bild einer Welt (assets/svg/welten/<theme>.svg). */
+/** Pfad zum Bild einer Welt (assets/pixel/welten/<theme>.png). */
 export function worldImage(theme) {
-  return `assets/svg/welten/${encodeURIComponent(theme)}.svg`;
+  return `assets/pixel/welten/${encodeURIComponent(theme)}.png`;
 }
 
 /** Bild von Tipp, dem Roboter. */
 export function tippImage(cls = '', alt = '') {
-  return el('img', { src: 'assets/svg/tipp.svg', class: `tipp ${cls}`, alt, width: 160, height: 160 });
+  return el('img', { src: 'assets/pixel/tipp.png', class: `tipp pixel ${cls}`, alt, width: 32, height: 32 });
 }
 
 /** Kurze Meldung unten am Bildschirm. */
@@ -167,7 +150,7 @@ export function openSettings(state, onChange) {
       const open = state.unlocked.avatars.includes(a.id);
       return el('label', { class: `avatar-choice${open ? '' : ' is-locked'}` },
         radio('avatar', a.id, a.id === avatar, !open, (v) => (avatar = v)),
-        el('img', { src: 'assets/svg/tipp.svg', alt: '', style: { filter: open ? a.filter : 'grayscale(1) opacity(.45)' } }),
+        el('img', { src: 'assets/pixel/tipp.png', class: 'pixel', alt: '', style: { filter: open ? a.filter : 'grayscale(1) opacity(.45)' } }),
         el('span', {}, a.name),
         open ? null : el('span', { class: 'avatar-choice__lock' }, `🔒 ab ${a.xp} XP`));
     })));

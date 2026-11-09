@@ -63,7 +63,7 @@ export function renderMap(app) {
       },
     },
     el('span', { class: 'level-node__gear', 'aria-hidden': 'true' },
-      gearIcon(),
+      gearIcon(!open),
       el('span', { class: 'level-node__num' }, open ? level.id : '🔒')),
     el('span', { class: 'level-node__title' }, level.title, level.optional ? el('span', { class: 'level-node__bonus' }, ' Bonus') : null),
     open ? starsNode(prog?.stars ?? 0) : el('span', { class: 'level-node__locked' }, 'gesperrt'),
@@ -88,7 +88,7 @@ export function renderMap(app) {
   // "Meine Knackpunkte": Übungslevel aus den Tasten mit vielen Fehlern
   const tricky = findTrickyChars(state);
   const knack = el('section', { class: 'knack riveted', 'aria-labelledby': 'knack-title' },
-    el('span', { class: 'knack__icon', 'aria-hidden': 'true' }, gearIcon(10)),
+    el('span', { class: 'knack__icon', 'aria-hidden': 'true' }, gearIcon()),
     el('div', { class: 'knack__text' },
       el('h2', { id: 'knack-title' }, 'Meine Knackpunkte'),
       tricky.length

@@ -28,7 +28,7 @@
   --rivet: #c98a52;
   --gear: #c4783f;
   --gear-locked: #bfae95;
-  --shadow: 0 4px 0 rgba(107, 54, 18, 0.35);
+  --shadow: 3px 3px 0 #6b3612;
 
   /* Tastatur */
   --key-bg: #fbf3df;
@@ -133,7 +133,7 @@
   --rivet: #e2b45a;
   --gear: #c9932f;
   --gear-locked: #6b5a4a;
-  --shadow: 0 4px 0 rgba(0, 0, 0, 0.45);
+  --shadow: 3px 3px 0 rgba(0, 0, 0, 0.6);
   --key-bg: #f3e2bd;
   --key-text: #2b1d14;
   --key-border: #5a3d12;
@@ -174,7 +174,7 @@
   --rivet: #ffcf4a;
   --gear: #5fd0c4;
   --gear-locked: #4b6470;
-  --shadow: 0 4px 0 rgba(0, 0, 0, 0.45);
+  --shadow: 3px 3px 0 rgba(0, 0, 0, 0.6);
   --key-bg: #e9f3f5;
   --key-text: #0b222c;
   --key-border: #0b222c;
@@ -265,3 +265,7 @@
 /* Im Kontrast-Theme keine Bilder hinter Text */
 :root[data-theme="kontrast"] .world__pic,
 :root[data-theme="kontrast"] .game__field { background-image: none !important; }
+
+/* Pixel-Zahnräder in anderen Farbthemen einfärben */
+:root[data-theme="kontrast"] .gear-img { filter: grayscale(1) brightness(1.9) contrast(1.4); }
+:root[data-theme="werkstatt"] .gear-img { filter: hue-rotate(150deg) saturate(1.2); }

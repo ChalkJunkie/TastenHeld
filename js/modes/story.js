@@ -7,8 +7,10 @@ import { el, starsNode, formatNumber } from '../ui.js';
 import { createTextLine } from './textline.js';
 import { starsFor, DEFAULT_STARS } from '../engine.js';
 
+/** Bild zu einem Kapitel. story.json nennt z. B. "wald.svg", das Pixelbild heißt "wald.png". */
 export function storyImage(file) {
-  return `assets/svg/story/${encodeURIComponent(file)}`;
+  const name = String(file).replace(/\.(svg|png)$/i, '');
+  return `assets/pixel/story/${encodeURIComponent(name)}.png`;
 }
 
 export function createStory({ field, items, session, level, onProgress, onEnd, onChapter, startIndex = 0 }) {

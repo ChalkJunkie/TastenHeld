@@ -16,6 +16,7 @@ function makeHand(side) {
   svg.setAttribute('viewBox', '0 0 140 150');
   svg.setAttribute('class', `hand hand--${side}`);
   svg.setAttribute('aria-hidden', 'true');
+  svg.setAttribute('shape-rendering', 'crispEdges'); // kantige Pixel-Ränder passend zur Pixelart
   const g = document.createElementNS(SVG_NS, 'g');
   if (side === 'R') g.setAttribute('transform', 'translate(140 0) scale(-1 1)');
   svg.append(g);

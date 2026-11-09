@@ -104,7 +104,7 @@ Jeder Fehler nennt Level-ID und Wort.
 Jede Welt in `levels.json` hat ein `theme` (`wiese`, `berge`, `wolken`, `hoehle`, `uhrturm`, `werkstatt`,
 `maschinenraum`, `sternwarte`, `wald`). Mit `label` lässt sich die Überschrift auf der Karte ersetzen
 (z. B. „Das große Abenteuer“ statt „Welt 9“). Das Bild dazu liegt unter
-`assets/svg/welten/<theme>.svg` und erscheint auf der Weltkarte und als Hintergrund im Spielfeld.
+`assets/pixel/welten/<theme>.png` (Pixelart, 280 × 80 Pixel) und erscheint auf der Weltkarte und als Hintergrund im Spielfeld.
 Für eine neue Welt also ein Bild mit passendem Namen ablegen. Die Level-Zahnräder sitzen links und unten im Bild,
 die Deko sollte deshalb eher rechts und oben liegen.
 
@@ -156,7 +156,7 @@ Beispiel aus `levels.json`:
   - **keyhunt** (Tastenkunde): `repeatWrong` (falsche Karten am Ende wiederholen, Standard: ja).
     `content` ist `{ "type": "keycards", "source": "7.1" }` (Stufe aus keys.json) oder `{ "type": "combos" }`.
   - **story** (Geschichte): `content` ist `{ "type": "story", "source": "story" }`, die Kapitel kommen aus story.json.
-    Die Bilder zu den Kapiteln liegen unter `assets/svg/story/` (Dateiname wie im Feld `svg`).
+    Die Bilder zu den Kapiteln liegen unter `assets/pixel/story/` (Name wie im Feld `svg`, aber mit `.png`, z. B. `wald.png`).
   - **Alle Modi (derzeit nicht benutzt):** `capsCheck: true` für ein mögliches Feststelltasten-Level (Kleinbuchstaben bei aktiver Feststelltaste zählen
     nicht als Fehler, nach Wörtern in Großbuchstaben erinnert Tipp ans Ausschalten).
 - **`optional: true`:** Bonus-Level (z. B. 8-5). Es wird nicht als „Hier geht's weiter“ vorgeschlagen,
@@ -184,7 +184,9 @@ js/       main.js        Start, Daten laden, Bildschirme steuern
           knackpunkte.js Übungslevel aus den Tasten mit vielen Fehlern
           modes/         Spielmodi (rain, monster, race, keyhunt, story) und textline.js
 data/     JSON-Inhalte
-assets/svg/  selbst gezeichnete Grafiken
+assets/pixel/ selbst gezeichnete Pixelart (PNG, sehr klein, wird im Spiel ohne Weichzeichnen vergrößert)
+tools/       pixelart.py erzeugt alle Pixelbilder neu (nur für Änderungen an den Grafiken nötig,
+             braucht Python 3 mit Pillow: python3 tools/pixelart.py)
 ```
 
 ### Spielstand-Format

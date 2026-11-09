@@ -14,19 +14,30 @@ const DEFAULTS = {
 const LANES = 5;
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
-/** Geschwungene Tropfenspitze: Füllung plus Randlinie (die Randlinie ist unten offen). */
+// Tropfenspitze als Pixelbild: Zeilen von oben nach unten, # = Rand, o = Füllung.
+// Gezeichnet als SVG aus Rechtecken, damit die Farben aus dem Farbthema kommen.
+const TIP = [
+  '....##....',
+  '...#oo#...',
+  '...#oo#...',
+  '..#oooo#..',
+  '.#oooooo#.',
+  '#oooooooo#',
+];
+
 function dropTip() {
   const svg = document.createElementNS(SVG_NS, 'svg');
-  svg.setAttribute('viewBox', '0 0 56 34');
+  svg.setAttribute('viewBox', `0 0 ${TIP[0].length} ${TIP.length}`);
   svg.setAttribute('class', 'drop__tip');
+  svg.setAttribute('shape-rendering', 'crispEdges');
   svg.setAttribute('aria-hidden', 'true');
-  const curve = 'M0 34 C17 31 23 18 27 3 Q28 0 29 3 C33 18 39 31 56 34';
-  for (const [cls, d] of [['drop__tip-fill', `${curve} Z`], ['drop__tip-line', curve]]) {
-    const path = document.createElementNS(SVG_NS, 'path');
-    path.setAttribute('d', d);
-    path.setAttribute('class', cls);
-    svg.append(path);
-  }
+  TIP.forEach((row, y) => [...row].forEach((ch, x) => {
+    if (ch === '.') return;
+    const r = document.createElementNS(SVG_NS, 'rect');
+    r.setAttribute('x', x); r.setAttribute('y', y); r.setAttribute('width', 1.02); r.setAttribute('height', 1.02);
+    r.setAttribute('class', ch === '#' ? 'drop__tip-line' : 'drop__tip-fill');
+    svg.append(r);
+  }));
   return svg;
 }
 const MAX_RETRIES = 1; // so oft kommt ein verpasster Tropfen zurück
@@ -48,7 +59,7 @@ export function createRain({ field, items, session, level, onProgress, onEnd }) 
 
   const sky = el('div', { class: 'rain' });
   const ground = el('div', { class: 'rain__ground', 'aria-hidden': 'true' });
-  const tipp = el('img', { class: 'rain__tipp', src: 'assets/svg/tipp.svg', alt: '' });
+  const tipp = el('img', { class: 'rain__tipp pixel', src: 'assets/pixel/tipp.png', alt: '' });
   ground.append(tipp);
   sky.append(ground);
   field.append(sky);
