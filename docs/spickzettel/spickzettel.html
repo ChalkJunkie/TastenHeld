@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Spickzettel: Spielstand speichern</title>
+<!-- Vorlage für docs/Spickzettel_Spielstand.pdf (A4). Neu erzeugen: im Browser öffnen und als PDF drucken. -->
+<style>
+  @page { size: A4; margin: 12mm; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: Verdana, "DejaVu Sans", sans-serif; color: #3b2a1a; font-size: 11pt; line-height: 1.35; }
+  h1, h2 { font-family: Georgia, "DejaVu Serif", serif; margin: 0; }
+  .pixel { image-rendering: pixelated; }
+  header { display: flex; align-items: center; gap: 5mm; border: 3px solid #6b3612; background: #f3e6c9; padding: 3mm 6mm; box-shadow: 2mm 2mm 0 #6b3612; margin-bottom: 4.5mm; }
+  header img { width: 22mm; }
+  header h1 { font-size: 22pt; line-height: 1.15; }
+  header p { margin: 1.5mm 0 0; font-size: 12pt; }
+  .step { display: grid; grid-template-columns: 13mm 1fr; gap: 4mm; border: 2.5px solid #b0703a; padding: 3mm 5mm; margin-bottom: 3.5mm; break-inside: avoid; }
+  .num { width: 13mm; height: 13mm; display: grid; place-items: center; background: #a3531c; color: #fff; font: bold 20pt Georgia, serif; border: 2.5px solid #3b2414; }
+  .step h2 { font-size: 15pt; margin-bottom: 1.5mm; }
+  .step p { margin: 0 0 2mm; }
+  .shots { display: flex; gap: 4mm; align-items: center; flex-wrap: nowrap; margin-top: 1.5mm; }
+  .shots img { border: 1.5px solid #8a5a2b; height: auto; }
+  .arrow { font-size: 18pt; font-weight: bold; }
+  .warn { border: 2.5px dashed #3b2414; background: #fbe3b0; padding: 2.5mm 4mm; font-weight: bold; margin: 2mm 0; }
+  .file { font-family: "DejaVu Sans Mono", Consolas, monospace; background: #fbf3df; border: 1px solid #b0703a; padding: 0.5mm 1.5mm; font-size: 10pt; }
+  .hints { border: 2.5px solid #3b2414; padding: 3mm 5mm; }
+  .hints h2 { font-size: 13pt; margin-bottom: 1mm; }
+  .hints ul { margin: 0; padding-left: 5mm; }
+  .hints li { margin: 1mm 0; }
+</style>
+</head>
+<body>
+  <header>
+    <img class="pixel" src="tipp.png" alt="Tipp, der kleine Dampf-Roboter">
+    <div>
+      <h1>So speicherst du deinen TastenHeld-Spielstand</h1>
+      <p>Tipp merkt sich deine Sterne nur, wenn du sie <strong>als Datei speicherst</strong>.</p>
+    </div>
+  </header>
+
+  <section class="step">
+    <div class="num">1</div>
+    <div>
+      <h2>Speichern</h2>
+      <p>Klick auf <strong>„Spielstand speichern“</strong>. Den Knopf findest du oben auf der Weltkarte und nach jeder Runde.
+        Steht daneben <strong>„nicht gespeichert“</strong>, hast du etwas Neues geschafft.</p>
+      <div class="shots">
+        <img src="speichern.png" alt="Knopf Spielstand speichern" style="width: 62mm">
+        <img src="erinnerung.png" alt="Erinnerung nach einer Runde" style="width: 88mm">
+      </div>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="num">2</div>
+    <div>
+      <h2>Den richtigen Ordner wählen</h2>
+      <p>Speichere in <strong>deinem Ordner auf dem Netzlaufwerk</strong> oder auf deinem <strong>USB-Stick</strong>.</p>
+      <div class="warn">⚠ Nicht im Ordner „Downloads“ lassen! Der wird auf Schulrechnern oft geleert.</div>
+      <p>Den Dateinamen nicht ändern. Er sieht so aus:<br>
+        <span class="file">Spielstand_Tastenheld_DeinName_2026-11-09.tastenheld</span></p>
+      <p>Benutzt du <strong>Firefox</strong>? Dann landet die Datei zuerst in „Downloads“.
+        Verschieb sie danach in deinen Ordner.</p>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="num">3</div>
+    <div>
+      <h2>Beim nächsten Mal weiterspielen</h2>
+      <p>Klick auf <strong>„Ich habe schon einen Spielstand“</strong>, dann auf <strong>„Spielstand auswählen“</strong>
+        und wähle deine Datei.</p>
+      <div class="shots">
+        <img src="start.png" alt="Startseite mit zwei Knöpfen" style="width: 62mm">
+        <span class="arrow">→</span>
+        <img src="laden.png" alt="Knopf Spielstand auswählen" style="width: 64mm">
+      </div>
+    </div>
+  </section>
+
+  <section class="hints">
+    <h2>Gut zu wissen</h2>
+    <ul>
+      <li>Du hast mehrere Dateien? Nimm die mit dem <strong>neuesten Datum</strong>.</li>
+      <li>Erscheint „Mit dieser Datei stimmt etwas nicht“, hast du vielleicht eine falsche Datei erwischt. Frag deine Lehrkraft.</li>
+      <li>Schließt du das Spiel ohne Speichern, fragt dein Browser nach. Dann lieber zuerst speichern!</li>
+    </ul>
+  </section>
+</body>
+</html>
