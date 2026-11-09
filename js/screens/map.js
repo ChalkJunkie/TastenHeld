@@ -1,6 +1,6 @@
 // Weltkarte: alle Welten und Level mit Sternen, Sperren und dem Knopf "Spielstand speichern".
 
-import { el, showScreen, starsNode, tippImage, openSettings, openDialog, formatNumber } from '../ui.js';
+import { el, showScreen, starsNode, tippImage, openSettings, openDialog, formatNumber, gearIcon, worldImage } from '../ui.js';
 import { isUnlocked, levelProgress, totalStars } from '../progress.js';
 
 export function renderMap(app) {
@@ -28,11 +28,12 @@ export function renderMap(app) {
 
   const worlds = app.data.levels.worlds.map((world) => {
     const levels = world.levels.map((level, i) => levelNode(level, i));
-    return el('section', { class: `world world--${world.theme}`, 'aria-labelledby': `world-${world.id}` },
-      el('div', { class: 'world__head' },
-        el('h2', { id: `world-${world.id}` }, `Welt ${world.id}: ${world.title}`),
-        el('p', {}, world.intro)),
-      el('ol', { class: 'world__path' }, levels));
+    return el('section', { class: `world riveted world--${world.theme}`, 'aria-labelledby': `world-${world.id}` },
+      el('div', { class: 'world__pic', style: { backgroundImage: `url(${worldImage(world.theme)})` } },
+        el('div', { class: 'world__plate' },
+          el('h2', { id: `world-${world.id}` }, `Welt ${world.id}: ${world.title}`),
+          el('p', {}, world.intro)),
+        el('ol', { class: 'world__path' }, levels)));
   });
 
   function levelNode(level, i) {
@@ -53,7 +54,9 @@ export function renderMap(app) {
         }
       },
     },
-    el('span', { class: 'level-node__bubble', 'aria-hidden': 'true' }, open ? level.id : '🔒'),
+    el('span', { class: 'level-node__gear', 'aria-hidden': 'true' },
+      gearIcon(),
+      el('span', { class: 'level-node__num' }, open ? level.id : '🔒')),
     el('span', { class: 'level-node__title' }, level.title),
     open ? starsNode(prog?.stars ?? 0) : el('span', { class: 'level-node__locked' }, 'gesperrt'),
     isNext ? el('span', { class: 'level-node__flag' }, "Hier geht's weiter!") : null);
@@ -74,7 +77,7 @@ export function renderMap(app) {
     }
   }
 
-  showScreen(el('section', { class: 'screen map' }, header, el('div', { class: 'map__worlds' }, worlds)));
+  showScreen(el('section', { class: 'screen map' }, el('div', { class: 'pipe', 'aria-hidden': 'true' }), header, el('div', { class: 'map__worlds' }, worlds)));
   // Bei langer Karte direkt zum nächsten Level scrollen (ab Welt 2)
   const next = document.querySelector('.level-node.is-suggested');
   if (next && suggestion.world.id > 1) next.scrollIntoView({ block: 'center' });

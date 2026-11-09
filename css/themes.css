@@ -1,50 +1,56 @@
 /* Farbthemen. Alle Farben laufen über Variablen.
-   "standard" = bunt, "kontrast" = hoher Kontrast (immer verfügbar). */
+   "standard" = Steampunk (Kupfer & Pergament), "kontrast" = hoher Kontrast (immer verfügbar). */
 
 :root,
 :root[data-theme="standard"] {
-  --bg: #fff8ec;
-  --bg-2: #ffeccc;
-  --surface: #ffffff;
-  --text: #1f2547;
-  --muted: #545b80;
-  --border: #d9d2c2;
-  --primary: #e8553e;
-  --primary-hover: #cf4430;
+  --font-head: Georgia, "Book Antiqua", "Palatino Linotype", "DejaVu Serif", serif;
+  --bg: #f3e6c9;
+  --bg-2: #ead6ad;
+  --surface: #fbf3df;
+  --text: #3b2a1a;
+  --muted: #6b5340;
+  --border: #b0703a;
+  --border-dark: #6b3612;
+  --primary: #b8642a;
+  --primary-top: #d88a4c;
+  --primary-hover: #a0521c;
   --primary-text: #ffffff;
-  --accent: #2f7fd8;
-  --focus: #1b5fc1;
-  --ok: #1f8a4c;
-  --ok-bg: #dff5e7;
-  --bad: #c0392b;
-  --bad-bg: #fde4df;
-  --info-bg: #e3f0ff;
-  --warn-bg: #fff3c4;
-  --star: #f5b400;
-  --star-off: #c9c3b4;
-  --shadow: 0 4px 0 rgba(31, 37, 71, 0.15);
+  --accent: #2c6e86;
+  --focus: #1f5fa8;
+  --ok: #2e7d32;
+  --ok-bg: #e3f1d8;
+  --bad: #b03a2e;
+  --bad-bg: #f8dfd7;
+  --info-bg: #efe2c2;
+  --warn-bg: #fbe3b0;
+  --star: #d68a00;
+  --star-off: #c7b49a;
+  --rivet: #c98a52;
+  --gear: #c4783f;
+  --gear-locked: #bfae95;
+  --shadow: 0 4px 0 rgba(107, 54, 18, 0.35);
 
   /* Tastatur */
-  --key-bg: #fbfbfd;
-  --key-text: #1f2547;
-  --key-border: #a8a9bd;
-  --key-inactive: 0.38;
-  --next-ring: #1f2547;
-  --f-pinky: #f7a8c9;
-  --f-ring: #ffd76e;
-  --f-middle: #98dc9c;
-  --f-index: #8ccaf7;
-  --f-thumb: #cdb9f5;
-  --hand-skin: #ffe1c7;
-  --hand-line: #8b6b55;
+  --key-bg: #fbf3df;
+  --key-text: #3b2a1a;
+  --key-border: #8a5a2b;
+  --key-inactive: 0.4;
+  --next-ring: #3b2a1a;
+  --f-pinky: #f2a0bf;
+  --f-ring: #f5cf62;
+  --f-middle: #a2d48c;
+  --f-index: #8fc2e6;
+  --f-thumb: #c6b0e8;
+  --hand-skin: #f6dcc0;
+  --hand-line: #7a5235;
 
-  /* Welt "Wiese" */
-  --sky-top: #9fd8ff;
-  --sky-bottom: #e6f6ff;
-  --ground: #7ccf6b;
-  --ground-dark: #4fa443;
-  --drop-bg: #ffffff;
-  --drop-border: #2f7fd8;
+  /* Welt "Wiese" (Standard für Himmel/Boden) */
+  --sky-top: #a6dcf5;
+  --sky-bottom: #fdf3d2;
+  --ground: #74c262;
+  --ground-dark: #4f9a43;
+  --drop-bg: #fbf3df;
+  --drop-border: #b0703a;
 }
 
 :root[data-theme="kontrast"] {
@@ -68,6 +74,11 @@
   --star: #ffe600;
   --star-off: #8a8a8a;
   --shadow: none;
+  --border-dark: #ffffff;
+  --primary-top: #ffe600;
+  --rivet: transparent;
+  --gear: #ffe600;
+  --gear-locked: #8a8a8a;
 
   --key-bg: #000000;
   --key-text: #ffffff;
@@ -113,24 +124,25 @@
 :root[data-theme="kontrast"] .hand__finger.is-active { fill: #ffe600 !important; }
 
 /* Welt-Themes: Himmel und Boden je Welt (im Kontrast-Theme bleibt alles schwarz-weiß) */
-:root:not([data-theme="kontrast"]) .world--strand {
-  --sky-top: #8fd3f5;
-  --sky-bottom: #fff4d6;
-  --ground: #f2d38b;
-  --ground-dark: #d9b25f;
-  --drop-border: #1f8fb3;
-}
-:root:not([data-theme="kontrast"]) .world--wald {
-  --sky-top: #b7e4c7;
-  --sky-bottom: #eaf7ee;
-  --ground: #5aa165;
-  --ground-dark: #3d7d48;
-  --drop-border: #2f8a4a;
-}
 :root:not([data-theme="kontrast"]) .world--berge {
-  --sky-top: #c6d6f2;
-  --sky-bottom: #f1f5fc;
-  --ground: #9cb58f;
-  --ground-dark: #6f8f66;
-  --drop-border: #5b6fb3;
+  --sky-top: #86b9e6;
+  --sky-bottom: #eaf2fb;
+  --ground: #7aa66a;
+  --ground-dark: #5a8a4c;
 }
+:root:not([data-theme="kontrast"]) .world--wolken {
+  --sky-top: #f1ab76;
+  --sky-bottom: #d4e8f5;
+  --ground: #ffffff;
+  --ground-dark: #dfe9f2;
+}
+:root:not([data-theme="kontrast"]) .world--hoehle {
+  --sky-top: #3a2f4a;
+  --sky-bottom: #5d4c72;
+  --ground: #2b2338;
+  --ground-dark: #1e1828;
+}
+
+/* Im Kontrast-Theme keine Bilder hinter Text */
+:root[data-theme="kontrast"] .world__pic,
+:root[data-theme="kontrast"] .game__field { background-image: none !important; }

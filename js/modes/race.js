@@ -1,4 +1,4 @@
-// Spielmodus "race": Tipps Auto fährt nur, wenn richtig getippt wird.
+// Spielmodus "race": Tipps Dampfauto fährt nur, wenn richtig getippt wird.
 // Alle Wörter/Sätze bilden einen fortlaufenden Text (mit Leerzeichen dazwischen),
 // der wie eine Laufschrift mitläuft. Bei einem Fehler stottert das Auto kurz,
 // rollt aber nie zurück.
@@ -6,20 +6,27 @@
 import { el } from '../ui.js';
 import { createTextLine } from './textline.js';
 
-// Auto mit Tipp am Steuer (selbst gezeichnet). Die Räder drehen sich per CSS.
+// Dampfauto mit Tipp am Steuer (selbst gezeichnet). Die Räder drehen sich per CSS.
 const CAR_SVG = `
-<svg viewBox="0 0 160 90" aria-hidden="true">
-  <line x1="98" y1="22" x2="98" y2="8" stroke="#2b3a67" stroke-width="3" stroke-linecap="round"/>
-  <circle cx="98" cy="7" r="5" fill="#ffcf4a" stroke="#2b3a67" stroke-width="2.5"/>
-  <path d="M40 46 L58 22 Q62 18 68 18 L112 18 Q118 18 122 23 L136 46 Z" fill="#9fdcff" stroke="#2b3a67" stroke-width="4" stroke-linejoin="round"/>
-  <rect x="80" y="22" width="36" height="26" rx="8" fill="#5cc3f0" stroke="#2b3a67" stroke-width="3"/>
-  <rect x="85" y="27" width="26" height="15" rx="5" fill="#1f2b4f"/>
-  <circle cx="93" cy="34" r="3" fill="#7ff3c4"/><circle cx="103" cy="34" r="3" fill="#7ff3c4"/>
-  <path d="M8 50 Q8 44 16 44 L146 44 Q154 44 154 52 L154 64 Q154 70 148 70 L12 70 Q6 70 6 64 Z" fill="#e8553e" stroke="#2b3a67" stroke-width="4"/>
-  <rect x="140" y="50" width="12" height="7" rx="3" fill="#ffe28a"/>
-  <rect x="8" y="50" width="8" height="7" rx="3" fill="#ff8a8a"/>
-  <g class="car__wheel" style="transform-origin:42px 70px"><circle cx="42" cy="70" r="15" fill="#2b3a67"/><circle cx="42" cy="70" r="6" fill="#d9dbe7"/><rect x="40" y="56" width="4" height="28" fill="#d9dbe7"/></g>
-  <g class="car__wheel" style="transform-origin:120px 70px"><circle cx="120" cy="70" r="15" fill="#2b3a67"/><circle cx="120" cy="70" r="6" fill="#d9dbe7"/><rect x="118" y="56" width="4" height="28" fill="#d9dbe7"/></g>
+<svg viewBox="0 0 170 100" aria-hidden="true">
+  <circle class="car__steam" cx="34" cy="14" r="8" fill="#fff" opacity=".85"/>
+  <circle class="car__steam" cx="22" cy="6" r="6" fill="#fff" opacity=".6"/>
+  <rect x="30" y="22" width="14" height="30" rx="3" fill="#6b4a2a" stroke="#4a2a12" stroke-width="3"/>
+  <rect x="26" y="20" width="22" height="7" rx="2" fill="#c9932f" stroke="#4a2a12" stroke-width="2.5"/>
+  <line x1="106" y1="22" x2="106" y2="10" stroke="#4a2a12" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="106" cy="8" r="5" fill="#ffcf6b" stroke="#4a2a12" stroke-width="2.5"/>
+  <rect x="86" y="22" width="40" height="30" rx="9" fill="#c4783f" stroke="#4a2a12" stroke-width="3"/>
+  <rect x="92" y="30" width="28" height="16" rx="5" fill="#2a2338"/>
+  <circle cx="100" cy="38" r="3" fill="#7ff3c4"/><circle cx="112" cy="38" r="3" fill="#7ff3c4"/>
+  <rect x="86" y="22" width="40" height="7" rx="3" fill="#6b4a2a"/>
+  <circle cx="98" cy="25" r="5" fill="#9fe3e0" stroke="#c9932f" stroke-width="2.5"/>
+  <circle cx="114" cy="25" r="5" fill="#9fe3e0" stroke="#c9932f" stroke-width="2.5"/>
+  <path d="M10 56 Q10 48 20 48 L150 48 Q162 48 162 58 L162 70 Q162 78 154 78 L16 78 Q8 78 8 70 Z" fill="#d9a441" stroke="#4a2a12" stroke-width="4"/>
+  <rect x="18" y="54" width="132" height="8" rx="4" fill="#b8642a" opacity=".7"/>
+  <g fill="#f0c27a" stroke="#4a2a12" stroke-width="1.5"><circle cx="24" cy="70" r="3"/><circle cx="84" cy="70" r="3"/><circle cx="146" cy="70" r="3"/></g>
+  <circle cx="156" cy="60" r="6" fill="#ffe28a" stroke="#4a2a12" stroke-width="2"/>
+  <g class="car__wheel" style="transform-origin:46px 80px"><circle cx="46" cy="80" r="16" fill="#4a2a12"/><circle cx="46" cy="80" r="11" fill="#c9932f"/><rect x="44" y="66" width="4" height="28" fill="#4a2a12"/><rect x="32" y="78" width="28" height="4" fill="#4a2a12"/><circle cx="46" cy="80" r="4" fill="#fbf3df"/></g>
+  <g class="car__wheel" style="transform-origin:128px 80px"><circle cx="128" cy="80" r="16" fill="#4a2a12"/><circle cx="128" cy="80" r="11" fill="#c9932f"/><rect x="126" y="66" width="4" height="28" fill="#4a2a12"/><rect x="114" y="78" width="28" height="4" fill="#4a2a12"/><circle cx="128" cy="80" r="4" fill="#fbf3df"/></g>
 </svg>`;
 
 export function createRace({ field, items, session, level, onProgress, onEnd }) {

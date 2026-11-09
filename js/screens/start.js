@@ -6,6 +6,7 @@ import { readFile, FILE_ERROR } from '../progress.js';
 export function renderStart(app) {
   const box = el('div', { class: 'start__box' });
   const screen = el('section', { class: 'screen start' },
+    el('div', { class: 'pipe', 'aria-hidden': 'true' }),
     el('div', { class: 'start__hero' },
       tippImage('tipp--big tipp--wave', 'Tipp, der kleine Roboter, winkt dir zu'),
       el('div', {},

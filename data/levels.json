@@ -5,7 +5,7 @@
     {
       "id": 1,
       "title": "Die Grundreihe",
-      "intro": "Tipp wohnt auf der Tastenwiese. Hier lernst du die Grundreihe kennen: Dort wohnen deine Finger! Tipp spricht am Anfang nur die Kleinbuchstaben-Sprache.",
+      "intro": "Tipp wohnt auf der Blumenwiese. Hier lernst du die Grundreihe kennen: Dort wohnen deine Finger! Tipp spricht am Anfang nur die Kleinbuchstaben-Sprache.",
       "theme": "wiese",
       "levels": [
         {
@@ -97,8 +97,8 @@
     {
       "id": 2,
       "title": "Die obere Reihe I",
-      "intro": "Tipp reist an den Strand! Deine Finger machen jetzt kleine Ausflüge nach oben zu E, I, R und U. Danach kehren sie immer zur Grundreihe zurück.",
-      "theme": "strand",
+      "intro": "Mit der Zahnradbahn geht es hoch in die Berge! Deine Finger machen jetzt kleine Ausflüge nach oben zu E, I, R und U und kehren danach immer zur Grundreihe zurück.",
+      "theme": "berge",
       "levels": [
         {
           "id": "2-1",
@@ -147,8 +147,8 @@
     {
       "id": 3,
       "title": "Die obere Reihe II",
-      "intro": "Im Zauberwald warten T, Z, W, O, Q, P und Ü auf dich. Danach kennst du die ganze obere Reihe!",
-      "theme": "wald",
+      "intro": "Tipp steigt ins Luftschiff und fliegt über die Wolken. Dort warten T, Z, W, O, Q, P und Ü. Danach kennst du die ganze obere Reihe!",
+      "theme": "wolken",
       "levels": [
         {
           "id": "3-1",
@@ -211,8 +211,8 @@
     {
       "id": 4,
       "title": "Die untere Reihe",
-      "intro": "In den Bergen geht es nach unten: V, B, N, M, C, X, Y, Komma und Punkt. Am Ende tippst du schon ganze Sätze!",
-      "theme": "berge",
+      "intro": "Mit der Grubenbahn geht es hinunter in die Kristallhöhle: zu V, B, N, M, C, X und Y in der unteren Reihe.",
+      "theme": "hoehle",
       "levels": [
         {
           "id": "4-1",
@@ -269,20 +269,6 @@
           "params": {},
           "stars": { "accuracy": [85, 93, 98], "minChars": 60, "tempoBonusCpm": 80 },
           "unlock": { "after": "4-3" }
-        },
-        {
-          "id": "4-5",
-          "title": "Kurze Sätze",
-          "intro": "Komma und Punkt holen der rechte Mittelfinger und der rechte Ringfinger. Jetzt tippst du ganze Sätze!",
-          "mode": "race",
-          "caseMode": "lower",
-          "newKeys": [",", "."],
-          "activeKeys": ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä", "Space", "e", "i", "r", "u", "t", "z", "w", "o", "q", "p", "ü", "v", "b", "n", "m", "c", "x", "y", ",", "."],
-          "content": { "type": "sentences", "source": "w4_saetze", "count": 5 },
-          "helps": { "keyboard": true, "hands": false, "fingerColors": true, "highlightNext": false },
-          "params": {},
-          "stars": { "accuracy": [85, 93, 98], "minChars": 100, "tempoBonusCpm": 80 },
-          "unlock": { "after": "4-4" }
         }
       ]
     }

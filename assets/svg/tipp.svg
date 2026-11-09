@@ -1,40 +1,68 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Tipp, der kleine Roboter">
-  <!-- Tipp, der kleine Roboter (selbst gezeichnet) -->
-  <!-- Antenne -->
-  <line x1="100" y1="34" x2="100" y2="14" stroke="#2b3a67" stroke-width="5" stroke-linecap="round"/>
-  <circle cx="100" cy="12" r="9" fill="#ffcf4a" stroke="#2b3a67" stroke-width="4"/>
-  <!-- Ohren -->
-  <rect x="30" y="58" width="16" height="30" rx="6" fill="#ff8a5c" stroke="#2b3a67" stroke-width="4"/>
-  <rect x="154" y="58" width="16" height="30" rx="6" fill="#ff8a5c" stroke="#2b3a67" stroke-width="4"/>
-  <!-- Kopf -->
-  <rect x="42" y="32" width="116" height="84" rx="26" fill="#5cc3f0" stroke="#2b3a67" stroke-width="5"/>
-  <!-- Bildschirm-Gesicht -->
-  <rect x="56" y="46" width="88" height="56" rx="16" fill="#1f2b4f"/>
-  <ellipse cx="82" cy="70" rx="9" ry="11" fill="#7ff3c4"/>
-  <ellipse cx="118" cy="70" rx="9" ry="11" fill="#7ff3c4"/>
-  <circle cx="85" cy="66" r="3" fill="#fff"/>
-  <circle cx="121" cy="66" r="3" fill="#fff"/>
-  <path d="M86 88 Q100 98 114 88" fill="none" stroke="#7ff3c4" stroke-width="5" stroke-linecap="round"/>
-  <circle cx="66" cy="88" r="5" fill="#ff8fb1" opacity=".8"/>
-  <circle cx="134" cy="88" r="5" fill="#ff8fb1" opacity=".8"/>
-  <!-- Hals -->
-  <rect x="88" y="114" width="24" height="10" fill="#2b3a67"/>
-  <!-- Arme -->
-  <path d="M52 140 Q30 150 28 172" fill="none" stroke="#2b3a67" stroke-width="9" stroke-linecap="round"/>
-  <path d="M148 140 Q170 150 172 172" fill="none" stroke="#2b3a67" stroke-width="9" stroke-linecap="round"/>
-  <circle cx="28" cy="174" r="9" fill="#ffcf4a" stroke="#2b3a67" stroke-width="4"/>
-  <circle cx="172" cy="174" r="9" fill="#ffcf4a" stroke="#2b3a67" stroke-width="4"/>
-  <!-- Körper -->
-  <rect x="50" y="122" width="100" height="64" rx="20" fill="#ff8a5c" stroke="#2b3a67" stroke-width="5"/>
-  <!-- Tasten auf dem Bauch -->
-  <g fill="#fff" stroke="#2b3a67" stroke-width="2.5">
-    <rect x="64" y="136" width="18" height="16" rx="4"/>
-    <rect x="91" y="136" width="18" height="16" rx="4"/>
-    <rect x="118" y="136" width="18" height="16" rx="4"/>
-    <rect x="72" y="158" width="56" height="14" rx="4"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Tipp, der kleine Dampf-Roboter">
+  <!-- Tipp, der kleine Dampf-Roboter (selbst gezeichnet) -->
+  <!-- Dampfwölkchen aus dem Schulterrohr -->
+  <circle cx="168" cy="104" r="7" fill="#fff" opacity=".85"/>
+  <circle cx="178" cy="90" r="9" fill="#fff" opacity=".6"/>
+  <!-- Antenne mit Glühbirne -->
+  <line x1="100" y1="34" x2="100" y2="16" stroke="#4a2a12" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="100" cy="11" r="8" fill="#ffcf6b" stroke="#4a2a12" stroke-width="3"/>
+  <rect x="93" y="17" width="14" height="6" rx="2" fill="#c9932f" stroke="#4a2a12" stroke-width="2"/>
+  <!-- Zahnrad-Ohren -->
+  <g fill="#c9932f" stroke="#4a2a12" stroke-width="3">
+    <path d="M38 62 l4 -6 l6 3 l5 -4 l5 5 l-3 6 l4 5 l-4 5 l-6 -2 l-4 5 l-6 -3 l1 -6 l-6 -3 l1 -6 z"/>
+    <path d="M162 62 l-4 -6 l-6 3 l-5 -4 l-5 5 l3 6 l-4 5 l4 5 l6 -2 l4 5 l6 -3 l-1 -6 l6 -3 l-1 -6 z"/>
   </g>
-  <rect x="94.5" y="139.5" width="11" height="9" rx="2" fill="#ffcf4a" stroke="none"/>
-  <!-- Füße -->
-  <rect x="62" y="184" width="28" height="12" rx="6" fill="#2b3a67"/>
-  <rect x="110" y="184" width="28" height="12" rx="6" fill="#2b3a67"/>
+  <circle cx="44" cy="72" r="4" fill="#4a2a12"/>
+  <circle cx="156" cy="72" r="4" fill="#4a2a12"/>
+  <!-- Kopf (Kupfer) -->
+  <rect x="44" y="34" width="112" height="82" rx="24" fill="#c4783f" stroke="#4a2a12" stroke-width="5"/>
+  <!-- Nieten -->
+  <g fill="#f0c27a" stroke="#4a2a12" stroke-width="1.5">
+    <circle cx="58" cy="108" r="3.5"/><circle cx="142" cy="108" r="3.5"/>
+  </g>
+  <!-- Bildschirm-Gesicht -->
+  <rect x="58" y="52" width="84" height="52" rx="14" fill="#2a2338" stroke="#c9932f" stroke-width="3"/>
+  <ellipse cx="82" cy="74" rx="8" ry="10" fill="#7ff3c4"/>
+  <ellipse cx="118" cy="74" rx="8" ry="10" fill="#7ff3c4"/>
+  <circle cx="85" cy="70" r="3" fill="#fff"/>
+  <circle cx="121" cy="70" r="3" fill="#fff"/>
+  <path d="M87 90 Q100 99 113 90" fill="none" stroke="#7ff3c4" stroke-width="4.5" stroke-linecap="round"/>
+  <!-- Fliegerbrille auf der Stirn -->
+  <rect x="46" y="34" width="108" height="12" rx="5" fill="#6b4a2a" stroke="#4a2a12" stroke-width="3"/>
+  <circle cx="80" cy="38" r="14" fill="#9fe3e0" stroke="#c9932f" stroke-width="5"/>
+  <circle cx="120" cy="38" r="14" fill="#9fe3e0" stroke="#c9932f" stroke-width="5"/>
+  <path d="M73 32 q4 -4 9 -3" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".9"/>
+  <path d="M113 32 q4 -4 9 -3" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".9"/>
+  <!-- Hals -->
+  <rect x="86" y="114" width="28" height="10" rx="3" fill="#c9932f" stroke="#4a2a12" stroke-width="3"/>
+  <!-- Arme (Rohre) -->
+  <path d="M52 142 Q30 150 28 172" fill="none" stroke="#4a2a12" stroke-width="10" stroke-linecap="round"/>
+  <path d="M52 142 Q30 150 28 172" fill="none" stroke="#8a5a2b" stroke-width="5" stroke-linecap="round"/>
+  <path d="M148 142 Q170 150 172 172" fill="none" stroke="#4a2a12" stroke-width="10" stroke-linecap="round"/>
+  <path d="M148 142 Q170 150 172 172" fill="none" stroke="#8a5a2b" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="28" cy="174" r="9" fill="#c9932f" stroke="#4a2a12" stroke-width="4"/>
+  <circle cx="172" cy="174" r="9" fill="#c9932f" stroke="#4a2a12" stroke-width="4"/>
+  <!-- Schulterrohr -->
+  <rect x="146" y="112" width="10" height="20" rx="3" fill="#6b4a2a" stroke="#4a2a12" stroke-width="2.5" transform="rotate(30 151 122)"/>
+  <!-- Körper (Messing) -->
+  <rect x="50" y="122" width="100" height="64" rx="18" fill="#d9a441" stroke="#4a2a12" stroke-width="5"/>
+  <rect x="58" y="130" width="84" height="48" rx="10" fill="#c4783f" opacity=".35"/>
+  <!-- Druckmanometer -->
+  <circle cx="80" cy="152" r="15" fill="#fbf3df" stroke="#4a2a12" stroke-width="3.5"/>
+  <path d="M70 154 A10 10 0 0 1 90 154" fill="none" stroke="#c4783f" stroke-width="2"/>
+  <line x1="80" y1="152" x2="87" y2="144" stroke="#b03a2e" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="80" cy="152" r="2.5" fill="#4a2a12"/>
+  <!-- Tasten -->
+  <g fill="#fbf3df" stroke="#4a2a12" stroke-width="2.5">
+    <rect x="104" y="138" width="16" height="14" rx="3"/>
+    <rect x="124" y="138" width="16" height="14" rx="3"/>
+    <rect x="104" y="157" width="36" height="13" rx="3"/>
+  </g>
+  <!-- Nieten am Körper -->
+  <g fill="#f0c27a" stroke="#4a2a12" stroke-width="1.5">
+    <circle cx="60" cy="130" r="3"/><circle cx="140" cy="130" r="3"/><circle cx="60" cy="178" r="3"/><circle cx="140" cy="178" r="3"/>
+  </g>
+  <!-- Stiefel -->
+  <rect x="62" y="184" width="28" height="12" rx="6" fill="#4a2a12"/>
+  <rect x="110" y="184" width="28" height="12" rx="6" fill="#4a2a12"/>
 </svg>

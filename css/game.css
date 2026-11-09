@@ -24,19 +24,27 @@
   height: 1rem;
   border-radius: 99px;
   background: var(--surface);
-  border: 2px solid var(--text);
+  border: 3px solid var(--border-dark);
   overflow: hidden;
 }
 .progress__fill { height: 100%; width: 0; background: var(--ok); transition: width 0.3s; }
 
 .game__field {
   position: relative;
-  border-radius: 22px;
-  border: 3px solid var(--border);
+  border-radius: 20px;
+  border: 5px solid var(--border);
+  box-shadow: 0 0 0 2px var(--border-dark), inset 0 0 0 2px rgba(107, 54, 18, 0.3);
   overflow: hidden;
   min-height: 200px;
-  background: linear-gradient(var(--sky-top), var(--sky-bottom));
+  background-color: var(--sky-bottom);
+  background-size: cover;
+  background-position: right bottom;
 }
+/* Mit Weltbild: eigene Bodenstreifen ausblenden, das Bild hat schon einen Boden */
+.game__field.has-scene .rain__ground,
+.game__field.has-scene .scene__ground { background: none; border: none; }
+:root[data-theme="kontrast"] .game__field.has-scene .rain__ground,
+:root[data-theme="kontrast"] .game__field.has-scene .scene__ground { background: var(--ground); }
 
 /* Hinweiszeile unter dem Spielfeld */
 .hint {
@@ -279,7 +287,7 @@
 
 /* Bewegungen reduzieren, wenn gewünscht */
 @media (prefers-reduced-motion: reduce) {
-  .key.is-next, .level-node.is-suggested .level-node__bubble, .tipp--wave { animation: none; }
+  .key.is-next, .level-node.is-suggested .level-node__gear svg, .tipp--wave { animation: none; }
 }
 
 /* ---------- Textzeile (Monster, Rennen) ---------- */
@@ -404,6 +412,8 @@
 }
 .race__car svg { display: block; width: 100%; height: auto; }
 .race__car.is-driving .car__wheel { animation: wheel-spin 0.4s linear infinite; }
+.race__car.is-driving .car__steam { animation: steam-puff 0.8s ease-out infinite; }
+@keyframes steam-puff { from { transform: translateY(6px); opacity: 0.9; } to { transform: translate(-6px, -8px); opacity: 0; } }
 .race__car.is-stutter { animation: car-stutter 0.35s; }
 .race__car.is-finished { animation: car-cheer 0.6s ease-out 2; }
 @keyframes wheel-spin { to { transform: rotate(360deg); } }

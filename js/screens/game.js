@@ -1,6 +1,6 @@
 // Spielbildschirm: verbindet Modus, Tastatur, Hände, Hinweise, Pause und Spielschleife.
 
-import { el, showScreen, tippImage, openDialog } from '../ui.js';
+import { el, showScreen, tippImage, openDialog, worldImage } from '../ui.js';
 import { createKeyboard } from '../keyboard.js';
 import { createHands } from '../hands.js';
 import { createSession, drawItems, HINTS } from '../engine.js';
@@ -33,7 +33,11 @@ export function renderGame(app, id) {
   const toggleKb = toggleButton('Tastatur', helps.keyboard, (on) => { helps.keyboard = on; applyHelps(); });
   const toggleHands = toggleButton('Hände', helps.hands, (on) => { helps.hands = on; applyHelps(); });
   const pauseBtn = el('button', { class: 'btn btn--small', type: 'button', onclick: () => pause() }, 'Pause');
-  const field = el('div', { class: 'game__field' });
+  // Spielfeld mit dem Bild der Welt (leicht aufgehellt, damit Text gut lesbar bleibt)
+  const field = el('div', {
+    class: 'game__field has-scene',
+    style: { backgroundImage: `linear-gradient(rgba(251, 243, 223, 0.3), rgba(251, 243, 223, 0.3)), url(${worldImage(world.theme)})` },
+  });
   const hintIcon = el('span', { class: 'hint__icon', 'aria-hidden': 'true' });
   const hintText = el('span', {});
   const hintBar = el('div', { class: 'hint', role: 'status', 'aria-live': 'polite' }, hintIcon, hintText);

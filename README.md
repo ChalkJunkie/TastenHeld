@@ -78,6 +78,12 @@ Jeder Fehler nennt Level-ID und Wort.
 | `story.json` | Boss-Geschichte „Tipp und die verschwundene Taste“ |
 | `layout-de.json` | komplette deutsche Tastatur (Position, Beschriftung, Finger, Shift/AltGr) |
 
+### Welten und Weltbilder
+Jede Welt in `levels.json` hat ein `theme` (`wiese`, `berge`, `wolken`, `hoehle`). Das Bild dazu liegt unter
+`assets/svg/welten/<theme>.svg` und erscheint auf der Weltkarte und als Hintergrund im Spielfeld.
+Für eine neue Welt also ein Bild mit passendem Namen ablegen. Die Level-Zahnräder sitzen links und unten im Bild,
+die Deko sollte deshalb eher rechts und oben liegen.
+
 ### Wörter ergänzen
 Einfach in der passenden Liste in `words.json` ergänzen. Wichtig:
 - Welt 1–4: nur Kleinbuchstaben und nur Tasten, die bis dahin eingeführt sind.
