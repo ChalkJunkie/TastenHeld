@@ -9,8 +9,9 @@ const TYPO_NAMES = { '„': '„', '“': '“', '”': '”', '‚': '‚', '�
 const HAND_LEVELS = { '5-1': 'L', '5-2': 'R' };
 // Welt 8: diese Zeichen erst ab Level 8-3
 const W8_LATE = new Set([...'+*/%&=#\'_§$@€']);
-// Erlaubte Tastenkombinationen (nur mit Strg)
-const COMBO_CODES = new Set(['KeyC', 'KeyV', 'KeyX', 'KeyZ', 'KeyS', 'KeyA']);
+// Erlaubte Tastenkombinationen (nur mit Strg): C, V, X, Z, S, A auf der DEUTSCHEN Tastatur.
+// event.code ist nach US-Position benannt, deshalb liegt das deutsche Z auf "KeyY".
+const COMBO_CODES = new Set(['KeyC', 'KeyV', 'KeyX', 'KeyY', 'KeyS', 'KeyA']);
 const META_CODES = new Set(['MetaLeft', 'MetaRight', 'OSLeft', 'OSRight']);
 
 const show = (ch) => (ch === ' ' ? 'Leerzeichen' : TYPO_NAMES[ch] ?? ch);
@@ -195,6 +196,12 @@ export function validateAll(data, index) {
     const where = `keys.json Kombination "${c.id}"`;
     if (c.modifier !== 'Control') err(where, 'nur Kombinationen mit Strg sind erlaubt');
     if (!COMBO_CODES.has(c.code)) err(where, `Taste ${c.code} ist nicht erlaubt (nur C, V, X, Z, S, A)`);
+    // Passt der Code zur Beschriftung? (z. B. "Strg + Z" braucht auf der deutschen Tastatur "KeyY")
+    const letter = /\+\s*(\S)\s*$/.exec(c.label ?? '')?.[1]?.toLowerCase();
+    const base = index.keys.get(c.code)?.base;
+    if (letter && base && letter !== base) {
+      err(where, `"${c.label}" passt nicht zu ${c.code} – auf der deutschen Tastatur liegt dort "${base.toUpperCase()}" (richtig wäre ${index.chars.get(letter)?.code})`);
+    }
   }
 
   // --- story.json ---------------------------------------------------------

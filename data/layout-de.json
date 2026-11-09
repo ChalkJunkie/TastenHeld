@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "Deutsch (QWERTZ, ISO)",
-  "_hinweis": "Komplettes Tastaturlayout, unabhängig von den Levels. Positionen werden pro Reihe von links nach rechts berechnet (w = Breite in Tasteneinheiten, gap = Lücke). Finger: L/R = linke/rechte Hand, P kleiner Finger, R Ringfinger, M Mittelfinger, I Zeigefinger, T Daumen; TH = Leertaste (beide Daumen).",
+  "_hinweis": "Komplettes Tastaturlayout, unabhängig von den Levels. Positionen werden pro Reihe von links nach rechts berechnet (w = Breite in Tasteneinheiten, gap = Lücke). code = event.code, also die Position nach US-Tastatur benannt (deutsches Z = KeyY, deutsches Y = KeyZ). Finger: L/R = linke/rechte Hand, P kleiner Finger, R Ringfinger, M Mittelfinger, I Zeigefinger, T Daumen; TH = Leertaste (beide Daumen).",
   "fingers": {
     "LP": {
       "name": "linker kleiner Finger",
@@ -141,7 +141,7 @@
           { "code": "KeyE", "base": "e", "shift": "E", "altgr": "€", "finger": "LM" },
           { "code": "KeyR", "base": "r", "shift": "R", "finger": "LI" },
           { "code": "KeyT", "base": "t", "shift": "T", "finger": "LI" },
-          { "code": "KeyZ", "base": "z", "shift": "Z", "finger": "RI" },
+          { "code": "KeyY", "base": "z", "shift": "Z", "finger": "RI" },
           { "code": "KeyU", "base": "u", "shift": "U", "finger": "RI" },
           { "code": "KeyI", "base": "i", "shift": "I", "finger": "RM" },
           { "code": "KeyO", "base": "o", "shift": "O", "finger": "RR" },
@@ -169,7 +169,7 @@
         [
           { "code": "ShiftLeft", "label": "⇧", "finger": "LP", "w": 1.25 },
           { "code": "IntlBackslash", "base": "<", "shift": ">", "altgr": "|", "finger": "LP" },
-          { "code": "KeyY", "base": "y", "shift": "Y", "finger": "LP" },
+          { "code": "KeyZ", "base": "y", "shift": "Y", "finger": "LP" },
           { "code": "KeyX", "base": "x", "shift": "X", "finger": "LR" },
           { "code": "KeyC", "base": "c", "shift": "C", "finger": "LM" },
           { "code": "KeyV", "base": "v", "shift": "V", "finger": "LI" },
