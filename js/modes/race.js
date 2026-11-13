@@ -28,7 +28,7 @@ export function createRace({ field, items, session, level, onProgress, onEnd }) 
   const scene = el('div', { class: 'scene race' },
     el('div', { class: 'scene__ground', 'aria-hidden': 'true' }),
     el('div', { class: 'race__road', 'aria-hidden': 'true' }),
-    el('div', { class: 'race__finish', 'aria-hidden': 'true' }, el('span', { class: 'race__flag' }, '🏁')),
+    el('div', { class: 'race__finish', 'aria-hidden': 'true' }, el('span', { class: 'race__flag' })),
     lineBox,
     car);
   field.append(scene);

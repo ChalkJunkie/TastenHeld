@@ -12,7 +12,7 @@ export const AVATARS = [
 export const THEMES = [
   { id: 'standard', name: 'Kupfer & Pergament', xp: 0 },
   { id: 'kontrast', name: 'Hoher Kontrast', xp: 0 },
-  { id: 'messing', name: 'Messing & Holz', xp: 300 },
+  { id: 'messing', name: 'Dunkles Holz', xp: 300 },
   { id: 'werkstatt', name: 'Bunte Werkstatt', xp: 1000 },
 ];
 
@@ -32,4 +32,13 @@ export function unlockRewards(state) {
 
 export function avatarFilter(id) {
   return AVATARS.find((a) => a.id === id)?.filter ?? 'none';
+}
+
+/** Nächste Belohnung, die noch nicht erreicht ist: { xp, from } oder null (alles freigeschaltet). */
+export function nextReward(xp) {
+  const steps = [...AVATARS, ...THEMES].map((r) => r.xp).sort((a, b) => a - b);
+  const goal = steps.find((s) => s > xp);
+  if (goal == null) return null;
+  const from = Math.max(0, ...steps.filter((s) => s <= xp));
+  return { xp: goal, from };
 }

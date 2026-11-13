@@ -56,7 +56,7 @@ export function createMonster({ field, items, session, level, onProgress, onEnd 
 
   /** Zauberstern fliegt von Tipp zum Monster. */
   function spell(strength) {
-    const star = el('span', { class: 'spell', 'aria-hidden': 'true' }, '★');
+    const star = el('img', { class: 'spell pixel', src: 'assets/pixel/ui/i-star.png', alt: '', 'aria-hidden': 'true' });
     const from = tipp.offsetLeft + tipp.offsetWidth * 0.7;
     const to = monster.offsetLeft + monster.offsetWidth * 0.3;
     star.style.left = `${from}px`;

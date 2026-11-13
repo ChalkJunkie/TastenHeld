@@ -54,7 +54,7 @@ Der Spielstand wird als Datei gespeichert, z. B. `Spielstand_Tastenheld_Lena_202
 ### Einstellungen (Zahnrad auf der Weltkarte)
 - **Schriftgröße:** Normal, Groß, Sehr groß
 - **Farben:** Kupfer & Pergament (Standard) und **Hoher Kontrast** (immer verfügbar). Mit XP kommen
-  „Messing & Holz“ (ab 300 XP) und „Bunte Werkstatt“ (ab 1000 XP) dazu.
+  „Dunkles Holz“ (ab 300 XP) und „Bunte Werkstatt“ (ab 1000 XP) dazu.
 - **Weniger Bewegung:** schaltet Wackel-, Hüpf- und Konfetti-Effekte ab. Das passiert auch automatisch,
   wenn es im Betriebssystem so eingestellt ist.
 - **Mein Tipp:** Tipp in anderen Farben (ab 150, 400, 800 und 1500 XP).
@@ -145,7 +145,7 @@ das Z auf `KeyY` und das Y auf `KeyZ` (Strg + Z = `KeyY`). Der Validator meldet,
 Jede Welt in `levels.json` hat ein `theme` (`wiese`, `berge`, `wolken`, `hoehle`, `uhrturm`, `werkstatt`,
 `maschinenraum`, `sternwarte`, `wald`). Mit `label` lässt sich die Überschrift auf der Karte ersetzen
 (z. B. „Das große Abenteuer“ statt „Welt 9“). Das Bild dazu liegt unter
-`assets/pixel/welten/<theme>.png` (Pixelart, 280 × 80 Pixel) und erscheint auf der Weltkarte und als Hintergrund im Spielfeld.
+`assets/pixel/welten/<theme>.png` (Pixelart, 444 × 160 Pixel, wird dreifach vergrößert) und erscheint auf der Weltkarte und als Hintergrund im Spielfeld.
 Die Level-Zahnräder sitzen links und unten im Bild, die Deko sollte deshalb eher rechts und oben liegen.
 
 ### Ein Level ergänzen
@@ -220,6 +220,10 @@ js/       main.js        Start, Daten laden, Bildschirme steuern
           modes/         Spielmodi (rain, monster, race, keyhunt, story) und textline.js
 data/     JSON-Inhalte
 assets/pixel/  selbst gezeichnete Pixelart (PNG, sehr klein, wird ohne Weichzeichnen vergrößert)
+               ui/ = Bausatz der Oberfläche (Rahmen, Knöpfe, Symbole, Sterne, Hände)
+assets/fonts/  Schriften, liegen im Projekt (es wird nichts aus dem Internet geladen):
+               „Jersey 15“ (Überschriften) und „Atkinson Hyperlegible“ (Lesetext, besonders gut lesbar).
+               Beide stehen unter der SIL Open Font License, die Lizenztexte liegen daneben.
 tools/    pixelart.py erzeugt alle Pixelbilder neu (nur für Änderungen an den Grafiken nötig,
           braucht Python 3 mit Pillow: python3 tools/pixelart.py)
 docs/     Spickzettel_Spielstand.pdf zum Ausdrucken, Vorlage in docs/spickzettel/ (HTML,
