@@ -39,21 +39,34 @@ export function showScreen(node, { focus = true } = {}) {
   }
 }
 
-/** Sterne als Symbole (★ voll, ☆ leer) plus Text für Bildschirmleser. */
+/** Pixel-Symbol aus dem UI-Bausatz (assets/pixel/ui/i-<name>.png), rein dekorativ. */
+export function icon(name, cls = '') {
+  return el('img', { src: `assets/pixel/ui/i-${name}.png`, class: `icon pixel ${cls}`, alt: '', 'aria-hidden': 'true' });
+}
+
+/** Sterne als Pixelbilder plus Text für Bildschirmleser. cls: '' (klein) oder 'stars--big'. */
 export function starsNode(count, max = 3, cls = '') {
+  const big = cls.includes('stars--big');
   const wrap = el('span', { class: `stars ${cls}`, role: 'img', 'aria-label': `${count} von ${max} Sternen` });
   for (let i = 0; i < max; i++) {
-    wrap.append(el('span', { class: i < count ? 'star star--on' : 'star star--off', 'aria-hidden': 'true' }, i < count ? '★' : '☆'));
+    const on = i < count;
+    const file = big ? (on ? 'star-big' : 'star-big-off') : (on ? 'i-star-s' : 'i-star-s-off');
+    wrap.append(el('img', { src: `assets/pixel/ui/${file}.png`, class: `star pixel ${on ? 'star--on' : 'star--off'}`, alt: '', 'aria-hidden': 'true' }));
   }
   return wrap;
 }
 
-/** Zahnrad als Pixelbild (gesperrt = grau). */
-export function gearIcon(locked = false) {
-  return el('img', {
-    src: locked ? 'assets/pixel/zahnrad-gesperrt.png' : 'assets/pixel/zahnrad.png',
-    class: 'pixel gear-img', alt: '', width: 24, height: 24, 'aria-hidden': 'true',
-  });
+/** Level-Zahnrad als Pixelbild: 'open', 'gold' (nächstes Level) oder 'locked'. */
+export function gearIcon(kind = 'open') {
+  const file = kind === 'locked' ? 'gear-locked' : kind === 'gold' ? 'gear-gold' : 'gear';
+  return el('img', { src: `assets/pixel/ui/${file}.png`, class: 'pixel gear-img', alt: '', 'aria-hidden': 'true' });
+}
+
+/** Knopf mit optionalem Pixel-Symbol. variant: '', 'primary', 'green', 'dark', dazu 'big', 'sm', 'icon'. */
+export function button(label, { variant = '', icon: ic = null, iconEnd = null, onclick, type = 'button', ...attrs } = {}) {
+  const iconOnly = variant.includes('icon');
+  return el('button', { class: `btn ${variant.split(' ').filter(Boolean).map((v) => `btn--${v}`).join(' ')}`, type, onclick, ...(iconOnly ? { 'aria-label': label, title: label } : {}), ...attrs },
+    ic ? icon(ic) : null, iconOnly ? null : el('span', { class: 'btn__label' }, label), iconEnd ? icon(iconEnd) : null);
 }
 
 /** Pfad zum Bild einer Welt (assets/pixel/welten/<theme>.png). */
@@ -69,8 +82,7 @@ export function tippImage(cls = '', alt = '') {
 /** Kurze Meldung unten am Bildschirm. */
 export function toast(text, kind = 'info', ms = 4000) {
   const root = document.getElementById('toasts');
-  const icon = kind === 'ok' ? '✔' : kind === 'warn' ? '!' : 'i';
-  const node = el('div', { class: `toast toast--${kind}`, role: 'status' }, el('span', { class: 'toast__icon', 'aria-hidden': 'true' }, icon), text);
+  const node = el('div', { class: `toast toast--${kind}`, role: 'status' }, icon(kind === 'ok' ? 'check' : 'info'), text);
   root.append(node);
   setTimeout(() => node.classList.add('toast--out'), ms);
   setTimeout(() => node.remove(), ms + 400);
@@ -85,12 +97,8 @@ export function openDialog(title, content, { onClose, actions = [{ label: 'Ferti
     dlg.close();
   };
   const buttons = actions.map((a) =>
-    el('button', {
-      class: a.primary ? 'btn btn--primary' : 'btn',
-      type: 'button',
-      onclick: () => { close(); a.onClick?.(); },
-    }, a.label));
-  const dlg = el('dialog', { class: 'dialog', 'aria-labelledby': 'dlg-title' },
+    button(a.label, { variant: a.primary ? 'primary' : '', onclick: () => { close(); a.onClick?.(); } }));
+  const dlg = el('dialog', { class: 'dialog frame', 'aria-labelledby': 'dlg-title' },
     el('h2', { id: 'dlg-title' }, title),
     content,
     el('div', { class: 'dialog__actions' }, buttons));
@@ -114,6 +122,7 @@ export function applySettings(settings, avatar = 'tipp') {
   const root = document.documentElement;
   root.dataset.theme = settings.theme ?? 'standard';
   root.style.setProperty('--font-scale', settings.fontScale ?? 1);
+  root.dataset.font = String(settings.fontScale ?? 1); // für Layout-Anpassungen bei großer Schrift
   root.style.setProperty('--avatar-filter', avatarFilter(avatar));
   root.classList.toggle('reduce-motion', !!settings.reduceMotion || prefersReducedMotion());
 }
@@ -168,7 +177,7 @@ export function openSettings(state, onChange) {
       const open = state.unlocked.themes.includes(t.id);
       return el('label', { class: `choice__item${open ? '' : ' is-locked'}` },
         radio('theme', t.id, t.id === settings.theme, !open, (v) => (settings.theme = v)),
-        el('span', {}, t.name, open ? '' : ` (🔒 ab ${t.xp} XP)`));
+        el('span', {}, t.name), open ? null : el('span', { class: 'lockinfo' }, icon('lock'), `ab ${t.xp} XP`));
     }));
 
   const avatarGroup = el('fieldset', { class: 'choice' }, el('legend', {}, 'Mein Tipp'),
@@ -178,7 +187,7 @@ export function openSettings(state, onChange) {
         radio('avatar', a.id, a.id === avatar, !open, (v) => (avatar = v)),
         el('img', { src: 'assets/pixel/tipp.png', class: 'pixel', alt: '', style: { filter: open ? a.filter : 'grayscale(1) opacity(.45)' } }),
         el('span', {}, a.name),
-        open ? null : el('span', { class: 'avatar-choice__lock' }, `🔒 ab ${a.xp} XP`));
+        open ? null : el('span', { class: 'lockinfo' }, icon('lock'), `ab ${a.xp} XP`));
     })));
 
   const motionGroup = el('fieldset', { class: 'choice' }, el('legend', {}, 'Bewegung'),

@@ -65,16 +65,16 @@ export function createStory({ field, items, session, level, onProgress, onEnd, o
     onProgress(idx, chapters.length);
 
     const last = idx >= chapters.length;
-    const go = el('button', { class: 'btn btn--primary', type: 'button', onclick: () => (last ? end() : startChapter()) },
-      last ? 'Zum Ergebnis' : `Weiter zu Kapitel ${idx + 1}`);
-    between.replaceChildren(el('div', { class: 'overlay__box story__box' },
+    const go = el('button', { class: 'btn btn--green', type: 'button', onclick: () => (last ? end() : startChapter()) },
+      el('span', { class: 'btn__label' }, last ? 'Zum Ergebnis' : `Weiter zu Kapitel ${idx + 1}`));
+    between.replaceChildren(el('div', { class: 'overlay__box frame story__box' },
       el('img', { class: 'story__img', src: storyImage(chapter.svg), alt: `Bild zum Kapitel ${chapter.title}` }),
       el('h2', {}, last ? 'Das Abenteuer ist geschafft!' : `Kapitel ${idx} geschafft!`),
-      starsNode(stars, 3, 'stars--mid stars--animate'),
+      starsNode(stars, 3, 'stars--mid'),
       el('p', {}, `${formatNumber(accuracy, 1)} % genau`),
       el('div', { class: 'row row--center' },
         go,
-        last ? null : el('button', { class: 'btn', type: 'button', onclick: end }, 'Pause machen')),
+        last ? null : el('button', { class: 'btn', type: 'button', onclick: end }, el('span', { class: 'btn__label' }, 'Pause machen'))),
       el('p', { class: 'muted' }, last ? '' : 'Drück Enter, um weiterzulesen. Dein Fortschritt ist gespeichert.')));
     between.hidden = false;
   }

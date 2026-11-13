@@ -4,7 +4,7 @@
 // Richtig: Erklärung mit Merkhilfe. Falsch: freundlicher Hinweis, die Karte kommt am Ende noch einmal.
 // Gewertet wird nur der ERSTE Versuch jeder Karte (Wissen, nicht Glück beim zweiten Mal).
 
-import { el, shuffleList } from '../ui.js';
+import { icon, el, shuffleList } from '../ui.js';
 
 const MODIFIER_KEYS = new Set(['Control', 'Shift', 'Alt', 'AltGraph', 'Meta', 'OS']);
 
@@ -47,7 +47,7 @@ export function createKeyhunt({ field, items, session, level, keyboard, onProgre
   let resolved = 0;
   let timer = null;
 
-  const panel = el('div', { class: 'card keyhunt__card', role: 'region', 'aria-live': 'polite' });
+  const panel = el('div', { class: 'frame card keyhunt__card', role: 'region', 'aria-live': 'polite' });
   const scene = el('div', { class: 'scene keyhunt' }, panel);
   field.append(scene);
 
@@ -74,7 +74,7 @@ export function createKeyhunt({ field, items, session, level, keyboard, onProgre
     phase = 'ask';
     keyboard.markNew([]);
     const { card, round } = current;
-    panel.className = 'card keyhunt__card';
+    panel.className = 'frame card keyhunt__card';
     panel.replaceChildren(
       el('p', { class: 'eyebrow' }, round ? 'Noch einmal: ' : `Karte ${resolved + 1} von ${total}`),
       el('p', { class: 'keyhunt__question' }, card.question),
@@ -84,8 +84,8 @@ export function createKeyhunt({ field, items, session, level, keyboard, onProgre
   /** Erklärung zeigen, dann weiter (Knopf oder nach Lesezeit). */
   function explain(nodes, cls, ms) {
     phase = 'explain';
-    const next = el('button', { class: 'btn btn--primary', type: 'button', onclick: () => ask() }, 'Weiter');
-    panel.className = `card keyhunt__card ${cls}`;
+    const next = el('button', { class: 'btn btn--primary', type: 'button', onclick: () => ask() }, el('span', { class: 'btn__label' }, 'Weiter'), icon('play'));
+    panel.className = `frame card keyhunt__card ${cls}`;
     panel.replaceChildren(...nodes, el('div', { class: 'row row--center' }, next));
     timer = setTimeout(ask, ms);
   }
@@ -103,7 +103,7 @@ export function createKeyhunt({ field, items, session, level, keyboard, onProgre
     onProgress(resolved, total);
     if (card.kind !== 'combo') keyboard.markNew([card.code]);
     explain([
-      el('p', { class: 'keyhunt__verdict' }, el('span', { 'aria-hidden': 'true' }, '✔ '), 'Richtig!'),
+      el('p', { class: 'keyhunt__verdict' }, icon('check'), 'Richtig!'),
       answerLine(card),
       el('p', {}, card.explanation),
     ], 'is-right', readingMs(card.explanation));
@@ -119,7 +119,7 @@ export function createKeyhunt({ field, items, session, level, keyboard, onProgre
       // Karte kommt am Rundenende noch einmal
       queue.push({ card, round: 1 });
       explain([
-        el('p', { class: 'keyhunt__verdict' }, el('span', { 'aria-hidden': 'true' }, '☝ '), 'Noch nicht ganz.'),
+        el('p', { class: 'keyhunt__verdict' }, icon('bulb'), 'Noch nicht ganz.'),
         el('p', {}, card.wrongHint),
         el('p', { class: 'muted' }, 'Diese Karte kommt am Ende noch einmal.'),
       ], 'is-wrong', 3500);

@@ -1,6 +1,6 @@
 // Level-Vorschau und Mini-Tutorial für neue Tasten.
 
-import { el, showScreen, starsNode, formatNumber, worldLabel } from '../ui.js';
+import { el, showScreen, starsNode, formatNumber, worldLabel, button, icon, worldImage, pixelBackground } from '../ui.js';
 import { levelProgress, storyProgress } from '../progress.js';
 import { DEFAULT_STARS, HINTS } from '../engine.js';
 import { tokenLabel } from '../layout.js';
@@ -32,7 +32,7 @@ export function renderLevelIntro(app, id) {
   const handL = el('div', { class: 'game__hand' });
   const handR = el('div', { class: 'game__hand' });
   let figure = el('figure', { class: 'intro__fig' },
-    el('div', { class: 'game__kb intro__kb' }, handL, kbWrap, handR),
+    el('div', { class: 'game__kb intro__kb' }, handL, el('div', { class: 'kbcase frame frame--dark' }, kbWrap), handR),
     el('figcaption', {},
       el('span', { class: 'legend-swatch', 'aria-hidden': 'true' }),
       'Gleiche Farbe = gleicher Finger.',
@@ -54,7 +54,7 @@ export function renderLevelIntro(app, id) {
       el('ol', { class: 'chapters' }, chapters.map((c) => {
         const done = app.state.story.chapters[c.id];
         return el('li', { class: done ? 'is-done' : sp.next === c ? 'is-next' : '' },
-          el('span', { class: 'chapters__mark', 'aria-hidden': 'true' }, done ? '✔' : sp.next === c ? '➜' : ''),
+          el('span', { class: 'chapters__mark', 'aria-hidden': 'true' }, done ? icon('check') : sp.next === c ? icon('play') : null),
           el('span', { class: 'chapters__title' }, c.title),
           done ? starsNode(done.stars ?? 0) : sp.next === c ? el('span', { class: 'muted' }, 'geht hier weiter') : null);
       })),
@@ -65,25 +65,25 @@ export function renderLevelIntro(app, id) {
     ? el('p', { class: 'intro__new' }, 'Deine Knackpunkte: ', level.tricky.map((ch) => el('kbd', {}, ch)))
     : null;
 
-  const screen = el('section', { class: `screen intro world--${world.theme}` },
-    el('div', { class: 'card intro__card' },
-      el('p', { class: 'eyebrow' }, worldLabel(world)),
-      el('h1', {}, level.id === 'knackpunkte' ? level.title : `Level ${level.id}: ${level.title}`),
+  const rule = (n, pct) => el('span', { class: 'rule' }, starsNode(n, n), ` ${pct} %`);
+  const screen = el('section', { class: `screen intro world--${world.theme}`, style: { backgroundImage: `url(${worldImage(world.theme)})` } },
+    el('div', { class: 'frame card intro__card' },
+      el('p', { class: 'ribbon' }, worldLabel(world)),
+      el('h1', {}, level.id === 'knackpunkte' ? level.title : [el('span', { class: 'badge' }, level.id), ' ', level.title]),
       level.intro ? el('p', { class: 'intro__text' }, level.intro) : null,
       trickyNote,
       figure,
       el('div', { class: 'intro__info' },
         el('p', { class: 'intro__rules' },
-          isKeyhunt ? 'Sterne gibt es für richtige Antworten: ' : 'Sterne gibt es fürs genaue Tippen: ',
-          el('span', { class: 'nowrap' }, `★ ${thresholds[0]} %`), ' · ',
-          el('span', { class: 'nowrap' }, `★★ ${thresholds[1]} %`), ' · ',
-          el('span', { class: 'nowrap' }, `★★★ ${thresholds[2]} %`)),
+          isKeyhunt ? 'Sterne für richtige Antworten: ' : 'Sterne fürs genaue Tippen: ',
+          rule(1, thresholds[0]), rule(2, thresholds[1]), rule(3, thresholds[2])),
         best),
-      el('div', { class: 'row' },
-        el('button', { class: 'btn btn--big btn--primary', type: 'button', onclick: start }, "Los geht's!"),
-        hasNew && seen ? el('button', { class: 'btn', type: 'button', onclick: () => renderTutorial(app, level, () => app.go.intro(id)) }, 'Neue Tasten noch mal üben') : null,
-        el('button', { class: 'btn', type: 'button', onclick: () => app.go.map() }, 'Zur Weltkarte'))));
+      el('div', { class: 'row row--center' },
+        button("Los geht's!", { variant: 'big green', iconEnd: 'play', onclick: start }),
+        hasNew && seen ? button('Neue Tasten noch mal üben', { icon: 'keys', onclick: () => renderTutorial(app, level, () => app.go.intro(id)) }) : null,
+        button('Zur Weltkarte', { icon: 'back', onclick: () => app.go.map() }))));
   showScreen(screen);
+  pixelBackground(screen, 444, 160);
 
   if (isKeyhunt || isStory) return;
 
@@ -113,23 +113,23 @@ export function renderTutorial(app, level, onDone) {
     el('li', { class: 'tut__card' },
       el('kbd', { class: 'kbd-big' }, tokenLabel(s.token, index)),
       el('span', {}, index.fingerInfo(s.finger)?.name ?? ''),
-      el('span', { class: 'tut__check', 'aria-hidden': 'true' })));
-  const hint = el('p', { class: 'hint', role: 'status' });
+      el('span', { class: 'tut__check' }, icon('check'), 'geschafft')));
+  const hint = el('p', { class: 'tut__hint', role: 'status' });
   const kbWrap = el('div', { class: 'game__kbwrap' });
   const handL = el('div', { class: 'game__hand' });
   const handR = el('div', { class: 'game__hand' });
   const actions = el('div', { class: 'row' },
-    el('button', { class: 'btn', type: 'button', onclick: () => finish(false) }, 'Überspringen'));
+    button('Überspringen', { onclick: () => finish(false) }));
 
   const screen = el('section', { class: 'screen tut' },
-    el('div', { class: 'card tut__card-main' },
+    el('div', { class: 'frame card tut__card-main' },
       el('h1', {}, 'Neue Tasten!'),
       el('p', {}, 'Leg deine Finger auf die Grundstellung: links auf A S D F, rechts auf J K L Ö. Spürst du die kleinen Huckel auf F und J?'),
       el('p', { class: 'label-big' }, 'Drück jetzt jede neue Taste einmal.'),
       el('ol', { class: 'tut__cards' }, cards),
       hint,
       actions),
-    el('div', { class: 'game__kb' }, handL, kbWrap, handR));
+    el('div', { class: 'game__kb' }, handL, el('div', { class: 'kbcase frame frame--dark' }, kbWrap), handR));
   showScreen(screen);
 
   const keyboard = createKeyboard(kbWrap, index);
@@ -169,7 +169,7 @@ export function renderTutorial(app, level, onDone) {
       if (current >= steps.length) {
         input.stop();
         hint.textContent = 'Super! Du kennst jetzt alle neuen Tasten.';
-        const go = el('button', { class: 'btn btn--big btn--primary', type: 'button', onclick: () => finish(true) }, "Jetzt geht's los!");
+        const go = button("Jetzt geht's los!", { variant: 'big green', iconEnd: 'play', onclick: () => finish(true) });
         actions.replaceChildren(go);
         go.focus();
       }

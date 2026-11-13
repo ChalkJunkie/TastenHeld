@@ -1,29 +1,34 @@
 // Startseite: neues Abenteuer, Spielstand-Datei laden oder (falls vorhanden) weiterspielen.
 
-import { el, showScreen, tippImage } from '../ui.js';
+import { el, showScreen, tippImage, button, icon, pixelBackground } from '../ui.js';
 import { readFile, FILE_ERROR } from '../progress.js';
 
 export function renderStart(app) {
-  const box = el('div', { class: 'start__box' });
+  const box = el('div', { class: 'start__box frame' });
+  const worlds = app.data.levels.worlds.length;
+  const levels = app.allLevels.length;
   const screen = el('section', { class: 'screen start' },
-    el('div', { class: 'pipe', 'aria-hidden': 'true' }),
-    el('div', { class: 'start__hero' },
-      tippImage('tipp--big tipp--wave', 'Tipp, der kleine Roboter, winkt dir zu'),
-      el('div', {},
-        el('h1', { class: 'logo' }, 'Tasten', el('span', {}, 'Held')),
-        el('p', { class: 'start__lead' }, 'Lerne mit Tipp, dem kleinen Roboter, mit zehn Fingern zu tippen!'))),
-    box);
+    el('h1', { class: 'logo' }, 'Tasten', el('span', {}, 'Held')),
+    el('p', { class: 'start__lead' }, 'Tippen lernen mit Tipp, dem kleinen Dampf-Roboter'),
+    el('div', { class: 'start__main' },
+      el('div', { class: 'start__tipp' }, tippImage('tipp--big tipp--wave', 'Tipp, der kleine Roboter, winkt dir zu')),
+      box),
+    el('ul', { class: 'start__chips' },
+      el('li', {}, icon('check'), 'Ohne Anmeldung'),
+      el('li', {}, icon('disk'), 'Dein Spielstand bleibt bei dir'),
+      el('li', {}, icon('keys'), `${worlds} Welten · ${levels} Level`)));
 
   function choose() {
-    const buttons = [
-      el('button', { class: 'btn btn--big btn--primary', type: 'button', onclick: newGame }, 'Neues Abenteuer starten'),
-      el('button', { class: 'btn btn--big', type: 'button', onclick: loadGame }, 'Ich habe schon einen Spielstand'),
+    const items = [
+      button('Neues Abenteuer starten', { variant: 'big primary', icon: 'play', onclick: newGame }),
+      button('Ich habe schon einen Spielstand', { variant: 'big', icon: 'disk', onclick: loadGame }),
     ];
     if (app.backup) {
-      buttons.push(el('button', { class: 'btn btn--link', type: 'button', onclick: () => app.loadState(app.backup) },
-        `Weiterspielen als ${app.backup.profile.nickname}`));
+      items.push(el('p', { class: 'start__backup' }, 'Von vorhin auf diesem Computer: ',
+        el('button', { class: 'btn--link', type: 'button', onclick: () => app.loadState(app.backup) },
+          `Weiterspielen als ${app.backup.profile.nickname}`)));
     }
-    box.replaceChildren(el('div', { class: 'start__choices' }, buttons));
+    box.replaceChildren(el('div', { class: 'start__choices' }, items));
   }
 
   function newGame() {
@@ -37,8 +42,8 @@ export function renderStart(app) {
       app.backup && el('p', { class: 'note' },
         `Auf diesem Computer ist noch der Spielstand von ${app.backup.profile.nickname}. Er wird durch das neue Abenteuer ersetzt. Hast du ihn als Datei gespeichert?`),
       el('div', { class: 'row' },
-        el('button', { class: 'btn btn--big btn--primary', type: 'submit' }, "Los geht's!"),
-        el('button', { class: 'btn', type: 'button', onclick: choose }, 'Zurück')));
+        button("Los geht's!", { variant: 'big primary', type: 'submit', iconEnd: 'play' }),
+        button('Zurück', { icon: 'back', onclick: choose })));
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       const name = input.value.trim().replace(/\s+/g, ' ');
@@ -69,12 +74,13 @@ export function renderStart(app) {
     });
     box.replaceChildren(el('div', { class: 'start__form' },
       el('p', { class: 'label-big' }, 'Hast du schon einen Spielstand? Dann such deine Datei aus.'),
-      el('label', { class: 'btn btn--big btn--primary btn--file', for: 'savefile' }, 'Spielstand auswählen', file),
+      el('label', { class: 'btn btn--big btn--primary btn--file', for: 'savefile' }, icon('disk'), el('span', { class: 'btn__label' }, 'Spielstand auswählen'), file),
       error,
-      el('div', { class: 'row' }, el('button', { class: 'btn', type: 'button', onclick: choose }, 'Zurück'))));
+      el('div', { class: 'row' }, button('Zurück', { icon: 'back', onclick: choose }))));
     file.focus();
   }
 
   choose();
   showScreen(screen);
+  pixelBackground(screen, 456, 256);
 }

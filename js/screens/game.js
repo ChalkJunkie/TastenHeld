@@ -1,6 +1,6 @@
 // Spielbildschirm: verbindet Modus, Tastatur, Hände, Hinweise, Pause und Spielschleife.
 
-import { el, showScreen, tippImage, openDialog, worldImage, pixelBackground } from '../ui.js';
+import { el, showScreen, tippImage, openDialog, worldImage, pixelBackground, button, icon } from '../ui.js';
 import { createKeyboard } from '../keyboard.js';
 import { createHands } from '../hands.js';
 import { createSession, drawItems, HINTS } from '../engine.js';
@@ -44,31 +44,36 @@ export function renderGame(app, id) {
   const progressBar = el('div', { class: 'progress', role: 'progressbar', 'aria-valuemin': 0, 'aria-valuemax': 100, 'aria-valuenow': 0, 'aria-label': 'Fortschritt' },
     el('div', { class: 'progress__fill' }));
   const progressText = el('span', { class: 'hud__count' });
-  const toggleKb = toggleButton('Tastatur', helps.keyboard, (on) => { helps.keyboard = on; applyHelps(); });
-  const toggleHands = toggleButton('Hände', helps.hands, (on) => { helps.hands = on; applyHelps(); });
-  const pauseBtn = el('button', { class: 'btn btn--small', type: 'button', onclick: () => pause() }, 'Pause');
+  const toggleKb = toggleButton('Tastatur', 'keys', helps.keyboard, (on) => { helps.keyboard = on; applyHelps(); });
+  const toggleHands = toggleButton('Hände', 'hand', helps.hands, (on) => { helps.hands = on; applyHelps(); });
+  const pauseBtn = button('Pause', { variant: 'sm primary', icon: 'pause', onclick: () => pause() });
   // Spielfeld mit dem Bild der Welt (leicht aufgehellt, damit Text gut lesbar bleibt)
   const field = el('div', {
     class: 'game__field has-scene',
-    style: { backgroundImage: `linear-gradient(rgba(251, 243, 223, 0.3), rgba(251, 243, 223, 0.3)), url(${worldImage(world.theme)})` },
+    style: { backgroundImage: `url(${worldImage(world.theme)})` },
   });
-  const hintIcon = el('span', { class: 'hint__icon', 'aria-hidden': 'true' });
+  // Hinweise spricht Tipp in einer Sprechblase (liegt im Spielfeld)
+  const hintIcon = icon('bulb', 'hint__icon');
   const hintText = el('span', {});
-  const hintBar = el('div', { class: 'hint', role: 'status', 'aria-live': 'polite' }, hintIcon, hintText);
+  const hintBar = el('div', { class: 'hint', role: 'status', 'aria-live': 'polite' },
+    el('span', { class: 'hint__tipp', 'aria-hidden': 'true' }, tippImage()),
+    el('span', { class: 'hint__bubble' }, hintIcon, hintText));
   const kbWrap = el('div', { class: 'game__kbwrap' });
   const handL = el('div', { class: 'game__hand' });
   const handR = el('div', { class: 'game__hand' });
 
-  const screen = el('section', { class: `screen game world--${world.theme}` },
-    el('header', { class: 'hud' },
-      el('h1', { class: 'hud__title', title: `Level ${level.id}: ${level.title}` }, `Level ${level.id}: ${level.title}`),
+  const isLevel = level.id !== 'knackpunkte';
+  const screen = el('section', { class: `screen game game--${level.mode} world--${world.theme}` },
+    el('header', { class: 'bar hud' },
+      el('h1', { class: 'hud__title', title: isLevel ? `Level ${level.id}: ${level.title}` : level.title },
+        isLevel ? [el('span', { class: 'visually-hidden' }, 'Level '), el('span', { class: 'badge' }, level.id), ' '] : null,
+        el('span', { class: 'hud__name' }, level.title)),
       el('div', { class: 'hud__progress' }, progressBar, progressText),
       el('div', { class: 'hud__buttons' }, toggleKb, toggleHands, pauseBtn)),
-    field,
-    hintBar,
-    el('div', { class: 'game__kb' }, handL, kbWrap, handR));
+    el('div', { class: 'game__stage' }, field, el('div', { class: 'stage__frame', 'aria-hidden': 'true' })),
+    el('div', { class: 'game__kb' }, handL, el('div', { class: 'kbcase frame frame--dark' }, kbWrap), handR));
   showScreen(screen, { focus: false });
-  pixelBackground(field, 280, 80);
+  pixelBackground(field, 444, 160);
 
   // Tastenkunde: ganze Tastatur (mit F-Tasten und Pfeilblock), Tasten anklickbar
   const keyboard = createKeyboard(kbWrap, index, isKeyhunt
@@ -79,7 +84,7 @@ export function renderGame(app, id) {
   if (isKeyhunt) screen.classList.add('game--keyhunt');
 
   function applyHelps() {
-    kbWrap.style.visibility = helps.keyboard ? 'visible' : 'hidden';
+    kbWrap.parentNode.style.visibility = helps.keyboard ? 'visible' : 'hidden';
     hands.setVisible(helps.hands);
     keyboard.setHelps(helps);
   }
@@ -93,8 +98,8 @@ export function renderGame(app, id) {
       hintBar.classList.remove('is-visible');
       return;
     }
-    const icons = { error: '☝', caps: '⇪', shift: '⇧', capsOff: '⇪', capsMixed: '⇪', shiftSide: '⇧', info: '💡' };
-    hintIcon.textContent = icons[kind] ?? 'i';
+    const icons = { error: 'hand', caps: 'keys', shift: 'keys', capsOff: 'keys', capsMixed: 'keys', shiftSide: 'keys', info: 'bulb' };
+    hintIcon.src = `assets/pixel/ui/i-${icons[kind] ?? 'bulb'}.png`;
     hintText.textContent = text;
     hintBar.className = `hint is-visible hint--${kind}`;
     // Feststell-Hinweis bleibt, bis sie aus ist
@@ -128,10 +133,10 @@ export function renderGame(app, id) {
   let last = 0;
 
   const overlay = el('div', { class: 'overlay' });
-  field.append(overlay);
+  field.append(overlay, hintBar);
 
   function showReady() {
-    overlay.replaceChildren(el('div', { class: 'overlay__box' },
+    overlay.replaceChildren(el('div', { class: 'overlay__box frame' },
       tippImage('tipp--small tipp--wave'),
       el('p', { class: 'label-big' }, isKeyhunt
         ? 'Jede Karte stellt dir eine Frage zu einer Taste.'
@@ -159,13 +164,13 @@ export function renderGame(app, id) {
     if (phase !== 'running') return;
     phase = 'paused';
     input.listen(onPausedKey, 'none'); // normale Bedienung der Knöpfe
-    const resumeBtn = el('button', { class: 'btn btn--big btn--primary', type: 'button', onclick: resume }, 'Weiterspielen');
-    overlay.replaceChildren(el('div', { class: 'overlay__box' },
+    const resumeBtn = button('Weiterspielen', { variant: 'big green', icon: 'play', onclick: resume });
+    overlay.replaceChildren(el('div', { class: 'overlay__box frame' },
       el('h2', {}, 'Pause'),
       el('p', {}, 'Ruh dich kurz aus. Weiter geht es, wann du willst.'),
-      el('div', { class: 'row' },
+      el('div', { class: 'row row--center' },
         resumeBtn,
-        el('button', { class: 'btn', type: 'button', onclick: quit }, 'Level verlassen'))));
+        button('Level verlassen', { icon: 'exit', onclick: quit }))));
     overlay.hidden = false;
     resumeBtn.focus();
   }
@@ -230,8 +235,9 @@ export function renderGame(app, id) {
   showReady();
 }
 
-function toggleButton(label, on, onChange) {
-  const btn = el('button', { class: 'btn btn--small btn--toggle', type: 'button', 'aria-pressed': String(on) }, label);
+/** Umschalter für Hilfen: Symbol + Text, Zustand zusätzlich als Häkchen bzw. durchgestrichen. */
+function toggleButton(label, ic, on, onChange) {
+  const btn = button(label, { variant: 'sm dark toggle', icon: ic, 'aria-pressed': String(on) });
   btn.addEventListener('click', () => {
     const now = btn.getAttribute('aria-pressed') !== 'true';
     btn.setAttribute('aria-pressed', String(now));

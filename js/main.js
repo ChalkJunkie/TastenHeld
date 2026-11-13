@@ -2,7 +2,7 @@
 
 import { buildLayoutIndex } from './layout.js';
 import { createInput } from './input.js';
-import { el, applySettings, toast } from './ui.js';
+import { el, applySettings, toast, button } from './ui.js';
 import {
   createState, saveBackup, loadBackup, saveToFile, recordResult, fileName, recordChapter, storyProgress,
 } from './progress.js';
@@ -36,10 +36,10 @@ async function boot() {
     data = { levels, words, keys, story, layout };
   } catch (err) {
     console.error(err);
-    document.getElementById('screen').replaceChildren(el('section', { class: 'screen card' },
+    document.getElementById('screen').replaceChildren(el('section', { class: 'screen screen--center' }, el('div', { class: 'frame card' },
       el('h1', {}, 'Hoppla!'),
       el('p', {}, 'TastenHeld konnte nicht starten. Bitte sag deiner Lehrkraft Bescheid.'),
-      el('p', { class: 'muted' }, `Für die Lehrkraft: ${err.message}. Lokal braucht TastenHeld einen kleinen Webserver (siehe README).`)));
+      el('p', { class: 'muted' }, `Für die Lehrkraft: ${err.message}. Lokal braucht TastenHeld einen kleinen Webserver (siehe README).`))));
     return;
   }
 
@@ -68,7 +68,8 @@ async function boot() {
     for (const b of saveButtons) {
       if (!b.isConnected) { saveButtons.delete(b); continue; }
       b.classList.toggle('is-dirty', app.dirty);
-      b.querySelector('.save-btn__state').textContent = app.dirty ? 'nicht gespeichert' : 'gespeichert';
+      b.querySelector('.savestate__led').src = `assets/pixel/ui/led-${app.dirty ? 'amber' : 'green'}.png`;
+      b.querySelector('.savestate__text').textContent = app.dirty ? 'noch nicht gespeichert' : 'gespeichert';
     }
   };
 
@@ -132,14 +133,16 @@ async function boot() {
       return true;
     },
 
-    makeSaveButton() {
-      const btn = el('button', { class: 'btn btn--save', type: 'button', onclick: () => app.saveFile() },
-        el('span', { 'aria-hidden': 'true' }, '💾 '),
-        'Spielstand speichern',
-        el('span', { class: 'save-btn__state' }));
-      saveButtons.add(btn);
+    /** Speicher-Anzeige (Lämpchen + Text, nicht nur Farbe) mit Knopf "Spielstand speichern". */
+    makeSaveButton(variant = 'sm primary', label = 'Spielstand speichern') {
+      const box = el('div', { class: 'savestate' },
+        el('span', { class: 'savestate__info', role: 'status' },
+          el('img', { class: 'savestate__led pixel', src: 'assets/pixel/ui/led-amber.png', alt: '' }),
+          el('span', { class: 'savestate__text' })),
+        button(label, { variant, icon: 'disk', title: 'Spielstand speichern', onclick: () => app.saveFile() }));
+      saveButtons.add(box);
       queueMicrotask(updateSaveButtons);
-      return btn;
+      return box;
     },
 
     /** Story-Kapitel getippt: sofort speichern (man kann jederzeit aufhören). */
