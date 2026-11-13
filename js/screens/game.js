@@ -147,6 +147,8 @@ export function renderGame(app, id) {
 
   function begin() {
     overlay.hidden = true;
+    // Hinweis aus der Startphase nicht stehen lassen (die Runde kennt ihn nicht und könnte ihn nie ausblenden)
+    if (hintBar.classList.contains('hint--caps')) showHint(null);
     phase = 'running';
     mode.start();
     last = performance.now();
@@ -178,6 +180,8 @@ export function renderGame(app, id) {
   function resume() {
     if (phase !== 'paused') return;
     overlay.hidden = true;
+    // Hinweis aus der Startphase nicht stehen lassen (die Runde kennt ihn nicht und könnte ihn nie ausblenden)
+    if (hintBar.classList.contains('hint--caps')) showHint(null);
     phase = 'running';
     input.listen(onKey, policy);
     last = performance.now();
@@ -200,8 +204,10 @@ export function renderGame(app, id) {
       return;
     }
     if (phase === 'ready') {
-      if (level.caseMode === 'lower' && ev.caps) showHint(HINTS.caps, 'caps');
-      else if (ev.type === 'down' && ev.code === 'Space') begin();
+      // Die Leertaste startet immer, auch wenn die Feststelltaste an ist.
+      // Den Feststell-Hinweis zeigt dann die Runde beim ersten Buchstaben.
+      if (ev.type === 'down' && ev.code === 'Space') begin();
+      else if (level.caseMode === 'lower' && ev.caps) showHint(HINTS.caps, 'caps');
       return;
     }
     if (phase !== 'running') return;
